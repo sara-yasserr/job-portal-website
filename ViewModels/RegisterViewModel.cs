@@ -28,6 +28,7 @@ namespace Job_Portal_Project.ViewModels
         public string Country { get; set; }
         public Role Role { get; set; } // Employer or Applicant
         public string? ProfilePicturePath { get; set; }
+        public IFormFile? ProfilePictureFile { get; set; }
 
     } 
 }
