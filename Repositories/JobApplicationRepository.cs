@@ -43,5 +43,9 @@ namespace Job_Portal_Project.Repositories
             return _context.JobApplications.Count();
         }
 
+        public List<JobApplication> GetUserApplications(string userId)
+        {
+            return _context.JobApplications.Where(a => a.ApplicantId == userId).ToList();
+        }
     }
 }

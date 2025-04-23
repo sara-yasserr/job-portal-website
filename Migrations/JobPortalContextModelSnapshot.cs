@@ -172,7 +172,7 @@ namespace Job_Portal_Project.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Companies");
+                    b.ToTable("Companies", (string)null);
                 });
 
             modelBuilder.Entity("Job_Portal_Project.Models.Favourites", b =>
@@ -199,7 +199,7 @@ namespace Job_Portal_Project.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Favourites");
+                    b.ToTable("Favourites", (string)null);
                 });
 
             modelBuilder.Entity("Job_Portal_Project.Models.Job", b =>
@@ -268,7 +268,7 @@ namespace Job_Portal_Project.Migrations
 
                     b.HasIndex("JobCategoryId");
 
-                    b.ToTable("Jobs");
+                    b.ToTable("Jobs", (string)null);
                 });
 
             modelBuilder.Entity("Job_Portal_Project.Models.JobApplication", b =>
@@ -302,7 +302,7 @@ namespace Job_Portal_Project.Migrations
 
                     b.HasIndex("JobId");
 
-                    b.ToTable("JobApplications");
+                    b.ToTable("JobApplications", (string)null);
                 });
 
             modelBuilder.Entity("Job_Portal_Project.Models.JobCategory", b =>
@@ -319,7 +319,7 @@ namespace Job_Portal_Project.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("JobCategories");
+                    b.ToTable("JobCategories", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

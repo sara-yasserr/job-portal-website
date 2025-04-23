@@ -4,78 +4,101 @@
     ViewData["Title"] = "Register";
 }
 
-<h1>Register</h1>
-
-<h4>RegisterViewModel</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Register" method="post">
-            <div asp-validation-summary="All" class="text-danger"></div>
-            <div class="form-group">
-                <label class="control-label">Role</label>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" asp-for="Role" value="JobSeeker" id="jobSeeker">
-                    <label class="form-check-label" for="jobSeeker">Job Seeker</label>
+<section id="content" class="section-padding">
+    <!-- Content section Start --><div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-5 col-md-6 col-xs-12">
+                <div class="page-login-form box">
+                    <h3>
+                        Create Your account
+                    </h3>
+                    <form class="login-form" asp-action="Register" method="post" enctype="multipart/form-data">
+                        <div asp-validation-summary="All" class="text-danger" style="display:none;"></div>
+                        <input type="hidden" asp-for="Role" />
+                        <div class="form-group">
+                            <div class="input-icon">
+                                <label asp-for="FirstName">First name </label>
+                                <input asp-for="FirstName" class="form-control" />
+                                <span asp-validation-for="FirstName" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-icon">
+                                <label asp-for="LastName">Last name</label>
+                                <input asp-for="LastName" class="form-control" />
+                                <span asp-validation-for="LastName" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-icon">
+                                <label asp-for="UserName">Username</label>
+                                <input asp-for="UserName" type="text" class="form-control">
+                                <span asp-validation-for="UserName" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-icon">
+                                <label asp-for="Email">Email</label>
+                                    <input asp-for="Email" type="email" class="form-control">
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+                        </div>
+                       
+                        <div class="form-group">
+                            <div class="input-icon">
+                                <label asp-for="Country">Country</label>
+                                <input asp-for="Country" type="text" class="form-control">
+                                <span asp-validation-for="Country" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-icon">
+                                <label asp-for="City">City</label>
+                            <input asp-for="City" class="form-control" />
+                            <span asp-validation-for="City" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-icon">
+                                <label asp-for="ProfilePictureFile">Image</label>
+                                <input asp-for="ProfilePictureFile" type="file" class="form-control"/>
+                                <input type="hidden" asp-for="ProfilePicturePath" value="@Model?.ProfilePicturePath" />
+                                @* @if (!string.IsNullOrEmpty(Model.ProfilePicturePath)) *@
+                                @* { *@
+                                @*     <div class="mb-2"> *@
+                                @*         <img src="/images/@Model.ProfilePicturePath" alt="Current Image" height="120" /> *@
+                                @*     </div> *@
+                                @* } *@
+                            <span asp-validation-for="ProfilePicturePath" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-icon">
+                                <label asp-for="Password" style="width:125px">Password</label>
+                                <input asp-for="Password" type="password" class="form-control" style="padding-left:127px">
+                                <span asp-validation-for="Password" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-icon">
+                                <label asp-for="ConfirmPassword" class="control-label" style="width:125px">Confirm Password</label>
+                                <input asp-for="ConfirmPassword" type="password" class="form-control" style="padding-left:127px">
+                                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <button class="btn btn-common log-btn mt-3" value="Create">Register</button>
+                        <style>
+                            .log-btn:hover {
+                                color: #00BCD4 !important
+                            }
+                        </style>
+                        <p class="text-center">Already have an account?<a asp-action="Login" asp-controller="Account"> Login</a></p>
+                    </form>
                 </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" asp-for="Role" value="Employer" id="employer">
-                    <label class="form-check-label" for="employer">Employer</label>
-                </div>
-                <span asp-validation-for="Role" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="UserName" class="control-label"></label>
-                <input asp-for="UserName" class="form-control" />
-                <span asp-validation-for="UserName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ConfirmPassword" class="control-label"></label>
-                <input asp-for="ConfirmPassword" class="form-control" />
-                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="FirstName" class="control-label"></label>
-                <input asp-for="FirstName" class="form-control" />
-                <span asp-validation-for="FirstName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="LastName" class="control-label"></label>
-                <input asp-for="LastName" class="form-control" />
-                <span asp-validation-for="LastName" class="text-danger"></span>
-            </div>
-			<div class="form-group">
-				<label asp-for="City" class="control-label"></label>
-                <input asp-for="City" class="form-control" />
-                <span asp-validation-for="City" class="text-danger"></span>
-			</div>
-            <div>
-                <label asp-for="Country" class="control-label"></label>
-                <input asp-for="Country" class="form-control" />
-                <span asp-validation-for="Country" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ProfilePicturePath" class="control-label"></label>
-                <input asp-for="ProfilePicturePath" class="form-control" />
-                <span asp-validation-for="ProfilePicturePath" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
-</div>
-
+</section>
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
