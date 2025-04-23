@@ -38,5 +38,10 @@ namespace Job_Portal_Project.Repositories
         {
             _context.SaveChanges();
         }
+
+        int IRepository<Company>.Count()
+        {
+            return _context.Companies.Count();
+        }
     }
 }

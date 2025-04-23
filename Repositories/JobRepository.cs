@@ -38,5 +38,9 @@ namespace Job_Portal_Project.Repositories
         {
             _context.SaveChanges();
         }
+        public int Count()
+        {
+            return _context.Jobs.Count();
+        }
     }
 }

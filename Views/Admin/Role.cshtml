@@ -1,0 +1,76 @@
+﻿@using Job_Portal_Project.ViewModels.Admin
+@model RoleViewModel
+@{
+    ViewData["Title"] = "Add Role";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Add New Role</h4>
+                </div>
+                <div class="card-body">
+                    <form asp-action="SaveRole">
+                        <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+                        <div class="mb-3">
+                            <label asp-for="RoleName" class="form-label">Role Name</label>
+                            <input asp-for="RoleName" class="form-control" placeholder="Enter role name" />
+                            <span asp-validation-for="RoleName" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-flex justify-content-between text-center">
+                            <button type="submit" class="btn btn-success">
+                                <i class="bi bi-plus-circle me-1"></i> Create Role
+                            </button>
+                        </div>
+                    </form>
+                    @if (TempData["RoleError"] != null)
+                    {
+                        <div class="alert alert-danger text-center mt-3">
+                            @TempData["RoleError"]
+                        </div>
+                    }
+                    @if (Model.ExistingRoles != null && Model.ExistingRoles.Any())
+                    {
+                        <div class="mt-5">
+                            <h4>Existing Roles</h4>
+                            <table class="table table-bordered table-hover">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Role Name</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (int i = 0; i < Model.ExistingRoles.Count; i++)
+                                    {
+                                        <tr>
+                                            <td>@(i + 1)</td>
+                                            <td>@Model.ExistingRoles[i].Name</td>
+                                            <td>
+                                                <form asp-action="DeleteRole" method="post" asp-route-id="@Model.ExistingRoles[i].Id" onsubmit="return confirm('Are you sure you want to delete this role?');">
+                                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                                </form>
+                                            </td>
+
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

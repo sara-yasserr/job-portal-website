@@ -1,0 +1,33 @@
+﻿
+body {
+    display: flex;
+    min-height: 100vh;
+}
+
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    background-color: #343a40;
+    color: white;
+    padding: 20px;
+}
+
+    .sidebar h4 {
+        color: #fff;
+        margin-bottom: 20px;
+    }
+
+    .sidebar a {
+        display: block;
+        color: #ccc;
+        text-decoration: none;
+        margin-bottom: 10px;
+    }
+
+        .sidebar a:hover {
+            color: #fff;
+        }
+
+.dashboard-cards .card {
+    color: white;
+}

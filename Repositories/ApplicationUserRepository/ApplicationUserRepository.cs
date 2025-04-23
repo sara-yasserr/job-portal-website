@@ -16,7 +16,7 @@ namespace Job_Portal_Project.Repositories.ApplicationUserRepository
         {
             return await _userManager.Users.ToListAsync();
         }
-
+        
         public async Task<ApplicationUser?> GetByIdAsync(string id)
         {
             return await _userManager.FindByIdAsync(id);
@@ -42,7 +42,22 @@ namespace Job_Portal_Project.Repositories.ApplicationUserRepository
 
         public async Task<IdentityResult> DeleteAsync(ApplicationUser user)
         {
+            await _userManager.RemoveFromRolesAsync(user, await _userManager.GetRolesAsync(user));
+
             return await _userManager.DeleteAsync(user);
+        }
+
+        public Task<int> GetNumberOfUsersAsync()
+        {
+            return _userManager.Users.CountAsync();
+        }
+        public Task<int> GetNumberOfApplicantsAsync()
+        {
+            return _userManager.Users.Where(u => u.Role == "JobSeeker").CountAsync();
+        }
+        public Task<int> GetNumberOfEmployersAsync()
+        {
+            return _userManager.Users.Where(u => u.Role == "Employer").CountAsync();
         }
 
     }
