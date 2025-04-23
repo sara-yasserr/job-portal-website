@@ -1,0 +1,92 @@
+﻿@using Job_Portal_Project.ViewModels.Admin
+@model List<UserWithRolesViewModel>
+@{
+    ViewData["Title"] = "Manage User Roles";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var allRoles = ViewData["AllRoles"] as List<string>;
+}
+
+<h2 class="mb-4">Manage Users Roles</h2>
+
+<!-- Filter Form -->
+<form method="get" asp-action="ManageUserRoles" class="row g-2 mb-4">
+    <div class="col-md-4">
+        <input type="text" name="searchTerm" class="form-control" placeholder="Search by name or email..."
+               value="@ViewData["SearchTerm"]" />
+    </div>
+    <div class="col-md-3">
+        <select name="roleFilter" class="form-select">
+            @foreach (var role in allRoles!)
+            {
+                <option value="@role" selected="@(role == (ViewData["RoleFilter"] as string) ? "selected" : null)">
+                    @role
+                </option>
+            }
+        </select>
+    </div>
+    <div class="col-md-2">
+        <button type="submit" class="btn btn-primary w-100">Filter</button>
+    </div>
+    <div class="col-md-3">
+        <a asp-action="ManageUserRoles" class="btn btn-secondary w-100">Reset</a>
+    </div>
+</form>
+
+<!-- Users Table -->
+<table class="table table-bordered table-striped align-middle">
+    <thead class="table-dark">
+        <tr>
+            <th>Full Name</th>
+            <th>Email</th>
+            <th>Title</th>
+            <th>Current Role</th>
+            <th>Assign New Role</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.FullName</td>
+                <td>@user.Email</td>
+                <td>@user.Title</td>
+                <td>@user.CurrentRole</td>
+                <td>
+                    <form asp-action="AssignRole" method="post" class="d-flex">
+                        <input type="hidden" name="userId" value="@user.UserId" />
+                        <select name="role" class="form-select me-2">
+                            @foreach (var role in user.AllRoles)
+                            {
+                                <option value="@role" selected="@(role == user.CurrentRole)">
+                                    @role
+                                </option>
+                            }
+                        </select>
+                        <button type="submit" class="btn btn-sm btn-primary">Assign</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Pagination -->
+@if (true)
+{
+    <nav aria-label="User Role Pagination">
+        <ul class="pagination justify-content-center mt-4">
+            <li class="page-item @( (int)ViewData["CurrentPage"] == 1 ? "disabled" : "")">
+                <a class="page-link" href="?searchTerm=@ViewData["SearchTerm"]&roleFilter=@ViewData["RoleFilter"]&page=@((int)ViewData["CurrentPage"] - 1)">«</a>
+            </li>
+            @for (int i = 1; i <= (int)ViewData["TotalPages"]; i++)
+            {
+                <li class="page-item @(i == (int)ViewData["CurrentPage"] ? "active" : "")">
+                    <a class="page-link" href="?searchTerm=@ViewData["SearchTerm"]&roleFilter=@ViewData["RoleFilter"]&page=@i">@i</a>
+                </li>
+            }
+            <li class="page-item @( (int)ViewData["CurrentPage"] == (int)ViewData["TotalPages"] ? "disabled" : "")">
+                <a class="page-link" href="?searchTerm=@ViewData["SearchTerm"]&roleFilter=@ViewData["RoleFilter"]&page=@((int)ViewData["CurrentPage"] + 1)">»</a>
+            </li>
+        </ul>
+    </nav>
+}
