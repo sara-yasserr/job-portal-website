@@ -23,11 +23,21 @@ namespace Job_Portal_Project.Repositories.ApplicationUserRepository
         }
         public async Task<ApplicationUser> GetByUserNameAsync(string userName)
         {
-            return await _userManager.FindByNameAsync(userName);
+            var user = await _userManager.FindByNameAsync(userName);
+            if (user == null)
+            {
+                throw new InvalidOperationException($"User with username '{userName}' not found.");
+            }
+            return user;
         }
         public async Task<ApplicationUser> GetByEmailAsync(string email)
         {
-            return await _userManager.FindByEmailAsync(email);
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+            {
+                throw new InvalidOperationException($"User with email '{email}' not found.");
+            }
+            return user;
         }
 
         public async Task<IdentityResult> InsertAsync(ApplicationUser user, string password)
