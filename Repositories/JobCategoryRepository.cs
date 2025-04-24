@@ -18,25 +18,30 @@ namespace Job_Portal_Project.Repositories
 
         public JobCategory GetById<I>(I id)
         {
-            throw new NotImplementedException();
+            return _context.JobCategories.Find(id);
         }
 
         public void Insert(JobCategory entity)
         {
-            throw new NotImplementedException();
+            _context.JobCategories.Add(entity);
         }
 
         public void Update(JobCategory entity)
         {
-            throw new NotImplementedException();
+            _context.JobCategories.Update(entity);
         }
         public void Delete<I>(I id)
         {
-            throw new NotImplementedException();
+            var Record = _context.JobCategories.Find(id);
+            _context.JobCategories.Remove(Record);
         }
         public void Save()
         {
-            throw new NotImplementedException();
+            _context.SaveChanges();
+        }
+        public int Count()
+        {
+            return _context.JobCategories.Count();
         }
     }
 }

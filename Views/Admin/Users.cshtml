@@ -1,0 +1,135 @@
+﻿@model List<Job_Portal_Project.Models.ApplicationUser>
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Users";
+}
+
+<div class="content">
+    <h2 class="mb-4">All Users</h2>
+
+    <!-- Filter & Search Form -->
+    <form method="get" asp-action="Users" class="row g-3 mb-4">
+        <div class="col-md-3">
+            <input type="text" name="search" value="@ViewBag.Search" class="form-control" placeholder="Search by name or email" />
+        </div>
+        <div class="col-md-2">
+            <select name="country" class="form-select">
+                <option value="">All Countries</option>
+                @foreach (var c in ViewBag.Countries as List<string>)
+                {
+                    if (ViewBag.SelectedCountry == c)
+                    {
+                        <option value="@c" selected>@c</option>
+                    }
+                    else
+                    {
+                        <option value="@c">@c</option>
+                    }
+                }
+            </select>
+        </div>
+        <div class="col-md-2">
+            <select name="city" class="form-select">
+                <option value="">All Cities</option>
+                @foreach (var c in ViewBag.Cities as List<string>)
+                {
+                    if (ViewBag.SelectedCity == c)
+                    {
+                        <option value="@c" selected>@c</option>
+                    }
+                    else
+                    {
+                        <option value="@c">@c</option>
+                    }
+                }
+            </select>
+        </div>
+        <div class="col-md-2">
+            <select name="role" class="form-select">
+                <option value="">All Roles</option>
+                @foreach (var r in ViewBag.Roles as List<string>)
+                {
+                    if (ViewBag.SelectedRole == r)
+                    {
+                        <option value="@r" selected>@r</option>
+                    }
+                    else
+                    {
+                        <option value="@r">@r</option>
+                    }
+                }
+            </select>
+        </div>
+        <div class="col-md-3">
+            <button type="submit" class="btn btn-primary">Filter</button>
+            <a asp-action="Users" class="btn btn-secondary">Reset</a>
+        </div>
+    </form>
+
+    @if (TempData["UserError"] != null)
+    {
+        <div class="alert alert-danger text-center mt-3">
+            @TempData["UserError"]
+        </div>
+    }
+
+    <!-- User Table -->
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped table-hover align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>City</th>
+                    <th>Country</th>
+                    <th>Role</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model)
+                {
+                    <tr>
+                        <td>@user.Id</td>
+                        <td>@user.FirstName @user.LastName</td>
+                        <td>@user.Email</td>
+                        <td>@user.City</td>
+                        <td>@user.Country</td>
+                        <td>@user.Role</td>
+                        <td>
+                            <a href="@Url.Action("UserDetails", "Admin", new { id = user.Id })" class="btn btn-sm btn-info">Details</a>
+                            <form asp-action="DeleteUser" asp-controller="Admin" asp-route-id="@user.Id" method="post" class="d-inline"
+                                  onsubmit="return confirm('Are you sure you want to delete this user?');">
+                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Pagination -->
+    @if (true)
+    {
+        <nav class="mt-4">
+            <ul class="pagination justify-content-center">
+                @for (int i = 1; i <= (int)ViewBag.TotalPages; i++)
+                {
+                    <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                        <a class="page-link"
+                           href="@Url.Action("Users", new {
+                               page = i,
+                               pageSize = ViewBag.PageSize,
+                               search = ViewBag.Search,
+                               country = ViewBag.SelectedCountry,
+                               city = ViewBag.SelectedCity,
+                               role = ViewBag.SelectedRole
+                           })">@i</a>
+                    </li>
+                }
+            </ul>
+        </nav>
+    }
+</div>

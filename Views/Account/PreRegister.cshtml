@@ -1,0 +1,135 @@
+﻿@model Job_Portal_Project.ViewModels.RegisterViewModel
+@{
+    ViewData["Title"] = "PreRegister";
+}
+
+<section id="content" class="section-padding">
+
+    <!-- Content section Start -->
+    <div class="container">
+     <div class="row rowthis  justify-content-center">
+            <form method="post" id="roleForm">
+                @if (TempData["Email"] != null)
+                {
+                <input type="hidden" asp-for="Email" value="@TempData["Email"]" />
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert" style="width:400px;background-color: ;">
+                    <strong>Warning:</strong> Your Google account is not linked to any account yet. Please complete registration.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" ></button>
+                </div>
+                }
+        <div class="text-center">
+            <h2 class="display-rebrand mt-6x pb-2x mb-6x mb-md-10x">
+                Join as an employer or job seeker
+            </h2> 
+            <div data-ev-sublocation="!button_box_radio_group" >
+              
+                        <div class="air3-grid-container"  style=" display:flex; flex-direction:row; justify-content:space-around;align-items:center; width:50vw; margin:0px auto;">
+  
+                        <div class="choice ">
+                             <label>
+                                <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" data-name="Layer 1" viewBox="0 0 24 24" role="img"><path fill="none" vector-effect="non-scaling-stroke" stroke="var(--icon-color, #001e00)" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19.28 21h-6.9a1.6 1.6 0 01-1.73-1.5v-4a1.6 1.6 0 011.73-1.5h6.9A1.59 1.59 0 0121 15.5v4a1.66 1.66 0 01-1.72 1.5z"></path><path fill="none" vector-effect="non-scaling-stroke" stroke="var(--icon-color, #001e00)" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16.9 12h-2.15a.65.65 0 00-.72.66V14h3.59v-1.34a.65.65 0 00-.72-.66z"></path><line x1="10.65" x2="21" y1="17.29" y2="17.29" fill="none" vector-effect="non-scaling-stroke" stroke="var(--icon-color, #001e00)" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></line><circle cx="10.04" cy="5.73" r="2.73" fill="none" vector-effect="non-scaling-stroke" stroke="var(--icon-color, #001e00)" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></circle><path fill="none" vector-effect="non-scaling-stroke" stroke="var(--icon-color, #001e00)" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 18.45v-.9a7 7 0 017-7h.09a6.73 6.73 0 011.91.27"></path></svg>
+                                <input class="radio" asp-for="Role" type="radio" name="choice" value="Employer" />
+                            <span></span>
+                            </label>
+                                        <h4 class="mt-4">
+                                         I'm hiring
+                                        </h4> 
+                            </div>
+
+                        <div class="choice ">
+                            <label><svg xmlns="http://www.w3.org/2000/svg" fill="none" aria-hidden="true" viewBox="0 0 24 24" role="img"><path vector-effect="non-scaling-stroke" stroke="var(--icon-color, #001e00)" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.43 21H5.99M3 18.45v-.9a7 7 0 017-7h.09a6.94 6.94 0 013.79 1.12m5.5 9.33h-11L10 14h11l-1.62 7zm-4.69-3a.5.5 0 100-1 .5.5 0 000 1zM12.77 5.73a2.73 2.73 0 11-5.46 0 2.73 2.73 0 015.46 0z"></path></svg>
+                                <input class="radio" asp-for="Role" value="JobSeeker" type="radio" name="choice" />
+                            <span></span>
+                            </label>
+                            <h4 class="mt-4">
+                                I'm looking for a job
+                                        </h4> 
+                                    </div>
+                        
+                        </div>
+                </div>
+            </div>
+ 
+            <div style="text-align:center;">
+                    <input type="hidden" asp-for="Role" id="roleInput">
+                <button type="submit" class="btn disabled btnthis" asp-action="PreRegister" asp-controller="Account" >Register as a Job seeker </button>
+                    
+            </form>
+                    <p class="text-center text-body mt-4x mb-6x">
+                        Already have an account?
+                <a  asp-action="Login" asp-controller="Account" data-qa="login" class="up-n-link" style="color: #00BCD4">
+                            Login
+                        </a>
+                    </p>
+            </div>
+        </div>
+                 </div>
+</section>
+
+<style>
+    .rowthis{
+        height:70vh;
+        display:flex;
+        align-content:center;
+        justify-content:center;
+    }
+    h4{
+        font-weight:100;
+        font-size:20px;
+    }
+
+    svg{
+        height:40px;
+    }
+
+    .choice{
+        width:350px;
+        height:150px;
+        border:solid black .8px;
+        border-radius:5px;
+    }
+
+    .choice:hover{
+    background-color:#eeeeee
+    }
+
+    .btnthis{
+        text-transform: none !important;
+        margin-top: 20px;
+    }
+    .btnthis.disabled {
+
+        background-color:#eeeeee !important;
+
+    }
+
+    .btnthis.active{
+            background-color : #00BCD4 !important;
+            color : white !important;
+    }
+</style>
+
+<script>
+    var elements = document.getElementsByClassName("choice");
+
+    Array.from(elements).forEach(function(item) {
+        item.addEventListener("click", function () {
+            var radio = item.getElementsByTagName("input")[0];
+            radio.checked = true;
+            var button = document.getElementsByClassName("btnthis")[0];
+
+            if(radio.value === "JobSeeker"){
+                button.innerHTML = `Register as a job seeker`
+            }
+            else if(radio.value === "Employer"){
+                button.innerText = `Register as an employer`
+            }
+
+           document.getElementById("roleInput").value = radio.value;
+
+            radio.classList.add("active");
+            button.classList.remove("disabled");
+            button.classList.add("active");
+        });
+    });
+</script>
