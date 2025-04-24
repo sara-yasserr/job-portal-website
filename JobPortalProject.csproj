@@ -49,6 +49,8 @@
     <None Include="wwwroot\assets\img\resume\.DS_Store" />
     <None Include="wwwroot\assets\img\testimonial\.DS_Store" />
     <None Include="wwwroot\assets\js\.DS_Store" />
+    <Folder Include="wwwroot\Uploads\resumes\" />
+    <Folder Include="wwwroot\Uploads\Profiles\" />
   </ItemGroup>
 
 </Project>

@@ -1,10 +1,14 @@
 using Job_Portal_Project.Controllers.Profile;
+//using Job_Portal_Project.Data;
+using System.Security.Claims;
 using Job_Portal_Project.Models;
 using Job_Portal_Project.Models.DbContext;
 using Job_Portal_Project.Repositories;
 using Job_Portal_Project.Repositories.ApplicationUserRepository;
 using Job_Portal_Project.Services;
 using Job_Portal_Project.Services.Contracts;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,18 +21,40 @@ namespace Job_Portal_Project
             
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
+            //Add services to the container.
 
-            //builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-            //    .AddCookie(options =>
-            //    {
-            //        options.LoginPath = "/Account/Login";
-            //    })
-            //    .AddGoogle(options =>
-            //    {
-            //        options.ClientId = "";
-            //        options.ClientSecret = "";
-            //    });
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.LoginPath = "/Account/Login";
+                })
+                .AddGoogle(options =>
+                {
+                    options.ClientId = "Authentication:Google:ClientId";
+                    options.ClientSecret = "Authentication:Google: ClientSecret";
+                    options.Scope.Add("email");
+                    options.Scope.Add("profile");
+                    options.SaveTokens = true;
+
+                    options.Events.OnCreatingTicket = ctx =>
+                    {
+                        var email = ctx.User.GetProperty("email").GetString();
+
+                        if (!string.IsNullOrEmpty(email))
+                        {
+                            var claims = new List<Claim>
+                            {
+                              new Claim(ClaimTypes.Email, email)
+                            };
+
+                            var identity = new ClaimsIdentity(claims, "Google");
+                            var principal = new ClaimsPrincipal(identity);
+                            ctx.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+                        }
+
+                        return Task.CompletedTask;
+                    };
+                });
 
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
             // service used insted of  method of on configuration to allow injecting the dbcontext in the repositories without using the service provider
@@ -58,6 +84,10 @@ namespace Job_Portal_Project
             builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
             builder.Services.AddScoped<IUserMappingService, UserMappingService>();
             builder.Services.AddScoped<IJobCategoryRepository, JobCategoryRepository>();
+            builder.Services.AddScoped<IJobService, JobService>();
+            builder.Services.AddScoped<IFavouritesRepository, FavouritesRepository>();
+            builder.Services.AddScoped<IAdminDashboardService, AdminDashboardService>();
+
 
             
             // Services
@@ -94,6 +124,9 @@ namespace Job_Portal_Project
             app.UseRouting();
 
             app.UseSession();
+
+            app.UseStaticFiles();
+
 
             app.UseAuthorization();
 

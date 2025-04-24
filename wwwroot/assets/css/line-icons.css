@@ -26,6 +26,7 @@
 
 .lni-add-files:before {
   content: "\e900";
+
 }
 .lni-agenda:before {
   content: "\e901";

@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Job_Portal_Project.Controllers
 {
@@ -27,15 +28,48 @@ namespace Job_Portal_Project.Controllers
         }
 
         #region Register
-        public IActionResult Register()
+        //Identifying Role = Employer | JobSeeker
+        public IActionResult PreRegister()
         {
-            return View();  
+            return View("PreRegister");
+        }
+        [HttpPost]
+        [AutoValidateAntiforgeryToken]
+        public IActionResult PreRegister(RegisterViewModel userVM)
+        {
+            if (userVM.Role!=null)
+            {
+                return RedirectToAction("Register",userVM);
+            }
+            return View("PreRegister", userVM);
+        }
+        //Redirecting to Register with specified role
+        public IActionResult Register(Role Role, string Email = null)
+        {
+            RegisterViewModel userVM = new RegisterViewModel();
+            userVM.Role = Role;
+            if (!string.IsNullOrEmpty(Email)) { userVM.Email = Email; }
+            return View("Register",userVM);  
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel userVM)
         {
+            if (userVM.ProfilePictureFile != null && userVM.ProfilePictureFile.Length > 0)
+            {
+                string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Images");
+                string uniqueFileName = Guid.NewGuid().ToString() + "_" + userVM.ProfilePictureFile.FileName;
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    userVM.ProfilePictureFile.CopyTo(fileStream);
+                }
+
+                userVM.ProfilePicturePath = uniqueFileName;
+            }
+
             if (ModelState.IsValid)
             {
                 var existingUser = await _applicationUserRepository.GetByUserNameAsync(userVM.UserName);
@@ -47,7 +81,6 @@ namespace Job_Portal_Project.Controllers
                 ApplicationUser userFromDB = _userMappingService.MapToApplicationUser(userVM);
                 //create db
                 IdentityResult result = await userManager.CreateAsync(userFromDB, userVM.Password);
-
                 //create cookie
                 if (result.Succeeded)
                 {
@@ -132,13 +165,31 @@ namespace Job_Portal_Project.Controllers
         public IActionResult GoogleLogin(string returnUrl = null)
         {
             var redirectUrl = Url.Action("GoogleCallBack", "Account", new { returnUrl });
-            var properries = new AuthenticationProperties { RedirectUri = redirectUrl };
-            return Challenge(properries, GoogleDefaults.AuthenticationScheme);
+            var properties = new AuthenticationProperties { RedirectUri = redirectUrl };
+            return Challenge(properties, GoogleDefaults.AuthenticationScheme);
         }
 
         public async Task<IActionResult> GoogleCallBack(string returnUrl = null)
         {
             var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            var email = result.Principal.FindFirst(ClaimTypes.Email)?.Value;
+
+            if (!result.Succeeded || result.Principal == null)
+            {
+                TempData["Email"] = email;
+                TempData.Keep("Email");
+                return RedirectToAction("PreRegister", "Account");
+            }
+
+            var user = await userManager.FindByEmailAsync(email);
+            if (user == null)
+            {
+                TempData["Email"] = email;
+                TempData.Keep("Email");
+                return RedirectToAction("PreRegister", "Account");
+            }
+
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(result.Principal.Identity));
             return RedirectToLocal(returnUrl);
         }
         #endregion
