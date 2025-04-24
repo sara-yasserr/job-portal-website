@@ -1,0 +1,110 @@
+﻿@using Job_Portal_Project.ViewModels;
+@model JobCreateViewModel
+@{
+    Layout = "_MyLayout";
+    ViewData["Title"] = "Edit";
+    SelectList ComOptions = new SelectList(ViewBag.Companies, "Id", "Name", Model.CompanyId);
+    SelectList CatOptions = new SelectList(ViewBag.Categories, "Id", "Name", Model.JobCategoryId);
+}
+
+
+<style>
+    label {
+        color: #00BCD4;
+        font-weight: 500;
+    }
+
+    .custom-select, .custom-select option {
+        color: #666666;
+    }
+
+</style>
+
+
+
+<div class="container mt-5 mb-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+
+            <form asp-action="Edit" method="post" class="bg-white p-4  mt-3 rounded shadow-sm">
+                <h3 class="text-center mb-3">Edit Job</h3>
+                <input type="hidden" asp-for="Id" />
+
+                <div class="form-group">
+                    <label asp-for="Title"></label>
+                    <input asp-for="Title" class="form-control" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Description"></label>
+                    <textarea asp-for="Description" class="form-control"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="EmploymentType"></label>
+                    <select asp-for="EmploymentType" class="form-control custom-select-gray">
+                        <option value="">-- Select Type --</option>
+                        <option selected="@((Model.EmploymentType == "Full-time") ? "selected" : null)">Full-time</option>
+                        <option selected="@((Model.EmploymentType == "Part-time") ? "selected" : null)">Part-time</option>
+                        <option selected="@((Model.EmploymentType == "Internship") ? "selected" : null)">Internship</option>
+                    </select>
+                    <span asp-validation-for="EmploymentType" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="WorkMode"></label>
+                    <select asp-for="WorkMode" class="form-control custom-select-gray">
+                        <option value="">-- Select Work Mode --</option>
+                        <option selected="@((Model.WorkMode == "On-site") ? "selected" : null)">On-site</option>
+                        <option selected="@((Model.WorkMode == "Remote") ? "selected" : null)">Remote</option>
+                        <option selected="@((Model.WorkMode == "Hybrid") ? "selected" : null)">Hybrid</option>
+                    </select>
+                    <span asp-validation-for="WorkMode" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="City"></label>
+                    <input asp-for="City" class="form-control" />
+                    <span asp-validation-for="City" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Country"></label>
+                    <input asp-for="Country" class="form-control" />
+                    <span asp-validation-for="Country" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="ExperienceLevel"></label>
+                    <input asp-for="ExperienceLevel" class="form-control" />
+                    <span asp-validation-for="ExperienceLevel" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="VacancyCount"></label>
+                    <input asp-for="VacancyCount" class="form-control" />
+                    <span asp-validation-for="VacancyCount" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="JobCategoryId">Job Category</label>
+                    <select asp-for="JobCategoryId" class="form-control custom-select-gray" asp-items="@CatOptions"></select>
+                    <span asp-validation-for="JobCategoryId" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="CompanyId">Company</label>
+                    <select asp-for="CompanyId" class="form-control custom-select-gray" asp-items="@ComOptions"></select>
+                    <span asp-validation-for="CompanyId" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mt-4 text-center justify-content-center">
+                    <button type="submit" class="btn px-5" style="background-color: #00BCD4; color: white; border: none;">Save Changes</button>
+                    @* <a asp-action="Index" class="btn btn-outline-secondary ml-2">Cancel</a> *@
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
