@@ -57,8 +57,9 @@ namespace Job_Portal_Project.Repositories
             }
 
             return query.ToList();
+        }
 
-        int IRepository<Company>.Count()
+        public int Count()
         {
             return _context.Companies.Count();
         }

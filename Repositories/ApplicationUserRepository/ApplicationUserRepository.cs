@@ -64,7 +64,7 @@ namespace Job_Portal_Project.Repositories.ApplicationUserRepository
         public async Task SaveAsync()
         {
             await context.SaveChangesAsync();
-
+        }
         public Task<int> GetNumberOfUsersAsync()
         {
             return _userManager.Users.CountAsync();

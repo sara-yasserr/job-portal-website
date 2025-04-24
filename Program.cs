@@ -23,7 +23,7 @@ namespace Job_Portal_Project
 
             //Add services to the container.
 
-<<<<<<< HEAD
+
            //builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
            //    .AddCookie(options =>
            //    {
@@ -56,41 +56,8 @@ namespace Job_Portal_Project
            //            return Task.CompletedTask;
            //        };
            //    });
-=======
-            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(options =>
-                {
-                    options.LoginPath = "/Account/Login";
-                })
-                .AddGoogle(options =>
-                {
-                    options.ClientId = "Authentication:Google:ClientId";
-                    options.ClientSecret = "Authentication:Google: ClientSecret";
-                    options.Scope.Add("email");
-                    options.Scope.Add("profile");
-                    options.SaveTokens = true;
 
-                    options.Events.OnCreatingTicket = ctx =>
-                    {
-                        var email = ctx.User.GetProperty("email").GetString();
-
-                        if (!string.IsNullOrEmpty(email))
-                        {
-                            var claims = new List<Claim>
-                            {
-                              new Claim(ClaimTypes.Email, email)
-                            };
-
-                            var identity = new ClaimsIdentity(claims, "Google");
-                            var principal = new ClaimsPrincipal(identity);
-                            ctx.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
-                        }
-
-                        return Task.CompletedTask;
-                    };
-                });
->>>>>>> e5124330c55b98497ef6d0c2e96df8a5d744b568
-
+           
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
             // service used insted of  method of on configuration to allow injecting the dbcontext in the repositories without using the service provider
             builder.Services.AddDbContext<JobPortalContext>(options =>
