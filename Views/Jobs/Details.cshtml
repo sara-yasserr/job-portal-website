@@ -1,0 +1,16 @@
+﻿@model Job
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<p><strong>Title:</strong> @Model.Title</p>
+<p><strong>Company:</strong> @Model.Company?.Name</p>
+<p><strong>Category:</strong> @Model.JobCategory?.Name</p>
+<p><strong>Salary:</strong> @Model.City</p>
+<p><strong>Salary:</strong> @Model.Company</p>
+<p><strong>Salary:</strong> @Model.Employer.FirstName</p>
+
+<a asp-action="Index" class="btn btn-secondary">Back</a>
+

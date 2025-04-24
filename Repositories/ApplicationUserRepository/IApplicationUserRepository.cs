@@ -6,6 +6,7 @@ namespace Job_Portal_Project.Repositories.ApplicationUserRepository
     public interface IApplicationUserRepository
     {
         Task<List<ApplicationUser>> GetAllAsync();
+        //Get Recent Users
         Task<ApplicationUser?> GetByIdAsync(string id);
         Task<ApplicationUser> GetByUserNameAsync(string userName);
         Task<ApplicationUser> GetByEmailAsync(string email);
@@ -14,5 +15,15 @@ namespace Job_Portal_Project.Repositories.ApplicationUserRepository
         Task<IdentityResult> DeleteAsync(ApplicationUser user);
 
         Task SaveAsync();
+
+        //save changes
+        //Number of Users
+        Task<int> GetNumberOfUsersAsync();
+
+        Task<int> GetNumberOfApplicantsAsync();
+        //Number of Employers
+        Task<int> GetNumberOfEmployersAsync();
+
+
     }
 }
