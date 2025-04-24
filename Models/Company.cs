@@ -13,6 +13,6 @@ namespace Job_Portal_Project.Models
         public string? LogoPath { get; set; }
 
         //Navigation Properties
-        public virtual List<Job> Jobs { get; set; }
+        public virtual List<Job>? Jobs { get; set; }
     }
 }

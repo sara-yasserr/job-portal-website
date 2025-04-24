@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -31,21 +31,24 @@
 <body>
 <partial name="_NavbarPartial"></partial>
 
-    @* <div class="container"> *@
-        @* <main role="main" class="pb-3"> *@
+    <div class="container" style="margin-top:200px"> 
+         <main role="main" class="pb-3"> 
             @RenderBody()
-        @* </main> *@
-    @* </div> *@
+         </main> 
+     </div>
 
-<partial name="_FooterPartial"></partial>
+@* <partial name="_FooterPartial"></partial> *@
     <!-- Preloader -->
     @* <div id="preloader"> *@
     @*     <div class="loader" id="loader-1"></div> *@
     @* </div> *@
     <!-- End Preloader -->
+
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+    @* @RenderSection("Scripts", required: false) *@
 </body>
 </html>
