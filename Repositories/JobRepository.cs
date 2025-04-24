@@ -1,5 +1,6 @@
 ﻿using Job_Portal_Project.Models;
 using Job_Portal_Project.Models.DbContext;
+using Microsoft.EntityFrameworkCore;
 
 namespace Job_Portal_Project.Repositories
 {
@@ -10,14 +11,21 @@ namespace Job_Portal_Project.Repositories
         {
             _context = context;
         }
+
+       
         public List<Job> GetAll()
         {
-            return _context.Jobs.ToList();
+            return _context.Jobs.Include(j => j.Company).Include(j => j.JobCategory).ToList();
         }
-        public Job GetById<I>(I id)
+        public Job? GetById<I>(I id)
         {
-            return _context.Jobs.Find(id);
+            return _context.Jobs
+                   .Include(j => j.Company)
+                   .Include(j => j.JobCategory)
+                   .FirstOrDefault(j => j.Id.Equals(id));
         }
+
+      
         public void Insert(Job entity)
         {
             _context.Jobs.Add(entity);
@@ -28,15 +36,15 @@ namespace Job_Portal_Project.Repositories
         }
         public void Delete<I>(I id)
         {
-            var job = _context.Jobs.Find(id);
+            var job = GetById(id);
             if (job != null)
-            {
                 _context.Jobs.Remove(job);
-            }
         }
         public void Save()
         {
             _context.SaveChanges();
         }
+
+       
     }
 }

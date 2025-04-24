@@ -13,7 +13,7 @@ namespace Job_Portal_Project.Repositories
 
         public List<JobCategory> GetAll()
         {
-            throw new NotImplementedException();
+            return _context.JobCategories.ToList();
         }
 
         public JobCategory GetById<I>(I id)
