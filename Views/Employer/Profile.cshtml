@@ -1,0 +1,92 @@
+﻿@model ApplicationUser
+
+@{
+    ViewData["Title"] = "Profile";
+}
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<div class="container py-4">
+    <div class="card shadow-sm mb-4">
+        <div class="card-body p-0">
+            <div class="row g-0">
+                <!-- Left side - Profile Photo and Name -->
+                <div class="col-md-4 border-end">
+                    <div class="d-flex flex-column align-items-center text-center p-4">
+                        @if (!string.IsNullOrEmpty(Model.ProfilePicturePath))
+                        {
+                            <img src="/Images/@Model.ProfilePicturePath" alt="Profile Picture"
+                                 class="rounded-circle img-thumbnail mb-3"
+                                 style="width: 160px; height: 160px; object-fit: cover;">
+                        }
+                        else
+                        {
+                            <img src="/Images/default-profile.png" alt="Profile Picture"
+                                 class="rounded-circle img-thumbnail mb-3"
+                                 style="width: 160px; height: 160px; object-fit: cover;">
+                        }
+
+                        <label class=" small mb-0 text-primary fw-semibold" style="font-size:15px">Full Name</label>
+                        <p class=" mb-4 text-muted" style="font-size: 20px;">@Model.FirstName @Model.LastName</p>
+
+                        <label class=" small mb-0 text-primary fw-semibold" style="font-size:15px">Username</label>
+                        <p class=" mb-2  text-muted" style="font-size: 20px;">@Model.UserName</p>
+
+                        <label class=" small mb-0 text-primary fw-semibold" style="font-size:15px">Title</label>
+                        <p class="text-muted " style="font-size: 20px;">@Model.Title</p>
+                    </div>
+                </div>
+
+                <!-- Right side - Contact Information -->
+                <div class="col-md-8">
+                    <div class="d-flex flex-column h-100 p-4">
+                        <div>
+                            <h6 class="fw-bold border-bottom pb-2 mb-4">
+                                @(Model.Role == "Employer" ? "Contact Information" : "معلومات الاتصال")
+                            </h6>
+
+                            <div class="mb-3">
+                                <label class="form-label text-primary fw-semibold mb-1 small" style="font-size:20px">
+                                    @((Model.Role == "Employer") ? "Email" : "البريد الإلكتروني")
+                                </label>
+                                <p class="mb-0 fs-5 fw-medium">@Model.Email</p>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label text-primary fw-semibold mb-1 small" style="font-size:20px">
+                                    @((Model.Role == "Employer") ? "Phone" : "رقم الهاتف")
+                                </label>
+                                <p class="mb-0 fs-5 fw-medium">
+                                    @(string.IsNullOrEmpty(Model.PhoneNumber)
+                                        ? (Model.Role == "Employer" ? "Not Provided" : "غير متوفر")
+                                        : Model.PhoneNumber)
+                                </p>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label text-primary fw-semibold mb-1 small" style="font-size:20px">
+                                    @((Model.Role == "Employer") ? "Location" : "الموقع")
+                                </label>
+                                <p class="mb-0 fs-5 fw-medium">@Model.City, @Model.Country</p>
+                            </div>
+                        </div>
+
+                        <div class="mt-auto text-center pt-3">
+                            <a asp-action="Update" asp-controller="Employer" asp-route-id="@Model.Id" class="btn btn-primary px-4 py-2">
+                                Update Profile
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -3,133 +3,291 @@
     ViewData["Title"] = "PreRegister";
 }
 
-<section id="content" class="section-padding">
 
-    <!-- Content section Start -->
-    <div class="container">
-     <div class="row rowthis  justify-content-center">
-            <form method="post" id="roleForm">
-                @if (TempData["Email"] != null)
-                {
-                <input type="hidden" asp-for="Email" value="@TempData["Email"]" />
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert" style="width:400px;background-color: ;">
-                    <strong>Warning:</strong> Your Google account is not linked to any account yet. Please complete registration.
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" ></button>
-                </div>
-                }
-        <div class="text-center">
-            <h2 class="display-rebrand mt-6x pb-2x mb-6x mb-md-10x">
-                Join as an employer or job seeker
-            </h2> 
-            <div data-ev-sublocation="!button_box_radio_group" >
-              
-                        <div class="air3-grid-container"  style=" display:flex; flex-direction:row; justify-content:space-around;align-items:center; width:50vw; margin:0px auto;">
-  
-                        <div class="choice ">
-                             <label>
-                                <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" data-name="Layer 1" viewBox="0 0 24 24" role="img"><path fill="none" vector-effect="non-scaling-stroke" stroke="var(--icon-color, #001e00)" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19.28 21h-6.9a1.6 1.6 0 01-1.73-1.5v-4a1.6 1.6 0 011.73-1.5h6.9A1.59 1.59 0 0121 15.5v4a1.66 1.66 0 01-1.72 1.5z"></path><path fill="none" vector-effect="non-scaling-stroke" stroke="var(--icon-color, #001e00)" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16.9 12h-2.15a.65.65 0 00-.72.66V14h3.59v-1.34a.65.65 0 00-.72-.66z"></path><line x1="10.65" x2="21" y1="17.29" y2="17.29" fill="none" vector-effect="non-scaling-stroke" stroke="var(--icon-color, #001e00)" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></line><circle cx="10.04" cy="5.73" r="2.73" fill="none" vector-effect="non-scaling-stroke" stroke="var(--icon-color, #001e00)" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></circle><path fill="none" vector-effect="non-scaling-stroke" stroke="var(--icon-color, #001e00)" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 18.45v-.9a7 7 0 017-7h.09a6.73 6.73 0 011.91.27"></path></svg>
-                                <input class="radio" asp-for="Role" type="radio" name="choice" value="Employer" />
-                            <span></span>
-                            </label>
-                                        <h4 class="mt-4">
-                                         I'm hiring
-                                        </h4> 
-                            </div>
 
-                        <div class="choice ">
-                            <label><svg xmlns="http://www.w3.org/2000/svg" fill="none" aria-hidden="true" viewBox="0 0 24 24" role="img"><path vector-effect="non-scaling-stroke" stroke="var(--icon-color, #001e00)" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.43 21H5.99M3 18.45v-.9a7 7 0 017-7h.09a6.94 6.94 0 013.79 1.12m5.5 9.33h-11L10 14h11l-1.62 7zm-4.69-3a.5.5 0 100-1 .5.5 0 000 1zM12.77 5.73a2.73 2.73 0 11-5.46 0 2.73 2.73 0 015.46 0z"></path></svg>
-                                <input class="radio" asp-for="Role" value="JobSeeker" type="radio" name="choice" />
-                            <span></span>
-                            </label>
-                            <h4 class="mt-4">
-                                I'm looking for a job
-                                        </h4> 
-                                    </div>
-                        
+
+
+    <section id="content" class="section-padding">
+        <div class="container">
+            <div class="row justify-content-center align-items-center min-vh-70">
+                <div class="col-md-10">
+                    <form method="post" id="roleForm">
+                        <div id="alertContainer">
+                           
                         </div>
-                </div>
-            </div>
- 
-            <div style="text-align:center;">
-                    <input type="hidden" asp-for="Role" id="roleInput">
-                <button type="submit" class="btn disabled btnthis" asp-action="PreRegister" asp-controller="Account" >Register as a Job seeker </button>
-                    
-            </form>
-                    <p class="text-center text-body mt-4x mb-6x">
+
+                        <div class="text-center">
+                            <h2 class="display-rebrand">Join as an Employer or Job Seeker</h2>
+
+                            <div class="role-container">
+                                <div class="choice-wrapper">
+                                    <div class="choice" data-role="Employer">
+                                        <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" viewBox="0 0 24 24">
+                                            <path fill="none" stroke="#001e00" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19.28 21h-6.9a1.6 1.6 0 01-1.73-1.5v-4a1.6 1.6 0 011.73-1.5h6.9A1.59 1.59 0 0121 15.5v4a1.66 1.66 0 01-1.72 1.5z"></path>
+                                            <path fill="none" stroke="#001e00" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16.9 12h-2.15a.65.65 0 00-.72.66V14h3.59v-1.34a.65.65 0 00-.72-.66z"></path>
+                                            <line x1="10.65" x2="21" y1="17.29" y2="17.29" stroke="#001e00" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></line>
+                                            <circle cx="10.04" cy="5.73" r="2.73" fill="none" stroke="#001e00" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></circle>
+                                            <path fill="none" stroke="#001e00" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 18.45v-.9a7 7 0 017-7h.09a6.73 6.73 0 011.91.27"></path>
+                                        </svg>
+                                        <input class="radio" id="employerRadio" type="radio" name="Role" value="Employer" />
+                                        <h4>I'm hiring</h4>
+                                    </div>
+
+                                    <div class="choice" data-role="JobSeeker">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" aria-hidden="true" viewBox="0 0 24 24">
+                                            <path stroke="#001e00" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.43 21H5.99M3 18.45v-.9a7 7 0 017-7h.09a6.94 6.94 0 013.79 1.12m5.5 9.33h-11L10 14h11l-1.62 7zm-4.69-3a.5.5 0 100-1 .5.5 0 000 1zM12.77 5.73a2.73 2.73 0 11-5.46 0 2.73 2.73 0 015.46 0z"></path>
+                                        </svg>
+                                        <input class="radio" id="jobSeekerRadio" type="radio" name="Role" value="JobSeeker" />
+                                        <h4>I'm looking for a job</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-center">
+                            <input type="hidden" name="Role" id="roleInput">
+                            <button type="submit" class="btn btn-register disabled" id="registerButton">
+                                Register as a Job seeker
+                            </button>
+                        </div>
+                    </form>
+
+                    <p class="text-center mt-4 mb-5">
                         Already have an account?
-                <a  asp-action="Login" asp-controller="Account" data-qa="login" class="up-n-link" style="color: #00BCD4">
-                            Login
-                        </a>
+                        <a href="/Account/Login" class="login-link">Login</a>
                     </p>
+                </div>
             </div>
         </div>
-                 </div>
-</section>
+    </section>
 
 <style>
-    .rowthis{
-        height:70vh;
-        display:flex;
-        align-content:center;
-        justify-content:center;
-    }
-    h4{
-        font-weight:100;
-        font-size:20px;
-    }
-
-    svg{
-        height:40px;
+    :root {
+        --primary-color: #00BCD4;
+        --primary-dark: #0097A7;
+        --accent-color: #009688;
+        --text-dark: #333333;
+        --light-bg: #f8f9fa;
+        --border-radius: 10px;
+        --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        --transition: all 0.3s ease;
     }
 
-    .choice{
-        width:350px;
-        height:150px;
-        border:solid black .8px;
-        border-radius:5px;
+    body {
+        font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+        color: var(--text-dark);
+        background-color: #ffffff;
     }
 
-    .choice:hover{
-    background-color:#eeeeee
+    .section-padding {
+        padding: 60px 0;
     }
 
-    .btnthis{
-        text-transform: none !important;
-        margin-top: 20px;
-    }
-    .btnthis.disabled {
-
-        background-color:#eeeeee !important;
-
+    .display-rebrand {
+        font-weight: 600;
+        color: var(--text-dark);
+        font-size: 2.25rem;
+        position: relative;
     }
 
-    .btnthis.active{
-            background-color : #00BCD4 !important;
-            color : white !important;
+        .display-rebrand:after {
+            content: '';
+            position: absolute;
+            bottom: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background-color: var(--primary-color);
+        }
+
+    .role-container {
+        max-width: 700px;
+        margin: 2rem auto;
     }
+
+    .choice-wrapper {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 2rem;
+        margin: 2.5rem 0;
+    }
+
+    .choice {
+        width: 280px;
+        height: 180px;
+        border: 2px solid #e0e0e0;
+        border-radius: var(--border-radius);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: var(--transition);
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+        .choice:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-5px);
+            box-shadow: var(--box-shadow);
+        }
+
+        .choice.selected {
+            border-color: var(--primary-color);
+            background-color: rgba(0, 188, 212, 0.05);
+            transform: translateY(-5px);
+            box-shadow: var(--box-shadow);
+        }
+
+            .choice.selected:before {
+                content: '✓';
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                width: 24px;
+                height: 24px;
+                background-color: var(--primary-color);
+                color: white;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: bold;
+                font-size: 14px;
+            }
+
+        .choice svg {
+            height: 50px;
+            width: 50px;
+            margin-bottom: 1rem;
+            transition: var(--transition);
+        }
+
+        .choice:hover svg path,
+        .choice:hover svg circle,
+        .choice:hover svg line,
+        .choice.selected svg path,
+        .choice.selected svg circle,
+        .choice.selected svg line {
+            stroke: var(--primary-color);
+        }
+
+        .choice h4 {
+            font-weight: 500;
+            font-size: 1.25rem;
+            margin-top: 1rem;
+            color: var(--text-dark);
+            transition: var(--transition);
+        }
+
+        .choice:hover h4,
+        .choice.selected h4 {
+            color: var(--primary-color);
+        }
+
+        .choice input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+    .btn-register {
+        background-color: var(--primary-color);
+        color: white;
+        padding: 0.8rem 2.5rem;
+        font-size: 1.1rem;
+        border-radius: 30px;
+        border: none;
+        box-shadow: 0 4px 10px rgba(0, 188, 212, 0.3);
+        transition: var(--transition);
+        font-weight: 500;
+        margin-top: 1.5rem;
+    }
+
+        .btn-register:hover,
+        .btn-register:focus {
+            background-color: var(--primary-dark);
+            box-shadow: 0 6px 12px rgba(0, 151, 167, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .btn-register.disabled {
+            background-color: #e0e0e0 !important;
+            color: #999 !important;
+            cursor: not-allowed;
+            pointer-events: none;
+            box-shadow: none;
+        }
+
+    .login-link {
+        color: var(--primary-color);
+        font-weight: 500;
+        text-decoration: none;
+        transition: var(--transition);
+    }
+
+        .login-link:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+
+    .alert {
+        border-radius: var(--border-radius);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
 </style>
 
-<script>
-    var elements = document.getElementsByClassName("choice");
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if we have an email from TempData and show alert if needed
+            const urlParams = new URLSearchParams(window.location.search);
+            const emailParam = urlParams.get('email');
 
-    Array.from(elements).forEach(function(item) {
-        item.addEventListener("click", function () {
-            var radio = item.getElementsByTagName("input")[0];
-            radio.checked = true;
-            var button = document.getElementsByClassName("btnthis")[0];
-
-            if(radio.value === "JobSeeker"){
-                button.innerHTML = `Register as a job seeker`
+            if (emailParam) {
+                const alertContainer = document.getElementById('alertContainer');
+                alertContainer.innerHTML = `
+                    <div class="alert alert-warning alert-dismissible fade show mx-auto" role="alert" style="max-width: 450px;">
+                        <strong>Warning:</strong> Your Google account is not linked to any account yet. Please complete registration.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    <input type="hidden" id="emailInput" name="Email" value="${emailParam}" />
+                `;
             }
-            else if(radio.value === "Employer"){
-                button.innerText = `Register as an employer`
-            }
 
-           document.getElementById("roleInput").value = radio.value;
+            const choices = document.querySelectorAll('.choice');
+            const registerButton = document.getElementById('registerButton');
+            const roleInput = document.getElementById('roleInput');
 
-            radio.classList.add("active");
-            button.classList.remove("disabled");
-            button.classList.add("active");
+            choices.forEach(function(choice) {
+                choice.addEventListener('click', function() {
+                    // Remove selected class from all choices
+                    choices.forEach(item => item.classList.remove('selected'));
+
+                    // Add selected class to clicked choice
+                    this.classList.add('selected');
+
+                    // Check the radio input
+                    const radio = this.querySelector('input[type="radio"]');
+                    radio.checked = true;
+
+                    // Update hidden input and button text
+                    const role = this.dataset.role;
+                    roleInput.value = role;
+
+                    registerButton.textContent = role === 'JobSeeker'
+                        ? 'Register as a job seeker'
+                        : 'Register as an employer';
+
+                    // Enable the button
+                    registerButton.classList.remove('disabled');
+                    registerButton.classList.add('active');
+                });
+            });
         });
-    });
-</script>
+    </script>
