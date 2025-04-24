@@ -1,4 +1,5 @@
 ﻿using Job_Portal_Project.Models;
+using Job_Portal_Project.Models.DbContext;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,9 +8,12 @@ namespace Job_Portal_Project.Repositories.ApplicationUserRepository
     public class ApplicationUserRepository : IApplicationUserRepository
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        public ApplicationUserRepository(UserManager<ApplicationUser> userManager)
+        private readonly JobPortalContext context;
+
+        public ApplicationUserRepository(UserManager<ApplicationUser> userManager, JobPortalContext context)
         {
             _userManager = userManager;
+            this.context = context;
         }
 
         public async Task<List<ApplicationUser>> GetAllAsync()
@@ -23,11 +27,21 @@ namespace Job_Portal_Project.Repositories.ApplicationUserRepository
         }
         public async Task<ApplicationUser> GetByUserNameAsync(string userName)
         {
-            return await _userManager.FindByNameAsync(userName);
+            var user = await _userManager.FindByNameAsync(userName);
+            if (user == null)
+            {
+                throw new InvalidOperationException($"User with username '{userName}' not found.");
+            }
+            return user;
         }
         public async Task<ApplicationUser> GetByEmailAsync(string email)
         {
-            return await _userManager.FindByEmailAsync(email);
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+            {
+                throw new InvalidOperationException($"User with email '{email}' not found.");
+            }
+            return user;
         }
 
         public async Task<IdentityResult> InsertAsync(ApplicationUser user, string password)
@@ -47,6 +61,10 @@ namespace Job_Portal_Project.Repositories.ApplicationUserRepository
             return await _userManager.DeleteAsync(user);
         }
 
+        public async Task SaveAsync()
+        {
+            await context.SaveChangesAsync();
+
         public Task<int> GetNumberOfUsersAsync()
         {
             return _userManager.Users.CountAsync();
@@ -58,6 +76,7 @@ namespace Job_Portal_Project.Repositories.ApplicationUserRepository
         public Task<int> GetNumberOfEmployersAsync()
         {
             return _userManager.Users.Where(u => u.Role == "Employer").CountAsync();
+
         }
 
     }

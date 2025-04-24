@@ -12,6 +12,7 @@ namespace Job_Portal_Project.Models.DbContext
         public virtual DbSet<Favourites> Favourites { get; set; }
         public virtual DbSet<JobCategory> JobCategories { get; set; }
 
+        //to make any repo donot depond on create the context so we not use onconfiguring method because IOC will resolve the context inject it in the repo
         public JobPortalContext(DbContextOptions<JobPortalContext> options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder builder)

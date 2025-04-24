@@ -129,8 +129,8 @@ namespace Job_Portal_Project.Controllers
                         List<Claim> claims = new List<Claim>();
                         claims.Add(new Claim(ClaimTypes.NameIdentifier, userFromDB.Id));
                         claims.Add(new Claim(ClaimTypes.Name, userFromDB.UserName));
-                        claims.Add(new Claim(ClaimTypes.Email, userFromDB.Email));
-                        claims.Add(new Claim("FirstName", userFromDB.FirstName));
+                        claims.Add(new Claim(ClaimTypes.Email, userFromDB.Email ?? string.Empty));
+                        claims.Add(new Claim("FirstName", userFromDB.FirstName ));
                         claims.Add(new Claim("LastName", userFromDB.LastName));
                         claims.Add(new Claim("City", userFromDB.City));
                         claims.Add(new Claim("Country", userFromDB.Country));
