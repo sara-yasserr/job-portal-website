@@ -1,0 +1,105 @@
+﻿@model ApplicationUser
+
+@{
+    ViewData["Title"] = "Update";
+}
+
+<hr />
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <form asp-action="SaveUpdate" method="post" asp-route-id="@Model.Id" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <!-- UserName -->
+                <div class="mb-3">
+                    <label asp-for="UserName" class="form-label">Username</label>
+                    <input asp-for="UserName" class="form-control" placeholder="Enter Username" />
+                    <span asp-validation-for="UserName" class="text-danger"></span>
+                </div>
+
+                <!-- Email -->
+                <div class="mb-3">
+                    <label asp-for="Email" class="form-label">Email</label>
+                    <input asp-for="Email" class="form-control" placeholder="Enter Email" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <!-- First Name -->
+                <div class="mb-3">
+                    <label asp-for="FirstName" class="form-label">First Name</label>
+                    <input asp-for="FirstName" class="form-control" placeholder="Enter First Name" />
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
+
+                <!-- Last Name -->
+                <div class="mb-3">
+                    <label asp-for="LastName" class="form-label">Last Name</label>
+                    <input asp-for="LastName" class="form-control" placeholder="Enter Last Name" />
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
+
+
+                <!-- Title -->
+                <div class="mb-3">
+                    <label asp-for="Title" class="form-label"></label>
+                    <input asp-for="Title" class="form-control" placeholder="Enter Title" />
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
+
+                <!-- City -->
+                <div class="mb-3">
+                    <label asp-for="City" class="form-label">City</label>
+                    <input asp-for="City" class="form-control" placeholder="Enter City" />
+                    <span asp-validation-for="City" class="text-danger"></span>
+                </div>
+
+                <!-- Country -->
+                <div class="mb-3">
+                    <label asp-for="Country" class="form-label">Country</label>
+                    <input asp-for="Country" class="form-control" placeholder="Enter Country" />
+                    <span asp-validation-for="Country" class="text-danger"></span>
+                </div>
+
+                <!-- Phone Number -->
+                <div class="mb-3">
+                    <label asp-for="PhoneNumber" class="form-label">Phone Number</label>
+                    <input asp-for="PhoneNumber" class="form-control" placeholder="Enter Phone Number" />
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div>
+
+                <!-- Profile Picture -->
+                <div class="mb-3">
+                    <label for="ProfilePicture" class="form-label">Profile Picture</label>
+                    <input name="ProfilePicture" id="ProfilePicture" class="form-control" type="file" accept="image/*"  value="@Model.ProfilePicturePath" />
+                   
+
+                    @if (!string.IsNullOrEmpty(Model.ProfilePicturePath))
+                    {
+                        <div class="mt-2">
+                            <img src="~/Images/@Model.ProfilePicturePath" alt="Profile Picture" width="150" height="150" />
+                        </div>
+                    }
+
+                    <input type="hidden" asp-for="ProfilePicturePath" />
+                    
+                </div>
+
+                <!-- Submit Button -->
+                <div class="d-flex justify-content-center mt-4">
+                    <button type="submit" class="btn btn-primary px-4 py-2">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

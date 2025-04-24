@@ -21,5 +21,18 @@ namespace Job_Portal_Project.Services
                     : vm.ProfilePicturePath
             };
         }
+
+        public void MapToUpdateUser(ApplicationUser existingUser, ApplicationUser updatedData)
+        {
+            existingUser.FirstName = updatedData.FirstName;
+            existingUser.LastName = updatedData.LastName;
+            existingUser.Email = updatedData.Email;
+            existingUser.City = updatedData.City;
+            existingUser.Country = updatedData.Country;
+            existingUser.PhoneNumber = updatedData.PhoneNumber;
+            existingUser.Title = updatedData.Title;
+        }
+
+
     }
 }
