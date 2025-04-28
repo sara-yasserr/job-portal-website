@@ -1,5 +1,6 @@
 ﻿using Job_Portal_Project.Models;
 using Job_Portal_Project.Models.DbContext;
+using Microsoft.AspNetCore.Identity;
 
 namespace Job_Portal_Project.Repositories
 {
@@ -42,6 +43,11 @@ namespace Job_Portal_Project.Repositories
         public List<JobApplication> GetUserApplications(string userId)
         {
             return _context.JobApplications.Where(a => a.ApplicantId == userId).ToList();
+        }
+
+        public JobApplication GetByJobIdAndApplicantId(int jobId, string applicantId)
+        {
+            return _context.JobApplications.Where(j => j.JobId == jobId && j.ApplicantId == applicantId).FirstOrDefault();
         }
     }
 }

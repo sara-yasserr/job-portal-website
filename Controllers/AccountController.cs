@@ -69,7 +69,8 @@ namespace Job_Portal_Project.Controllers
 
                 userVM.ProfilePicturePath = uniqueFileName;
             }
-
+            //to assign admins ==>>
+            //userVM.Role = Role.Admin;
             if (ModelState.IsValid)
             {
                 var existingUser = await _applicationUserRepository.GetByUserNameAsync(userVM.UserName);
@@ -84,8 +85,6 @@ namespace Job_Portal_Project.Controllers
                 //create cookie
                 if (result.Succeeded)
                 {
-                    //to assign admins ==>>
-                    //await userManager.AddToRoleAsync(userFromDB, "Admin");
                     string selectRole = userVM.Role.ToString();
                     await userManager.AddToRoleAsync(userFromDB, selectRole);
                     await signInManager.SignInAsync(userFromDB,false);
@@ -201,5 +200,29 @@ namespace Job_Portal_Project.Controllers
             return RedirectToAction("Login", "Account");
         }
         #endregion
+
+        #region Validations
+
+        public async Task<ActionResult> IsUniqueEmail(string Email)
+        {
+
+                var user = await userManager.FindByEmailAsync(Email);
+                if (user == null)
+                    return Json(true);
+                else
+                    return Json(false);
+
+        }
+
+        public async Task<IActionResult> IsUniqueUserName(string Username)
+        {
+                var user = await userManager.FindByNameAsync(Username);
+                if (user == null)
+                    return Json(true);
+                else
+                    return Json(false);
+        }
+
+        #endregion 
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Job_Portal_Project.Models;
 using Job_Portal_Project.Models.DbContext;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Job_Portal_Project.Repositories
 {
@@ -14,7 +15,7 @@ namespace Job_Portal_Project.Repositories
         {
             return _context.Jobs.ToList();
         }
-        public Job GetById<I>(I id)
+        Job IRepository<Job>.GetById<I>(I id)
         {
             return _context.Jobs.Find(id);
         }

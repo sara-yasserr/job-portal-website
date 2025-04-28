@@ -17,7 +17,7 @@
                         <input type="hidden" asp-for="Role" />
                         <div class="form-group">
                             <div class="input-icon">
-                                <label asp-for="FirstName">First name </label>
+                                <label asp-for="FirstName">First name</label>
                                 <input asp-for="FirstName" class="form-control" />
                                 <span asp-validation-for="FirstName" class="text-danger"></span>
                             </div>
@@ -47,29 +47,33 @@
                         <div class="form-group">
                             <div class="input-icon">
                                 <label asp-for="Country">Country</label>
-                                <input asp-for="Country" type="text" class="form-control">
+                                <input asp-for="Country" class="form-control" />
                                 <span asp-validation-for="Country" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="input-icon">
                                 <label asp-for="City">City</label>
-                            <input asp-for="City" class="form-control" />
-                            <span asp-validation-for="City" class="text-danger"></span>
+                                <input asp-for="City" class="form-control" />
+                                <span asp-validation-for="City" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="input-icon">
                                 <label asp-for="ProfilePictureFile">Image</label>
-                                <input asp-for="ProfilePictureFile" type="file" class="form-control"/>
+                                <input asp-for="ProfilePictureFile" type="file" class="form-control" value="@Model.ProfilePictureFile"/>
                                 <input type="hidden" asp-for="ProfilePicturePath" value="@Model?.ProfilePicturePath" />
                                 @* @if (!string.IsNullOrEmpty(Model.ProfilePicturePath)) *@
                                 @* { *@
-                                @*     <div class="mb-2"> *@
-                                @*         <img src="/images/@Model.ProfilePicturePath" alt="Current Image" height="120" /> *@
+                                @*     <div class="mb-2 mt-3"> *@
+                                @*         <img src="/images/@Model.ProfilePicturePath" *@
+                                @*              alt="Current Image" *@
+                                @*              style="height: 120px; width: 120px; object-fit: cover; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);" /> *@
                                 @*     </div> *@
+                                @* }else{ *@
+
                                 @* } *@
-                            <span asp-validation-for="ProfilePicturePath" class="text-danger"></span>
+                            <span asp-validation-for="ProfilePictureFile" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="form-group">

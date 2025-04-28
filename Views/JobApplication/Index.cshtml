@@ -6,60 +6,154 @@
 
 <h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ApplicationDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Status)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SpecificResumePath)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.JobId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ApplicantId)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ApplicationDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SpecificResumePath)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.JobId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ApplicantId)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
-        </tr>
+<div id="content">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-2 col-md-12 col-xs-12">
+                <div class="right-sideabr">
+                    <h4>Manage Account</h4>
+                    <ul class="list-item">
+                        <li><a href="resume.html">My Resume</a></li>
+                        <li><a href="bookmarked.html">Bookmarked Jobs</a></li>
+                        @*             <li><a href="notifications.html">Notifications <span class="notinumber">2</span></a></li> *@
+                        <li><a class="active" href="manage-applications.html">Manage Applications</a></li>
+                        @*             <li><a href="job-alerts.html">Job Alerts</a></li> *@
+                        @*             <li><a href="change-password.html">Change Password</a></li> *@
+                        @*             <li><a href="index.html">Sing Out</a></li> *@
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-10 col-md-12 col-xs-12">
+                <div class="job-alerts-item">
+                    <h3 class="alerts-title">Manage applications</h3>
+
+                    @using (Html.BeginForm("Index", "JobApplication", FormMethod.Get))
+                    {
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" name="searchQuery" value="@ViewData["searchQuery"]" placeholder="Search for Job Applications">
+                            <button class="btn btn-common log-btn" type="submit">Search</button>
+                        </div>
+                    }
+                    @foreach (var item in Model)
+                    {
+                        <div class="applications-content">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="thums">
+                                        <img src="/Images/@item.Job.Company.LogoPath" alt="">
+                                    </div>
+                                    <h3>@item.Job.Title Needed</h3>
+                                    <span>@item.Job.Company.Name</span>
+                                </div>
+                                <div class="col-md-2">
+                                    <p>
+                                        <span class="@(item.Job.EmploymentType == "Full-time" ? "full-time" : "part-time")">
+                                            @item.Job.EmploymentType
+                                        </span>
+                                    </p>
+                                </div>
+                                <div class="col-md-2">
+                                    <p>@item.ApplicationDate.ToString("dd-MMM-yyyy")</p>
+                                </div>
+                                <div class="col-md-2">
+                                    <p>@item.Status</p>
+                                </div>
+                                <div class="col-md-2" style="text-align:right;" >
+                                    <!--Edit button-->
+                                    <a href="/JobApplication/Edit?jobId=@item.JobId"><i class="fa-regular fa-pen-to-square" style="color: #00bcd4;"></i></a> |
+                                    <!--Modal confirm delete-->
+                                    <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="confirmModalLabel">Confirm delete</h5>
+                                                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Are you sure you want to delete this job application?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                    <form id="deleteForm" method="post" asp-action="Delete" asp-controller="Account">
+                                                        <button type="submit" class="btn btn-common log-btn">Ok</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                   <!-- delete Button -->
+                                    <a href="javascript:void(0);" class="delete" data-id="@item.Id"><i class="fa-solid fa-trash" style="color: #00bcd4;"></i></a>
+                                </div>
+                            </div>
+                        </div>
+
+                    }
+                    <br>
+                    <!-- Start Pagination -->
+                    <div class="d-flex justify-content-center">
+                        <nav>
+                            <ul class="pagination">
+                                @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                                {
+                                    <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                                        <a class="page-link" asp-action="Index" asp-route-page="@i">@i</a>
+                                    </li>
+                                }
+                            </ul>
+                        </nav>
+                    </div>
+                    <!-- End Pagination -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
-    </tbody>
-</table>
+
+<!-- Scripts -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $(".delete").click(function () {
+            var Id = $(this).data("id");
+            $("#deleteForm").attr("action", "/JobApplication/Delete/" + Id);
+            $("#confirmModal").modal("show");
+        });
+    });
+</script>
+
+<style>
+
+    .log-btn {
+        color: white
+    }
+
+        .log-btn:hover {
+            color: #00BCD4 !important;
+        }
+
+        a{
+            font-size:larger;
+        display: inline-block;
+        transition: transform 0.3s ease-in, color 0.3s ease-in;
+        }
+
+        a:hover {
+            transform:scale(1.1);
+            color: #008fa1;
+        }
+
+    .applications-content {
+        transition: background-color 0.3s ease-in;
+    }
+    .applications-content:hover{
+    background-color:#eeeeee;
+    }
+</style>

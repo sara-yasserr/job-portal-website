@@ -20,38 +20,38 @@ namespace Job_Portal_Project
 
             //Add services to the container.
 
-           builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-               .AddCookie(options =>
-               {
-                   options.LoginPath = "/Account/Login";
-               })
-               .AddGoogle(options =>
-               {
-                   options.ClientId = "";
-                   options.ClientSecret = "";
-                   options.Scope.Add("email");
-                   options.Scope.Add("profile");
-                   options.SaveTokens = true;
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.LoginPath = "/Account/Login";
+                });
+               //.AddGoogle(options =>
+               //{
+               //    options.ClientId = "";
+               //    options.ClientSecret = "";
+               //    options.Scope.Add("email");
+               //    options.Scope.Add("profile");
+               //    options.SaveTokens = true;
 
-                   options.Events.OnCreatingTicket = ctx =>
-                   {
-                       var email = ctx.User.GetProperty("email").GetString();
+               //    options.Events.OnCreatingTicket = ctx =>
+               //    {
+               //        var email = ctx.User.GetProperty("email").GetString();
 
-                       if (!string.IsNullOrEmpty(email))
-                       {
-                           var claims = new List<Claim>
-                           {
-                              new Claim(ClaimTypes.Email, email)
-                           };
+               //        if (!string.IsNullOrEmpty(email))
+               //        {
+               //            var claims = new List<Claim>
+               //            {
+               //               new Claim(ClaimTypes.Email, email)
+               //            };
 
-                           var identity = new ClaimsIdentity(claims, "Google");
-                           var principal = new ClaimsPrincipal(identity);
-                           ctx.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
-                       }
+               //            var identity = new ClaimsIdentity(claims, "Google");
+               //            var principal = new ClaimsPrincipal(identity);
+               //            ctx.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+               //        }
 
-                       return Task.CompletedTask;
-                   };
-               });
+               //        return Task.CompletedTask;
+               //    };
+               //});
 
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
             builder.Services.AddDbContext<JobPortalContext>(options =>
@@ -79,7 +79,7 @@ namespace Job_Portal_Project
             builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
             builder.Services.AddScoped<IUserMappingService, UserMappingService>();
             builder.Services.AddScoped<IJobCategoryRepository, JobCategoryRepository>();
-
+            builder.Services.AddScoped<IJobApplicationService,JobApplicationService>();
             
 
             var app = builder.Build();

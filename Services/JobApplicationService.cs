@@ -1,14 +1,15 @@
 ﻿using Job_Portal_Project.Models;
 using Job_Portal_Project.Repositories;
+using Job_Portal_Project.ViewModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace Job_Portal_Project.Services
 {
-    public class JobApplicationService
+    public class JobApplicationService : IJobApplicationService
     {
-       private readonly JobApplicationRepository jobApplicationRebo;
+       private readonly IJobApplicationRepository jobApplicationRebo;
 
-       public JobApplicationService( JobApplicationRepository _jobApplicationRebo)
+       public JobApplicationService( IJobApplicationRepository _jobApplicationRebo)
        {
             jobApplicationRebo = _jobApplicationRebo;
        }
@@ -16,12 +17,23 @@ namespace Job_Portal_Project.Services
        public List<JobApplication> GetUserApplications(string userId)
        {
             return jobApplicationRebo.GetUserApplications(userId);
-       }
+        }
 
-       public void Insert(JobApplication entity)
+       public void Insert(JobApplicationViewModel entity)
        {
             entity.ApplicationDate = DateTime.Now;
-            jobApplicationRebo.Insert(entity);
+
+            JobApplication application = new JobApplication()
+            {
+                JobId = entity.JobId,
+                ApplicantId = entity.ApplicantId,
+                ApplicationDate = entity.ApplicationDate,
+                Status = entity.Status,
+                SpecificResumePath = entity.ResumePath,
+                Applicant = entity.Applicant,
+                Job = entity.job
+            };
+            jobApplicationRebo.Insert(application);
             jobApplicationRebo.Save();
        }
 
@@ -30,17 +42,34 @@ namespace Job_Portal_Project.Services
             return jobApplicationRebo.GetById<int>(id);
        }
 
-       public void Delete(int jobId)
+       public void Delete<T>(T Id)
        {
-            jobApplicationRebo.Delete(jobId);
+            jobApplicationRebo.Delete(Id);
             jobApplicationRebo.Save();
 
         }
 
-        public void Update(JobApplication entity) 
+        public void Update(JobApplicationViewModel entity)
         {
-            jobApplicationRebo.Update(entity);
+            var jobApp = jobApplicationRebo.GetByJobIdAndApplicantId(entity.JobId, entity.ApplicantId);
+            jobApp.JobId = entity.JobId;
+            jobApp.ApplicantId = entity.ApplicantId;
+            jobApp.SpecificResumePath = entity.ResumePath;
+
+            jobApplicationRebo.Update(jobApp);
             jobApplicationRebo.Save();
         }
+
+        //public List<JobApplicationViewModel> GetAll()
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //public JobApplicationViewModel GetById<I>(I id)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+
     }
 }

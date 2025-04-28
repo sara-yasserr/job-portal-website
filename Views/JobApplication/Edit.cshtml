@@ -1,0 +1,181 @@
+﻿@model Job_Portal_Project.ViewModels.JobApplicationViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<hr />
+
+<section class="section">
+    <div class="container">
+        @if (ViewBag.Applied == true)
+        {
+            <div class="alert alert-dismissible alert-info fade show" role="alert">
+                You already applied to this job!
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+        <div class="row justify-content-center">
+            <div class="col-lg-9 col-md-12 col-xs-12">
+                <div class="post-job box">
+                    <!-- Company Info Section -->
+                    <div class="company-info text-center">
+                        <img src="/Images/@Model?.job.Company.LogoPath" alt="Company Logo" style="max-height:200px; max-width:200px;">
+                        <h4 class="job-title mt-2">Job Application For <a asp-action="" asp-controller="">@Model?.job.Company.Name</a></h4>
+                    </div>
+
+                    <!-- Job Title Section -->
+                    <div class="job-title-section mt-3">
+                        <h4>@Model?.job.Title Needed</h4>
+                    </div>
+
+                    <!-- Job Details Section -->
+                    <div class="job-details mt-4">
+                        <div class="job-requirements-title mb-3">
+                            <strong>Job Requirements</strong>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="requirement-item">
+                                    <strong>Experience Level:</strong>
+                                    <span>@Model?.job.ExperienceLevel years</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="requirement-item">
+                                    <strong>Location:</strong>
+                                    <span>@Model?.job.City</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="requirement-item">
+                                    <strong>Employment Type:</strong>
+                                    <span>@Model?.job.EmploymentType</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="requirement-item">
+                                    <strong>Work Mode:</strong>
+                                    <span>@Model?.job.WorkMode</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Application Form -->
+                    <form asp-action="SaveEdit" method="post" enctype="multipart/form-data">
+                        <div asp-validation-summary="All" class="text-danger" style="display:none;"></div>
+                        <input type="hidden" asp-for="JobId" class="form-control" />
+                        <input type="hidden" asp-for="ApplicantId" class="form-control" />
+                        <input type="hidden" asp-for="job.Id" value="@Model?.job.Id" />
+                        <input type="hidden" asp-for="Applicant.Id" value="@Model?.Applicant.Id" />
+                        <input type="hidden" asp-for="ApplicationDate" />
+                        <!-- Current CV Section -->
+                        @if (!string.IsNullOrEmpty(Model?.ResumePath))
+                        {
+                            <div class="mt-3">
+                                <button  class="btn btn-common log-btn">
+                                    <i class="fas fa-eye"></i> <a class="currentCV" href="@Model.ResumePath" target="_blank"> View Current CV</a>
+                                        </button>
+                            </div>
+                        }
+                        <!-- Upload New CV Section -->
+                        <div class="form-group mt-3">
+                            <label asp-for="ResumeFile" class="form-label d-block">Want to upload another CV?</label>
+                            <div class="cv-upload-box" onclick="document.getElementById('cvInput').click()">
+                                <i class="fas fa-file-upload fa-2x mb-2 text-primary"></i>
+                                <div>Click to upload another CV (PDF, DOC, DOCX)</div>
+                                <div class="file-name-preview" id="fileNamePreview">
+                                    @(string.IsNullOrEmpty(Model?.ResumePath) ? "No file selected" : System.IO.Path.GetFileName(Model.ResumePath))
+                                </div>
+                            </div>
+                            <input asp-for="ResumeFile" type="file" id="cvInput" accept=".pdf,.doc,.docx" class="d-none" onchange="previewFileName()" />
+                            <input type="hidden" asp-for="ResumePath" />
+                            <span asp-validation-for="ResumeFile" class="text-danger"></span>
+                        </div>
+
+                        <!-- Consent Section -->
+                        <div class="form-group form-check mt-3">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" asp-for="Consent" required />
+                                I confirm that all information provided is accurate and I accept the terms.
+                                <span asp-validation-for="Consent" class="text-danger"></span>
+                            </label>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="form-group text-center mt-4">
+                            <button type="submit" value="Create" class="btn btn-common log-btn">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+<style>
+    .cv-upload-box {
+        border: 2px dashed #00BCD4;
+        border-radius: 10px;
+        padding: 20px;
+        text-align: center;
+        cursor: pointer;
+        background-color: #f8f9fa;
+        transition: 0.3s;
+    }
+
+        .cv-upload-box:hover {
+            background-color: #e9ecef;
+        }
+
+    .file-name-preview {
+        font-size: 0.9rem;
+        color: #6c757d;
+        margin-top: 10px;
+    }
+
+    .log-btn{
+        color:white
+    }
+
+        .log-btn:hover {
+        color:#00BCD4 !important;
+    }
+
+    .currentCV {
+        color: white
+    }
+
+    .cv-view-box {
+        display: flex;
+        align-items: center;
+        border: 1px solid #ccc;
+        padding: 15px;
+        border-radius: 8px;
+        background-color: #f8f9fa;
+        margin-top: 20px;
+    }
+
+
+</style>
+
+<script>
+    function previewFileName() {
+        const input = document.getElementById('cvInput');
+        const preview = document.getElementById('fileNamePreview');
+        if (input.files.length > 0) {
+            preview.textContent = input.files[0].name;
+        } else {
+            preview.textContent = "No file selected";
+        }
+    }
+</script>
+
