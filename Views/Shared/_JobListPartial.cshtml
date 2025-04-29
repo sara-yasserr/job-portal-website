@@ -1,0 +1,62 @@
+﻿@model IEnumerable<Job_Portal_Project.Models.Job>
+
+<div class="row">
+    @if (Model.Any())
+    {
+        foreach (var job in Model)
+        {
+            <div class="col-lg-12 col-md-12 col-xs-12">
+                <div class="job-listings">
+                    <div class="row align-items-center">
+                        <div class="col-lg-2 col-md-2 col-xs-12">
+                            <div class="job-company-logo text-center">
+                                <a href="/JobSearch/Details/@job.Id'">
+                                    <img src="/@(job.Company?.LogoPath )" alt="@job.Company?.Name">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-lg-7 col-md-7 col-xs-12">
+                            <div class="job-details">
+                                <h3><a asp-action="Details" asp-route-id="@job.Id">@job.Title</a></h3>
+                                <div class="job-meta">
+                                    <span class="location"><i class="lni-alarm-clock"></i> @job.DatePosted.ToString("dd MMM yyyy")</span> &nbsp;&nbsp;&nbsp; <br />
+                                    <span class="job-type @job.EmploymentType.ToLower()"><i class="lni-tag"></i> @job.EmploymentType</span>
+                                </div>
+                                <div class="job-description">
+                                    @{
+                                        var preview = string.Join(" ", job.Description.Split(' ').Take(10)) + "...";
+                                    }
+                                    <p>@preview</p>
+                                    <a data-bs-toggle="collapse" href="/JobSearch/Details/@job.Id'" class="read-more">Read More</a>
+                                </div>
+                                <div class="job-meta">
+                                    <span class="company-name"><i class="lni-briefcase"></i> @job.Company?.Name</span>
+                                    <span class="location"><i class="lni-map-marker"></i> @job.City, @job.Country</span> &nbsp;&nbsp;&nbsp; <br />
+                                
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-xs-12">
+                            <div class="job-actions text-right">
+                                <a href="#" class="save-job mr-2" data-job-id="@job.Id">
+                                    <i class="lni-heart" style="padding: 10px;"></i>
+                                </a>
+
+                                <a asp-action="EasyApply" asp-controller="JobApplication" asp-route-jobId="@job.Id" class="btn btn-sm btn-common">Easy apply</a>
+                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="col-lg-12 col-md-12 col-xs-12">
+            <div class="alert alert-warning">
+                No jobs found matching your criteria.
+            </div>
+        </div>
+    }
+</div>

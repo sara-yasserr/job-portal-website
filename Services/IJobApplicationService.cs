@@ -10,6 +10,7 @@ namespace Job_Portal_Project.Services
         public void Insert(JobApplicationViewModel entity);
         public void Delete<T>(T jobId);
         public void Update(JobApplicationViewModel entity);
+        public void Insert(JobApplication entity);
 
     }
 }

@@ -29,7 +29,7 @@ namespace Job_Portal_Project.Controllers
         public IActionResult Index(int page = 1)
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var UserJobApplications = jobApplicationService.GetUserApplications(userId);
+            var UserJobApplications = jobApplicationService.GetUserApplications(userId).OrderByDescending(a=>a.ApplicationDate).ToList();
             //--search --//
             var searchQuery = HttpContext.Request.Query["searchQuery"].ToString().ToLower();
             if (!string.IsNullOrEmpty(searchQuery))
@@ -56,7 +56,7 @@ namespace Job_Portal_Project.Controllers
         }
         #endregion
 
-        #region Add
+        #region Apply
         public async Task<IActionResult> Add(int jobId)
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -98,6 +98,17 @@ namespace Job_Portal_Project.Controllers
             }
 
             return View("Add",jobAppVM);
+        }
+
+        public async Task<IActionResult> EasyApply(int jobId)
+        {
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = await userManager.FindByIdAsync(userId);
+            var job = jobRepo.GetById(jobId);
+            var jobApp = jobAppRepo.GetByJobIdAndApplicantId(jobId, userId);
+            jobApplicationService.Insert(jobApp);
+
+            return RedirectToAction("Index");
         }
         #endregion
 

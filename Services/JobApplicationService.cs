@@ -37,6 +37,21 @@ namespace Job_Portal_Project.Services
             jobApplicationRebo.Save();
        }
 
+        public void Insert(JobApplication entity)
+        {
+            JobApplication application = new JobApplication()
+            {
+                JobId = entity.JobId,
+                ApplicantId = entity.ApplicantId,
+                ApplicationDate = entity.ApplicationDate,
+                Status = entity.Status,
+                SpecificResumePath = entity.Applicant.ResumePath,
+                Applicant = entity.Applicant,
+                Job = entity.Job
+            };
+            jobApplicationRebo.Insert(application);
+            jobApplicationRebo.Save();
+        }
        public JobApplication GetJobApplication(int id)
        {
             return jobApplicationRebo.GetById<int>(id);
@@ -59,16 +74,6 @@ namespace Job_Portal_Project.Services
             jobApplicationRebo.Update(jobApp);
             jobApplicationRebo.Save();
         }
-
-        //public List<JobApplicationViewModel> GetAll()
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //public JobApplicationViewModel GetById<I>(I id)
-        //{
-        //    throw new NotImplementedException();
-        //}
 
 
     }

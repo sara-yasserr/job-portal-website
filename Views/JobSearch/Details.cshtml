@@ -1,0 +1,211 @@
+﻿@model Job_Portal_Project.ViewModels.JobDetailsViewModel
+
+<div class="page-header">
+    <div class="container">
+        <div class="row align-items-center">
+            <!-- company image -->
+            <div class="col-auto">
+                <div class="job-company-logo img-wrapper">
+                    <img src="/@(Model.Job.Company?.LogoPath)" alt="@Model.Job.Company?.Name" class="img-thumbnail" style="width: 120px; height: 120px; object-fit: contain;" />
+                </div>
+            </div>
+
+            <!--company details -->
+            <div class="col">
+                <div class="content">
+                    <h3 class="product-title fw-bold">@Model.Job.Title</h3>
+                    <p class="tags text-muted mb-1">@Model.Job.Company.Name</p>
+                    <div class="tags text-secondary small">
+                        <span class="me-3"><i class="lni-map-marker"></i> @Model.Job.City, @Model.Job.Country</span>
+                        <span><i class="lni-calendar"></i> Posted @Model.Job.DatePosted.ToString("MMM dd, yyyy")</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- emp type -->
+            <div class="col-lg-3 col-md-4 text-end">
+                <div class="bg-info text-white rounded px-3 py-2 d-inline-block text-center">
+                    
+                        <span class="year">@Model.Job.EmploymentType</span>
+                  
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Job Detail Section Start -->
+<section class="job-detail section">
+    <div class="container">
+        <div class="row justify-content-between">
+            <div class="col-lg-8 col-md-12 col-xs-12">
+                <div class="content-area">
+                    <h4>Job Description</h4>
+                    <p>
+                        @Model.Job.Description
+                    </p>
+                    @* //fixed  to all jobs not have it in database  *@
+                    
+                    <h5>Key Qualifications</h5>
+                    <ul>
+                        <li><strong>Objective-C Mastery</strong> – Proven experience building and optimizing iOS applications</li>
+                        <li><strong>iOS SDK Expertise</strong> – Deep understanding of Apple's frameworks and APIs</li>
+                        <li><strong>Xcode Proficiency</strong> – Efficient development, debugging, and performance tuning</li>
+                        <li><strong>Cocoa/Cocoa Touch</strong> – Strong skills in UI development and Apple's design patterns</li>
+                        <li><strong>ClojureScript Knowledge</strong> – Experience with functional programming for cross-platform solutions</li>
+                    </ul>
+
+                    <h5>How to Apply</h5>
+                    <p>Ready to join our team? Submit your resume and portfolio (if applicable) through the link below. We review applications on a rolling basis and will contact qualified candidates for next steps.</p>
+                    <button class="btn btn-primary" onclick="location.href='@Url.Action("Add", "JobApplication", new { jobId = Model.Job.Id })'">
+                    <i class="lni lni-check-mark-circle mr-1"></i> Apply Now</button>
+                </div>
+            </div>
+
+
+            <div class="col-lg-4 col-md-12 col-xs-12">
+                <div class="sideber">
+                    <!-- Job Overview Widget -->
+                    <div class="widghet bg-white p-4 mb-4 rounded shadow-sm">
+                        <h3 class="mb-3 pb-2 border-bottom">Job Overview</h3>
+                        <div class="job-meta">
+                            <ul class="list-unstyled">
+                                <li class="mb-3 d-flex">
+                                    <i class="lni lni-calendar text-muted mr-2 mt-1"></i>
+                                    <div>
+                                        <strong class="text-dark">Published on:</strong>
+                                        <span class="text-muted">@Model.Job.DatePosted</span>
+                                    </div>
+                                </li>
+                                <li class="mb-3 d-flex">
+                                    <i class="lni lni-users text-muted mr-2 mt-1"></i>
+                                    <div>
+                                        <strong class="text-dark">Vacancy:</strong>
+                                        <span class="text-muted">@Model.Job.VacancyCount</span>
+                                    </div>
+                                </li>
+                                <li class="mb-3 d-flex">
+                                    <i class="lni lni-briefcase text-muted mr-2 mt-1"></i>
+                                    <div>
+                                        <strong class="text-dark">Employment Status:</strong>
+                                        <span class="text-muted">@Model.Job.EmploymentType</span>
+                                    </div>
+                                </li>
+                                <li class="mb-3 d-flex">
+                                    <i class="lni lni-certificate text-muted mr-2 mt-1"></i>
+                                    <div>
+                                        <strong class="text-dark">Experience:</strong>
+                                        <span class="text-muted">@Model.Job.ExperienceLevel</span>
+                                    </div>
+                                </li>
+                                <li class="mb-3 d-flex">
+                                    <i class="lni lni-map-marker text-muted mr-2 mt-1"></i>
+                                    <div>
+                                        <strong class="text-dark">Job Location:</strong>
+                                        <span class="text-muted">@Model.Job.City ,@Model.Job.Country</span>
+                                    </div>
+                                </li>
+                               
+                                <li class="mb-3 d-flex">
+                                    <i class="lni lni-alarm-clock text-muted mr-2 mt-1"></i>
+                                    <div>
+                                        <strong class="text-dark">Application Deadline:</strong>
+                                        <span class="text-muted">@Model.Job.DateClosed</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="job-actions mt-4 d-flex">
+                            <button class="btn btn-primary" onclick="location.href='@Url.Action("Add", "JobApplication", new { jobId = Model.Job.Id })'">
+                                <i class="lni lni-check-mark-circle mr-1"></i> Apply Now</button>
+                        </div>
+                        <div class="job-actions mt-4 d-flex">
+                            <button class="btn btn-secondary mr-2">
+                                <i class="lni lni-heart mr-1"></i> Save Job
+                            </button>
+
+                        </div>
+                    </div>
+
+                    <!-- Job Location Map Widget -->
+                    <div class="widghet bg-white p-4 rounded shadow-sm"> 
+                                     <h3>Job Location</h3> 
+                                     <div class="maps">
+                                         <div id="map" class="map-full"> 
+                                             <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d405691.57240383344!2d-122.3212843181106!3d37.40247298383319!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x808fb68ad0cfc739%3A0x7eb356b66bd4b50e!2sSilicon+Valley%2C+CA%2C+USA!5e0!3m2!1sen!2sbd!4v1538319316724" allowfullscreen=""></iframe> 
+                                        </div>    
+                            <div class="location-info mt-2 d-flex align-items-center text-muted">
+                                <i class="lni lni-map-marker mr-2"></i>
+                                <span>@Model.Job.City,@Model.Job.Country</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            
+</section>
+<!-- Job Detail Section End -->
+<!-- Featured Section Start -->
+<section id="featured" class="section bg-gray pb-45">
+    <div class="container">
+        <h4 class="small-title text-left">Similar Jobs</h4>
+        <div class="row">
+            <div class="col-lg-6 col-md-12 col-xs-12">
+                <a class="job-listings-featured" href="job-details.html">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-xs-12">
+                            <div class="job-company-logo">
+                                <img src="assets/img/features/img1.png" alt="">
+                            </div>
+                            <div class="job-details">
+                                <h3>Software Engineer</h3>
+                                <span class="company-neme">MizTech</span>
+                                <div class="tags">
+                                    <span><i class="lni-map-marker"></i> New York</span>
+                                    <span><i class="lni-user"></i>John Smith</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-xs-12 text-right">
+                            <div class="tag-type">
+                                <sapn class="heart-icon">
+                                    <i class="lni-heart"></i>
+                                </sapn>
+                                <span class="full-time">Full Time</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-lg-6 col-md-12 col-xs-12">
+                <a class="job-listings-featured" href="job-details.html">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-xs-12">
+                            <div class="job-company-logo">
+                                <img src="assets/img/features/img2.png" alt="">
+                            </div>
+                            <div class="job-details">
+                                <h3>Graphic Designer</h3>
+                                <span class="company-neme">Hunter Inc.</span>
+                                <div class="tags">
+                                    <span><i class="lni-map-marker"></i> New York</span>
+                                    <span><i class="lni-user"></i>John Smith</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-xs-12 text-right">
+                            <div class="tag-type">
+                                <sapn class="heart-icon">
+                                    <i class="lni-heart"></i>
+                                </sapn>
+                                <span class="part-time">Part Time</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>

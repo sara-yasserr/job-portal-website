@@ -38,9 +38,9 @@
                     {
                         <div class="applications-content">
                             <div class="row">
-                                <div class="col-md-4">
+                                <div class="col-md-4" >
                                     <div class="thums">
-                                        <img src="/Images/@item.Job.Company.LogoPath" alt="">
+                                        <img src="/Images/@item.Job.Company.LogoPath" alt="" style="margin-left:10px; margin-right:10px;">
                                     </div>
                                     <h3>@item.Job.Title Needed</h3>
                                     <span>@item.Job.Company.Name</span>
@@ -58,7 +58,7 @@
                                 <div class="col-md-2">
                                     <p>@item.Status</p>
                                 </div>
-                                <div class="col-md-2" style="text-align:right;" >
+                                <div class="col-md-2" style="text-align:center;" >
                                     <!--Edit button-->
                                     <a href="/JobApplication/Edit?jobId=@item.JobId"><i class="fa-regular fa-pen-to-square" style="color: #00bcd4;"></i></a> |
                                     <!--Modal confirm delete-->
@@ -142,16 +142,16 @@
         a{
             font-size:larger;
         display: inline-block;
-        transition: transform 0.3s ease-in, color 0.3s ease-in;
+        transition: transform 0.1s ease-in, color 0.1s ease-in;
         }
 
         a:hover {
-            transform:scale(1.1);
+            transform:scale(1.05);
             color: #008fa1;
         }
 
     .applications-content {
-        transition: background-color 0.3s ease-in;
+        transition: background-color 0.1s ease-in;
     }
     .applications-content:hover{
     background-color:#eeeeee;

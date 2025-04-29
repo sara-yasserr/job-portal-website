@@ -5,6 +5,7 @@ using Job_Portal_Project.Models.DbContext;
 using Job_Portal_Project.Repositories;
 using Job_Portal_Project.Repositories.ApplicationUserRepository;
 using Job_Portal_Project.Services;
+using Job_Portal_Project.Services.Contracts;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
@@ -80,7 +81,7 @@ namespace Job_Portal_Project
             builder.Services.AddScoped<IUserMappingService, UserMappingService>();
             builder.Services.AddScoped<IJobCategoryRepository, JobCategoryRepository>();
             builder.Services.AddScoped<IJobApplicationService,JobApplicationService>();
-            
+            builder.Services.AddScoped<IJobSearchService, JobSearchService>();
 
             var app = builder.Build();
 
