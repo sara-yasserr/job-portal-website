@@ -20,7 +20,7 @@ namespace Job_Portal_Project.Repositories.ApplicationUserRepository
         {
             return await _userManager.Users.ToListAsync();
         }
-        
+
         public async Task<ApplicationUser?> GetByIdAsync(string id)
         {
             return await _userManager.FindByIdAsync(id);
@@ -54,6 +54,7 @@ namespace Job_Portal_Project.Repositories.ApplicationUserRepository
         public async Task SaveAsync()
         {
             await context.SaveChangesAsync();
+        }
 
         public Task<int> GetNumberOfUsersAsync()
         {

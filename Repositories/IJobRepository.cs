@@ -4,5 +4,6 @@ namespace Job_Portal_Project.Repositories
 {
     public interface IJobRepository : IRepository<Job>
     {
+        public int GetVacancyCount(int jobId);
     }
 }

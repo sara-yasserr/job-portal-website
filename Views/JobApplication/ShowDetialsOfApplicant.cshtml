@@ -1,0 +1,128 @@
+﻿@model Job_Portal_Project.Models.JobApplicantDetailsForApplicantViewModel
+
+@{
+    ViewData["Title"] = "Applicant Details";
+}
+
+<h1 class="text-center mb-4">Applicant Details</h1>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["ErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+
+<form asp-action="ChangeApplicantStatus" asp-controller="JobApplication" method="post" class="mt-4 d-flex flex-column align-items-center gap-3">
+    <input type="hidden" name="applicantId" value="@Model.ApplicantId" />
+
+    <div class="form-group mb-0">
+        <label for="statusSelect" class="form-label fw-bold mb-2">Change Status</label>
+        <select name="status" id="statusSelect" class="form-select shadow-sm rounded-3">
+            @if (Model.status == "Pending")
+            {
+                <option value="Pending" selected>Pending</option>
+                <option value="Interview Process">Interview Process</option>
+                <option value="Accept">Accept</option>
+                <option value="Rejected">Rejected</option>
+            }
+            else if (Model.status == "Interview Process")
+            {
+                <option value="Pending">Pending</option>
+                <option value="Interview Process" selected>Interview Process</option>
+                <option value="Accept">Accept</option>
+                <option value="Rejected">Rejected</option>
+            }
+            else if (Model.status == "Accept")
+            {
+                <option value="Pending">Pending</option>
+                <option value="Interview Process">Interview Process</option>
+                <option value="Accept" selected>Accept</option>
+                <option value="Rejected">Rejected</option>
+            }
+            else
+            {
+                <option value="Pending">Pending</option>
+                <option value="Interview Process">Interview Process</option>
+                <option value="Accept">Accept</option>
+                <option value="Rejected" selected>Rejected</option>
+            }
+        </select>
+    </div>
+
+    <div class="form-group mb-0">
+        <button type="submit" class="btn btn-success rounded-pill px-4 py-2 shadow-sm">
+            Update Status
+        </button>
+    </div>
+</form>
+
+
+<div class="card shadow-lg rounded-4 p-5">
+    <h2 class="card-title text-center mb-4">Applicant Information</h2>
+    <div class="row g-3">
+        <div class="col-md-6">
+            <div class="d-flex flex-column">
+                <small class="text-muted">First Name</small>
+                <span class="fs-5 fw-semibold">@Model.FirstName</span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="d-flex flex-column">
+                <small class="text-muted">Last Name</small>
+                <span class="fs-5 fw-semibold">@Model.LastName</span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="d-flex flex-column">
+                <small class="text-muted">City</small>
+                <span class="fs-5 fw-semibold">@Model.City</span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="d-flex flex-column">
+                <small class="text-muted">Country</small>
+                <span class="fs-5 fw-semibold">@Model.Country</span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="d-flex flex-column">
+                <small class="text-muted">Email</small>
+                <span class="fs-5 fw-semibold">@Model.Email</span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="d-flex flex-column">
+                <small class="text-muted">Phone Number</small>
+                <span class="fs-5 fw-semibold">@Model.PhoneNumber</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mt-4 d-flex justify-content-between">
+    <a asp-action="ShowAllApplicants" asp-controller="JobApplication" asp-route-JobId="@Model.JobId" class="btn btn-secondary">Back to List</a>
+
+    @if (!string.IsNullOrEmpty(Model.SpecificResumePath))
+    {
+        var cleanPath = Model.SpecificResumePath.Replace("/wwwroot", "");
+
+        <a asp-action="ViewResume" asp-route-path="@cleanPath" target="_blank" class="btn btn-primary">
+            View Resume
+        </a>
+    }
+    else
+    {
+        <button class="btn btn-warning" disabled>No Resume Uploaded</button>
+    }
+</div>

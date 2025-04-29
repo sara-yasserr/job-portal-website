@@ -5,7 +5,6 @@ using Job_Portal_Project.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Job_Portal_Project.ViewModels;
 
 namespace Job_Portal_Project.Controllers
 {
@@ -15,17 +14,17 @@ namespace Job_Portal_Project.Controllers
         private readonly IJobService _jobService;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ICompanyRepository _companyRepository;
-        private readonly IJobCategoryRepository  _jobCategoryRepository;
-        
+        private readonly IJobCategoryRepository _jobCategoryRepository;
+
 
         public JobsController(IJobService jobService, UserManager<ApplicationUser>? userManager, ICompanyRepository companyRepository, IJobCategoryRepository jobCategoryRepository)
-        { 
+        {
             _jobService = jobService;
             _userManager = userManager;
             _companyRepository = companyRepository;
             _jobCategoryRepository = jobCategoryRepository;
         }
-       
+
 
         [Authorize(Roles = "Employer")]
         public async Task<IActionResult> IndexAsync(string? title, string? companyName, int? categoryId)
@@ -34,37 +33,34 @@ namespace Job_Portal_Project.Controllers
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return Unauthorized(); 
+                return Unauthorized();
             }
-
-            //var jobs = _jobService.GetAllJobs();
 
             var jobs = _jobService.GetAllJobs()
                          .Where(j => j.EmployerId == user.Id)
                          .ToList();
 
-
             if (!string.IsNullOrWhiteSpace(title))
             {
-                title = title.Trim();   
-                
+                title = title.Trim();
+
                 jobs = jobs.Where(j => j.Title.Contains(title, StringComparison.OrdinalIgnoreCase)).ToList();
             }
 
-           
+
             if (!string.IsNullOrWhiteSpace(companyName))
             {
                 companyName = companyName.Trim();
                 jobs = jobs.Where(j => j.Company != null && j.Company.Name.Contains(companyName, StringComparison.OrdinalIgnoreCase)).ToList();
             }
 
-          
+
             if (categoryId.HasValue)
             {
                 jobs = jobs.Where(j => j.JobCategoryId == categoryId.Value).ToList();
             }
 
-            
+
             var model = new JobFilterViewModel
             {
                 Jobs = jobs,
@@ -83,11 +79,11 @@ namespace Job_Portal_Project.Controllers
 
         public ActionResult Details(int id)
         {
-           Job job  =  _jobService.GetJobById(id);
+            Job job = _jobService.GetJobById(id);
 
             if (job == null)
             {
-                return NotFound();  
+                return NotFound();
             }
             return View(job);
         }
@@ -217,9 +213,5 @@ namespace Job_Portal_Project.Controllers
             _jobService.DeleteJob(id);
             return RedirectToAction("Index");
         }
-
-
-
-
     }
 }

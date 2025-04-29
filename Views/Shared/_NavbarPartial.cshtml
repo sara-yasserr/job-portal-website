@@ -28,16 +28,17 @@
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="employerDropdown" style="top:70%">
                             <li><a class="dropdown-item" asp-action="AllCompany" asp-controller="Employer">Company</a></li>
-                            <li><a class="dropdown-item" href="#">Post a Job</a></li>
-                            <li><a class="dropdown-item" href="#">Manage Jobs</a></li>
-                            <li><a class="dropdown-item" href="#">Review Resume</a></li>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" asp-controller ="Jobs"  asp-action="Create">Add Job</a></li>
-                            <li><a class="dropdown-item" asp-controller="Jobs"   asp-action="Index">Manage Jobs</a></li>
-
-                            <li><a class="dropdown-item" href="manage-applications.html">Manage Applications</a></li>
-                            <li><a class="dropdown-item" href="browse-resumes.html">Browse Resumes</a></li>
+                            <li><a class="dropdown-item" asp-action="Create" asp-controller="Jobs">Post a Job</a></li>
+                            <li><a class="dropdown-item" asp-action="Index" asp-controller="Jobs">Manage Jobs</a></li>
+                            @* <li><a class="dropdown-item" href="#">Review Resume</a></li> *@
                         </ul>
+                        @* <ul class="dropdown-menu"> *@
+                        @*     <li><a class="dropdown-item" asp-controller ="Jobs"  asp-action="Create">Add Job</a></li> *@
+                        @*     <li><a class="dropdown-item" asp-controller="Jobs"   asp-action="Index">Manage Jobs</a></li> *@
+
+                        @*     <li><a class="dropdown-item" href="manage-applications.html">Manage Applications</a></li> *@
+                        @*     <li><a class="dropdown-item" href="browse-resumes.html">Browse Resumes</a></li> *@
+                        @* </ul> *@
                     </li>
                 }
 

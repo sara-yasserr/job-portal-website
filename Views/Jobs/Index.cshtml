@@ -7,6 +7,18 @@
 
 
 <style>
+
+    .btn-details {
+        background-color: #6c757d;
+        color: #fff;
+        border: none;
+        padding: 5px 12px;
+        font-size: 14px;
+        border-radius: 6px;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+    }
     .job-row:nth-child(even) {
         background-color: #343a40;
     }
@@ -66,7 +78,7 @@
 </style>
 
 
-<div class="container py-4 mt-5 mb-4">
+<div class="container py-4 mt-5 mb-4" style="    position: relative; top: 52px;">
     <h2 class="text-center mb-4">Available Jobs</h2>
 
     <form asp-action="Index" method="get" class="mb-4">
@@ -122,6 +134,9 @@
                         <td>@job.WorkMode</td>
                         <td>
                             <div class="action-buttons">
+                                <a asp-action="Details" asp-route-id="@job.Id" class="btn btn-secondary">
+                                    <i class="fas fa-info-circle"></i> Details
+                                </a>
                                 <a asp-action="Edit" asp-route-id="@job.Id" class="btn btn-edit">
                                     <i class="fas fa-edit"></i> Edit
                                 </a>
@@ -136,162 +151,5 @@
         </table>
     </div>
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-@* <div class="container py-4  mt-5   mb-4"> *@
-@*     <h2 class="text-center mb-4">Available Jobs</h2> *@
-
-@*     <form asp-action="Index" method="get" class="mb-4"> *@
-@*         <div class="row g-2 mb-3"> *@
-@*             <div class="col-md"> *@
-@*                 <input type="text" name="title" value="@Model.Title" class="form-control" placeholder="Search by Title" /> *@
-@*             </div> *@
-@*             <div class="col-md"> *@
-@*                 <input type="text" name="companyName" value="@Model.CompanyName" class="form-control" placeholder="Search by Company" /> *@
-@*             </div> *@
-@*             <div class="col-md"> *@
-@*                 <select name="categoryId" class="form-control"> *@
-@*                     <option value="">All Categories</option> *@
-@*                     @foreach (var category in Model.Categories) *@
-@*                     { *@
-@*                         <option value="@category.Id" selected="@(Model.CategoryId == category.Id ? "selected" : null)"> *@
-@*                             @category.Name *@
-@*                         </option> *@
-@*                     } *@
-@*                 </select> *@
-@*             </div> *@
-@*             <div class="col-md-auto d-flex gap-2"> *@
-@*                 <button type="submit" class="btn btn-info text-white">Filter</button> *@
-@*                 <a asp-action="Index" class="btn btn-outline-secondary">Reset</a> *@
-@*             </div> *@
-@*         </div> *@
-@*     </form> *@
-
-@*     <div class="table-responsive"> *@
-@*         <table class="table table-bordered table-hover text-center"> *@
-@*             <thead class="table-dark"> *@
-@*                 <tr> *@
-@*                     <th>Title</th> *@
-@*                     <th>Company</th> *@
-@*                     <th>Category</th> *@
-@*                     <th>City</th> *@
-@*                     <th>Country</th> *@
-@*                     <th>Employment</th> *@
-@*                     <th>Work Mode</th> *@
-@*                     <th>Actions</th> *@
-@*                 </tr> *@
-@*             </thead> *@
-@*             <tbody> *@
-@*                 @foreach (var job in Model.Jobs) *@
-@*                 { *@
-@*                     <tr> *@
-@*                         <td>@job.Title</td> *@
-@*                         <td>@job.Company?.Name</td> *@
-@*                         <td>@job.JobCategory?.Name</td> *@
-@*                         <td>@job.City</td> *@
-@*                         <td>@job.Country</td> *@
-@*                         <td>@job.EmploymentType</td> *@
-@*                         <td>@job.WorkMode</td> *@
-@*                         <td> *@
-@*                             <a asp-action="Edit" asp-route-id="@job.Id" class="btn btn-sm btn-outline-primary me-2">Edit</a> *@
-@*                             <a asp-action="Delete" asp-route-id="@job.Id" class="btn btn-sm btn-outline-danger">Delete</a> *@
-@*                         </td> *@
-@*                     </tr> *@
-@*                 } *@
-@*             </tbody> *@
-@*         </table> *@
-@*     </div> *@
-@* </div> *@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 

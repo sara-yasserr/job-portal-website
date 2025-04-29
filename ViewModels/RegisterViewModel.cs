@@ -26,9 +26,9 @@ namespace Job_Portal_Project.ViewModels
         public string LastName { get; set; }
         public string City { get; set; }
         public string Country { get; set; }
-        public Role Role { get; set; } // Employer or Applicant
+        public Role? Role { get; set; } // Employer or Applicant
         public string? ProfilePicturePath { get; set; }
         public IFormFile? ProfilePictureFile { get; set; }
 
-    } 
+    }
 }

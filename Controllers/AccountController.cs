@@ -3,12 +3,11 @@ using Job_Portal_Project.Models;
 using Job_Portal_Project.Repositories.ApplicationUserRepository;
 using Job_Portal_Project.Services;
 using Job_Portal_Project.ViewModels;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Job_Portal_Project.Controllers
 {
@@ -18,8 +17,8 @@ namespace Job_Portal_Project.Controllers
         private SignInManager<ApplicationUser> signInManager;
         IApplicationUserRepository _applicationUserRepository;
         IUserMappingService _userMappingService;
-        public AccountController(UserManager<ApplicationUser> _userManager, SignInManager<ApplicationUser> _signInManager ,
-            IApplicationUserRepository applicationUserRepository , IUserMappingService userMappingService)
+        public AccountController(UserManager<ApplicationUser> _userManager, SignInManager<ApplicationUser> _signInManager,
+            IApplicationUserRepository applicationUserRepository, IUserMappingService userMappingService)
         {
             userManager = _userManager;
             signInManager = _signInManager;
@@ -37,9 +36,9 @@ namespace Job_Portal_Project.Controllers
         [AutoValidateAntiforgeryToken]
         public IActionResult PreRegister(RegisterViewModel userVM)
         {
-            if (userVM.Role!=null)
+            if (userVM.Role != null)
             {
-                return RedirectToAction("Register",userVM);
+                return RedirectToAction("Register", userVM);
             }
             return View("PreRegister", userVM);
         }
@@ -49,7 +48,7 @@ namespace Job_Portal_Project.Controllers
             RegisterViewModel userVM = new RegisterViewModel();
             userVM.Role = Role;
             if (!string.IsNullOrEmpty(Email)) { userVM.Email = Email; }
-            return View("Register",userVM);  
+            return View("Register", userVM);
         }
 
         [HttpPost]
@@ -88,7 +87,7 @@ namespace Job_Portal_Project.Controllers
                     //await userManager.AddToRoleAsync(userFromDB, "Admin");
                     string selectRole = userVM.Role.ToString();
                     await userManager.AddToRoleAsync(userFromDB, selectRole);
-                    await signInManager.SignInAsync(userFromDB,false);
+                    await signInManager.SignInAsync(userFromDB, false);
                     return RedirectToAction("Login", "Account");
                 }
                 else
@@ -97,6 +96,7 @@ namespace Job_Portal_Project.Controllers
                     {
                         ModelState.AddModelError("", item.Description);
                     }
+                    return View("Register", userVM);
                 }
             }
             return View("Register", userVM);
@@ -105,7 +105,7 @@ namespace Job_Portal_Project.Controllers
         #endregion
 
         #region Login
-  
+
         public IActionResult Login()
         {
             return View();
@@ -137,10 +137,10 @@ namespace Job_Portal_Project.Controllers
                         claims.Add(new Claim(ClaimTypes.Role, userFromDB.Role));
 
                         //await signInManager.SignInAsync(userFromDB, loginVM.RememberMe);
-                        await signInManager.SignInWithClaimsAsync(userFromDB, loginVM.RememberMe,claims);
+                        await signInManager.SignInWithClaimsAsync(userFromDB, loginVM.RememberMe, claims);
 
                         return RedirectToAction("Index", "Home");
-                    }   
+                    }
                 }
 
                 ModelState.AddModelError("", "Username or Password is invalid");
