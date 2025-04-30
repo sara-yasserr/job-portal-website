@@ -105,19 +105,13 @@ namespace Job_Portal_Project.Controllers
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var user = await userManager.FindByIdAsync(userId);
             var job = jobRepo.GetById(jobId);
-            var jobApp = jobAppRepo.GetByJobIdAndApplicantId(jobId, userId);
-            jobApplicationService.Insert(jobApp);
+            jobApplicationService.Insert(job,user);
 
             return RedirectToAction("Index");
         }
         #endregion
 
-        #region Details & Delete
-        public IActionResult Details(int jobId)
-        {
-           JobApplication jobApplicaion = jobApplicationService.GetJobApplication(jobId);
-            return View(jobApplicaion);
-        }
+        #region Delete
 
         [HttpPost]
         public IActionResult Delete(int Id) 

@@ -37,17 +37,16 @@ namespace Job_Portal_Project.Services
             jobApplicationRebo.Save();
        }
 
-        public void Insert(JobApplication entity)
+        public void Insert(Job job , ApplicationUser user)
         {
             JobApplication application = new JobApplication()
             {
-                JobId = entity.JobId,
-                ApplicantId = entity.ApplicantId,
-                ApplicationDate = entity.ApplicationDate,
-                Status = entity.Status,
-                SpecificResumePath = entity.Applicant.ResumePath,
-                Applicant = entity.Applicant,
-                Job = entity.Job
+                JobId = job.Id,
+                ApplicantId = user.Id,
+                ApplicationDate = DateTime.Now,
+                SpecificResumePath = user.ResumePath,
+                Applicant = user,
+                Job = job
             };
             jobApplicationRebo.Insert(application);
             jobApplicationRebo.Save();
