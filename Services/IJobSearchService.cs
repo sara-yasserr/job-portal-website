@@ -13,9 +13,8 @@ namespace Job_Portal_Project.Services.Contracts
         Task<Job> GetJobDetails(int jobId);
         Task<ApplicationUser> GetCurrentUser(string userId);
         Task<bool> HasUserApplied(string userId, int jobId);
-        Task<bool> IsJobFavorite(string userId, int jobId);
         Task<List<Job>> GetRelatedJobs(int categoryId, int excludeJobId);
-        Task<bool> ToggleFavoriteJob(string userId, int jobId);
-        Task<bool> ApplyForJob(string userId, int jobId);
+        Task<List<CategoryWithJobCount>> GetAllCategories();
+     
     }
 }

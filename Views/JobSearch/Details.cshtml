@@ -121,11 +121,25 @@
                                 <i class="lni lni-check-mark-circle mr-1"></i> Apply Now</button>
                         </div>
                         <div class="job-actions mt-4 d-flex">
-                            <button class="btn btn-secondary mr-2">
-                                <i class="lni lni-heart mr-1"></i> Save Job
-                            </button>
-
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                @if (Model.IsBookmarked)
+                                {
+                                    <button id="bookmarkBtn" class="btn btn-danger mr-2" data-jobid="@Model.Job.Id" data-action="remove">
+                                        <i class="lni lni-heart-filled mr-1"></i>
+                                        Remove from Favorites
+                                    </button>
+                                }
+                                else
+                                {
+                                    <button id="bookmarkBtn" class="btn btn-secondary mr-2" data-jobid="@Model.Job.Id" data-action="add">
+                                        <i class="lni lni-heart mr-1"></i>
+                                        Save Job
+                                    </button>
+                                }
+                            }
                         </div>
+
                     </div>
 
                     <!-- Job Location Map Widget -->
@@ -209,3 +223,39 @@
         </div>
     </div>
 </section>
+@Html.AntiForgeryToken()
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $("#bookmarkBtn").click(function () {
+                var button = $(this);
+                var jobId = button.data("jobid");
+                var action = button.data("action");
+
+                $.ajax({
+                    url: '/Bookmarks/' + (action === 'add' ? 'Add' : 'Remove'),
+                    type: 'POST',
+                    data: { jobId: jobId },
+                    headers: {
+                        'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+                    },
+                    success: function (response) {
+                        if (action === 'add') {
+                            button.removeClass('btn-secondary').addClass('btn-danger');
+                            button.html('<i class="lni lni-heart-filled mr-1"></i> Remove from Favorites');
+                            button.data("action", "remove");
+                        } else {
+                            button.removeClass('btn-danger').addClass('btn-secondary');
+                            button.html('<i class="lni lni-heart mr-1"></i> Save Job');
+                            button.data("action", "add");
+                        }
+                    },
+                    error: function () {
+                        alert('Something went wrong. Please try again.');
+                    }
+                });
+            });
+        });
+    </script>
+}

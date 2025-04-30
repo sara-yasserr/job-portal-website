@@ -84,7 +84,7 @@ namespace Job_Portal_Project
             builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
             builder.Services.AddScoped<IUserMappingService, UserMappingService>();
             builder.Services.AddScoped<IJobCategoryRepository, JobCategoryRepository>();
-            builder.Services.AddScoped<IJobService, JobService>();
+            //builder.Services.AddScoped<IJobService, JobService>();
             builder.Services.AddScoped<IFavouritesRepository, FavouritesRepository>();
             builder.Services.AddScoped<IAdminDashboardService, AdminDashboardService>();
 
@@ -100,14 +100,10 @@ namespace Job_Portal_Project
 
             //builder.Services.AddScoped<IResumeService, ResumeService>();
             //builder.Services.AddScoped<IResumeRepository, ResumeRepository>();
+            //builder.Services.AddScoped<JobApplicationService, JobApplicationService>();
 
             builder.Services.AddScoped<ResumeController>();
-           
-
-
-
-
-
+     
             var app = builder.Build();
 
 

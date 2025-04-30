@@ -1,0 +1,29 @@
+﻿@model List<CategoryWithJobCount>
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-lg-3 col-md-6 col-xs-12 f-category">
+            <a asp-action="CategoryJobs" asp-route-id="@item.Category.Id">
+                <div class="icon bg-color-@(Math.Abs(item.Category.Id % 8) + 1)">
+                    @{
+                        string iconClass = "lni-home";
+                        switch (Math.Abs(item.Category.Id % 8))
+                        {
+                            case 1: iconClass = "lni-world"; break;
+                            case 2: iconClass = "lni-book"; break;
+                            case 3: iconClass = "lni-display"; break;
+                            case 4: iconClass = "lni-brush"; break;
+                            case 5: iconClass = "lni-heart"; break;
+                            case 6: iconClass = "lni-funnel"; break;
+                            case 7: iconClass = "lni-cup"; break;
+                        }
+                    }
+                    <i class="@iconClass"></i>
+                </div>
+                <h3>@item.Category.Name</h3>
+                <p>(@item.JobCount jobs)</p>
+            </a>
+        </div>
+    }
+</div>

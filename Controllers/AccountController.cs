@@ -18,13 +18,15 @@ namespace Job_Portal_Project.Controllers
         private SignInManager<ApplicationUser> signInManager;
         IApplicationUserRepository _applicationUserRepository;
         IUserMappingService _userMappingService;
+        private readonly IUserService _userService;
         public AccountController(UserManager<ApplicationUser> _userManager, SignInManager<ApplicationUser> _signInManager ,
-            IApplicationUserRepository applicationUserRepository , IUserMappingService userMappingService)
+            IApplicationUserRepository applicationUserRepository, IUserService userService, IUserMappingService userMappingService)
         {
             userManager = _userManager;
             signInManager = _signInManager;
             _applicationUserRepository = applicationUserRepository;
             _userMappingService = userMappingService;
+            _userService = userService;
         }
 
         #region Register
@@ -69,7 +71,8 @@ namespace Job_Portal_Project.Controllers
 
                 userVM.ProfilePicturePath = uniqueFileName;
             }
-
+            //to assign admins ==>>
+            //userVM.Role = Role.Admin;
             if (ModelState.IsValid)
             {
                 var existingUser = await _applicationUserRepository.GetByUserNameAsync(userVM.UserName);
@@ -85,10 +88,9 @@ namespace Job_Portal_Project.Controllers
                 if (result.Succeeded)
                 {
                     //to assign admins ==>>
-                    //await userManager.AddToRoleAsync(userFromDB, "Admin");
                     string selectRole = userVM.Role.ToString();
                     await userManager.AddToRoleAsync(userFromDB, selectRole);
-                    await signInManager.SignInAsync(userFromDB,false);
+                    await signInManager.SignInAsync(userFromDB, false);
                     return RedirectToAction("Login", "Account");
                 }
                 else
@@ -101,11 +103,10 @@ namespace Job_Portal_Project.Controllers
             }
             return View("Register", userVM);
         }
-
         #endregion
 
         #region Login
-  
+
         public IActionResult Login()
         {
             return View();
@@ -191,6 +192,42 @@ namespace Job_Portal_Project.Controllers
 
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(result.Principal.Identity));
             return RedirectToLocal(returnUrl);
+        }
+        #endregion
+
+        #region Change Password
+        //Change Password
+        [HttpGet("ChangePassword")]
+        public IActionResult ChangePassword()
+        {
+            return View(new ChangePasswordViewModel());
+        }
+
+        [HttpPost("ChangePassword")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var user = await userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var result = await _userService.ChangePasswordAsync(user.Id, model.CurrentPassword, model.NewPassword);
+            if (!result)
+            {
+                ModelState.AddModelError(string.Empty, "Error changing password. Please check your current password.");
+                return View(model);
+            }
+
+            await signInManager.RefreshSignInAsync(user);
+            TempData["SuccessMessage"] = "Your password has been changed successfully.";
+            return RedirectToAction(nameof(ChangePassword));
         }
         #endregion
 

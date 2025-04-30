@@ -34,20 +34,7 @@ namespace Job_Portal_Project.Controllers.Jobs
             return View(applications);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Apply(int jobId)
-        {
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            await _jobApplicationService.ApplyForJob(user.Id, jobId);
-            TempData["SuccessMessage"] = "Your application has been submitted successfully.";
-            return RedirectToAction("Details", "Jobs", new { id = jobId });
-        }
+      
 
         
     }

@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="~/assets/css/animate.css">
     <link rel="stylesheet" href="~/assets/css/main.css">
     <link rel="stylesheet" href="~/assets/css/responsive.css">
+    @RenderSection("Styles", required: false)
 
 </head>
 
@@ -65,8 +66,8 @@
                                 <ul class="dropdown-menu">
                                     <li><a class="dropdown-item" href="about.html">About</a></li>
                                     <li><a class="dropdown-item" href="job-page.html">Job Page</a></li>
-                                    <li><a class="dropdown-item" href="job-details.html">Job Details</a></li>
-                                    <li><a class="dropdown-item" href="resume.html">Resume Page</a></li>
+                                    <li><a class="dropdown-item" href="job-details.html">Job Categories</a></li>
+                                    <li><a class="dropdown-item" href="resume.html">Job Details</a></li>
                                     <li><a class="dropdown-item" href="/Home/Privacy">Privacy Policy</a></li>
                                     <li><a class="dropdown-item" href="faq.html">FAQ</a></li>
                                     <li><a class="dropdown-item" href="pricing.html">Pricing Tables</a></li>
@@ -79,7 +80,7 @@
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li><a class="dropdown-item" href="browse-jobs.html">Browse Jobs</a></li>
-                                    <li><a class="dropdown-item" href="browse-categories.html">Browse Categories</a></li>
+                                    <li><a class="dropdown-item" href="/JobSearch/Categories">Browse Categories</a></li>
                                     <li><a class="dropdown-item" href="add-resume.html">Add Resume</a></li>
                                     <li><a class="dropdown-item" href="manage-resumes.html">Manage Resumes</a></li>
                                     <li><a class="dropdown-item" href="job-alerts.html">Job Alerts</a></li>

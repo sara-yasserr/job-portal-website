@@ -30,10 +30,10 @@ namespace Job_Portal_Project.ViewModels
         public List<Job> RecommendedJobs { get; set; } = new(); //recommended jobs based on the user's profile and search history`
 
 
-        //public decimal? MinSalary { get; set; }
-        //public decimal? MaxSalary { get; set; }
-        //public string SortBy { get; set; } = "date";
-        public bool IsFavorite { get; set; }
+        //catigories
+        public string? CategoryName { get; set; }
+
+
         // browser pagination 
         public int CurrentPage { get; set; } = 1;
         public int PageSize { get; set; } = 6;

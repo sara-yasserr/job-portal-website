@@ -1,14 +1,16 @@
-﻿// Services/ProfileService.cs
-using Job_Portal_Project.Models;
+﻿using Job_Portal_Project.Models;
+using Job_Portal_Project.Repositories;
 using Job_Portal_Project.Repositories.ApplicationUserRepository;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using System.IO;
 
 namespace Job_Portal_Project.Services
 {
     public class ProfileService : IProfileService
     {
+        
         private readonly IApplicationUserRepository _userRepository;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
@@ -27,26 +29,24 @@ namespace Job_Portal_Project.Services
         public async Task<string> UploadProfilePictureAsync(string userId, IFormFile profilePicture)
         {
             var user = await _userRepository.GetByIdAsync(userId);
-            if (user == null || profilePicture == null) return null;
+            if (user == null || profilePicture == null || profilePicture.Length == 0)
+                return user?.ProfilePicturePath;
 
-            // Delete old profile picture if exists
+            // Delete old picture if exists
             if (!string.IsNullOrEmpty(user.ProfilePicturePath))
             {
-                var oldPath = Path.Combine(_webHostEnvironment.WebRootPath, user.ProfilePicturePath.TrimStart('/'));
+                var oldPath = Path.Combine(_webHostEnvironment.WebRootPath, user.ProfilePicturePath.TrimStart('~', '/'));
                 if (File.Exists(oldPath))
                 {
                     File.Delete(oldPath);
                 }
             }
 
-            // Save new profile picture
+            // Save new picture
             string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images", "profiles");
-            if (!Directory.Exists(uploadsFolder))
-            {
-                Directory.CreateDirectory(uploadsFolder);
-            }
+            Directory.CreateDirectory(uploadsFolder); // No need to check exists
 
-            string uniqueFileName = $"{userId}_{Guid.NewGuid().ToString()}_{profilePicture.FileName}";
+            string uniqueFileName = $"{userId}_{Guid.NewGuid()}{Path.GetExtension(profilePicture.FileName)}";
             string filePath = Path.Combine(uploadsFolder, uniqueFileName);
 
             using (var fileStream = new FileStream(filePath, FileMode.Create))
@@ -54,7 +54,8 @@ namespace Job_Portal_Project.Services
                 await profilePicture.CopyToAsync(fileStream);
             }
 
-            string relativePath = $"/images/profiles/{uniqueFileName}";
+            // Store path without ~ or / at start
+            string relativePath = $"images/profiles/{uniqueFileName}";
             user.ProfilePicturePath = relativePath;
             await _userRepository.UpdateAsync(user);
 
@@ -64,7 +65,17 @@ namespace Job_Portal_Project.Services
         public async Task<string> UploadResumeAsync(string userId, IFormFile resume)
         {
             var user = await _userRepository.GetByIdAsync(userId);
-            if (user == null || resume == null) return null;
+            if (user == null || resume == null || resume.Length == 0) return user?.ResumePath;
+
+            // Delete old resume if exists
+            if (!string.IsNullOrEmpty(user.ResumePath))
+            {
+                var oldPath = Path.Combine(_webHostEnvironment.WebRootPath, user.ResumePath.TrimStart('/'));
+                if (File.Exists(oldPath))
+                {
+                    File.Delete(oldPath);
+                }
+            }
 
             // Save resume
             string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "files", "resumes");
@@ -112,10 +123,9 @@ namespace Job_Portal_Project.Services
             return result.Succeeded;
         }
 
-        public Task<string> GetResumePathAsync(string userId, int resumeId)
-        {
-            // Would implement if multiple resumes feature is added
-            throw new NotImplementedException("Multiple resumes not implemented yet");
-        }
+
+        
+
+
     }
 }
