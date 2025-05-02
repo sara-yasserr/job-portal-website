@@ -192,6 +192,7 @@ namespace Job_Portal_Project.Services
         public Task<bool> ApplyForJob(string userId, int jobId)
         {
             throw new NotImplementedException();
+        }
         //Categoriiies
 
 

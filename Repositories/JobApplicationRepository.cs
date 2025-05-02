@@ -49,6 +49,11 @@ namespace Job_Portal_Project.Repositories
             return _context.JobApplications.Where(a => a.ApplicantId == userId).ToList();
         }
 
+        public JobApplication GetByJobIdAndApplicantId(int jobId, string applicantId)
+        {
+            return _context.JobApplications.Where(j => j.JobId == jobId && j.ApplicantId == applicantId).FirstOrDefault();
+        }
+
         #region Made By Ahmed Ali
         public List<JobApplication> jobApplications(int jobId)
         {

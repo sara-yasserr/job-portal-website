@@ -1,6 +1,7 @@
 ﻿using Job_Portal_Project.Models;
 using Job_Portal_Project.Repositories;
 using Job_Portal_Project.Services;
+using Job_Portal_Project.Services.Contracts;
 using Job_Portal_Project.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -10,7 +11,6 @@ namespace Job_Portal_Project.Controllers
 {
     public class JobsController : Controller
     {
-
         private readonly IJobService _jobService;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ICompanyRepository _companyRepository;

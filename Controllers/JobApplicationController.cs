@@ -196,5 +196,5 @@ namespace Job_Portal_Project.Controllers
         }
         #endregion
     }
-    #endregion
+  
 }

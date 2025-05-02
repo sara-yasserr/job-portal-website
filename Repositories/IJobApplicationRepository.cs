@@ -11,5 +11,7 @@ namespace Job_Portal_Project.Repositories
         public Task<List<JobApplicantDetailsForApplicantViewModel>> AllApplicantApplied(int jobId, string fullName);
 
         public JobApplication GetJobApplicationByApplicantId(string applicantId);
+        public JobApplication GetByJobIdAndApplicantId(int jobId, string applicantId);
+
     }
 }
