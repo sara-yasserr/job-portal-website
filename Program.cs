@@ -82,6 +82,11 @@ namespace Job_Portal_Project
             builder.Services.AddScoped<IJobCategoryRepository, JobCategoryRepository>();
             builder.Services.AddScoped<IJobApplicationService,JobApplicationService>();
             builder.Services.AddScoped<IJobSearchService, JobSearchService>();
+            builder.Services.AddScoped<IJobService, JobService>();
+            builder.Services.AddScoped<IFavouritesRepository, FavouritesRepository>();
+            builder.Services.AddScoped<IAdminDashboardService, AdminDashboardService>();
+
+
 
             var app = builder.Build();
 
@@ -99,6 +104,9 @@ namespace Job_Portal_Project
             app.UseRouting();
 
             app.UseSession();
+
+            app.UseStaticFiles();
+
 
             app.UseAuthorization();
 

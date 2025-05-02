@@ -1,0 +1,110 @@
+﻿@using Job_Portal_Project.ViewModels;
+@model JobCreateViewModel
+@{
+    Layout = "_MyLayout";
+    ViewData["Title"] = "Create";
+    SelectList ComOptions = new SelectList(ViewBag.Companies, "Id", "Name");
+    SelectList CatOptions = new SelectList(ViewBag.Categories, "Id", "Name");
+}
+
+<style>
+    label {
+        color: #00BCD4; 
+        font-weight: 500;
+    }
+
+    .custom-select, .custom-select option {
+        color: #666666;
+    }
+
+</style>
+
+
+<div class="container mt-5   mb-4" style="    position: relative;top: 93px;">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <form asp-action="Create" method="post" class="bg-white p-4  mt-3 rounded shadow-sm">
+                <h3 class="mb-4 text-center">Create a Job</h3>
+
+                <div class="form-group mb-3">
+                    <label asp-for="Title" class="form-label"></label>
+                    <input asp-for="Title" class="form-control" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="Description" class="form-label"></label>
+                    <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="EmploymentType" class="form-label"></label>
+                    <select asp-for="EmploymentType" class="form-control  custom-select">
+                        <option value="">-- Select Type --</option>
+                        <option>Full-time</option>
+                        <option>Part-time</option>
+                        <option>Internship</option>
+                    </select>
+                    <span asp-validation-for="EmploymentType" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="WorkMode" class="form-label"></label>
+                    <select asp-for="WorkMode" class="form-control  custom-select">
+                        <option value="">-- Select Work Mode --</option>
+                        <option>On-site</option>
+                        <option>Remote</option>
+                        <option>Hybrid</option>
+                    </select>
+                    <span asp-validation-for="WorkMode" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="City" class="form-label"></label>
+                    <input asp-for="City" class="form-control" />
+                    <span asp-validation-for="City" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="Country" class="form-label"></label>
+                    <input asp-for="Country" class="form-control" />
+                    <span asp-validation-for="Country" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="ExperienceLevel" class="form-label"></label>
+                    <input asp-for="ExperienceLevel" class="form-control" />
+                    <span asp-validation-for="ExperienceLevel" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="VacancyCount" class="form-label"></label>
+                    <input asp-for="VacancyCount" class="form-control" />
+                    <span asp-validation-for="VacancyCount" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="JobCategoryId" class="form-label">Job Category</label>
+                    <select asp-for="JobCategoryId" class="form-control custom-select" asp-items="@CatOptions"></select>
+                    <span asp-validation-for="JobCategoryId" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-4">
+                    <label asp-for="CompanyId" class="form-label">Company</label>
+                    <select asp-for="CompanyId" class="form-control custom-select" asp-items="@ComOptions"></select>
+                    <span asp-validation-for="CompanyId" class="text-danger"></span>
+                </div>
+
+                <div class="form-group d-flex justify-content-between">
+                    <button type="submit" class="btn" style="background-color: #00BCD4; color: white; border: none;">Create</button>
+                    <a asp-action="Index" class="btn" style="background-color: #00BCD4; color: white; border: none;">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

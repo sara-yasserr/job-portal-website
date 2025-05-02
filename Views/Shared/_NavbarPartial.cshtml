@@ -1,98 +1,235 @@
-﻿
-<!-- Navbar Start -->
-<nav class="navbar navbar-expand-lg fixed-top scrolling-navbar">
+﻿<!-- Navbar Start -->
+<nav class="navbar navbar-expand-lg fixed-top">
     <div class="container">
-        <div class="theme-header clearfix">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                    <span class="lni-menu"></span>
-                    <span class="lni-menu"></span>
-                    <span class="lni-menu"></span>
-                </button>
-                <a href="index.html" class="navbar-brand"><img src="/assets/img/logo.png" alt=""></a>
-            </div>
-            <div class="collapse navbar-collapse" id="main-navbar">
-                <ul class="navbar-nav mr-auto w-100 justify-content-end">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="index.html">
-                            Home
-                        </a>
-                    </li>
+        <!-- Brand Logo -->
+        <a class="navbar-brand" href="index.html">
+            <img src="/assets/img/logo.png" alt="Logo" class="logo-img">
+        </a>
+
+        <!-- Mobile Toggle Button -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#main-navbar"
+                aria-controls="main-navbar" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Navbar Links -->
+        <div class="collapse navbar-collapse" id="main-navbar">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link active" asp-controller="Home" asp-action="Index">Home</a>
+                </li>
+
+                @if (User?.Identity?.IsAuthenticated == true && User.IsInRole("Employer"))
+                {
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Pages
+                        <a class="nav-link dropdown-toggle" href="#" id="employerDropdown"
+                           role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Employer Menu
                         </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="about.html">About</a></li>
-                            <li><a class="dropdown-item" href="job-page.html">Job Page</a></li>
-                            <li><a class="dropdown-item" href="job-details.html">Job Details</a></li>
-                            <li><a class="dropdown-item" href="resume.html">Resume Page</a></li>
-                            <li><a class="dropdown-item" href="privacy-policy.html">Privacy Policy</a></li>
-                            <li><a class="dropdown-item" href="faq.html">FAQ</a></li>
-                            <li><a class="dropdown-item" href="pricing.html">Pricing Tables</a></li>
-                            <li><a class="dropdown-item" href="contact.html">Contact</a></li>
+                        <ul class="dropdown-menu" aria-labelledby="employerDropdown" style="top:70%">
+                            <li><a class="dropdown-item" asp-action="AllCompany" asp-controller="Employer">Company</a></li>
+                            <li><a class="dropdown-item" asp-action="Create" asp-controller="Jobs">Post a Job</a></li>
+                            <li><a class="dropdown-item" asp-action="Index" asp-controller="Jobs">Manage Jobs</a></li>
+                            @* <li><a class="dropdown-item" href="#">Review Resume</a></li> *@
+                        </ul>
+                        @* <ul class="dropdown-menu"> *@
+                        @*     <li><a class="dropdown-item" asp-controller ="Jobs"  asp-action="Create">Add Job</a></li> *@
+                        @*     <li><a class="dropdown-item" asp-controller="Jobs"   asp-action="Index">Manage Jobs</a></li> *@
+
+                        @*     <li><a class="dropdown-item" href="manage-applications.html">Manage Applications</a></li> *@
+                        @*     <li><a class="dropdown-item" href="browse-resumes.html">Browse Resumes</a></li> *@
+                        @* </ul> *@
+                    </li>
+                }
+
+                @if (User?.Identity?.IsAuthenticated == true)
+                {
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown"
+                           role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-person-circle"></i>
+                            <span>My Account</span>
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="userDropdown" style="top:70%">
+                            <li><a class="dropdown-item" asp-action="Profile" asp-controller="Employer">Profile</a></li>
+                            <li><a class="dropdown-item" href="#">Change Password</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item logout-link" asp-action="Logout" asp-controller="Account">Logout</a></li>
                         </ul>
                     </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Candidates
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="browse-jobs.html">Browse Jobs</a></li>
-                            <li><a class="dropdown-item" href="browse-categories.html">Browse Categories</a></li>
-                            <li><a class="dropdown-item" href="add-resume.html">Add Resume</a></li>
-                            <li><a class="dropdown-item" href="manage-resumes.html">Manage Resumes</a></li>
-                            <li><a class="dropdown-item" href="job-alerts.html">Job Alerts</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Employers
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="post-job.html">Add Job</a></li>
-                            <li><a class="dropdown-item" href="manage-jobs.html">Manage Jobs</a></li>
-                            <li><a class="dropdown-item" href="manage-applications.html">Manage Applications</a></li>
-                            <li><a class="dropdown-item" href="browse-resumes.html">Browse Resumes</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Blog
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="blog.html">Blog - Right Sidebar</a></li>
-                            <li><a class="dropdown-item" href="blog-left-sidebar.html">Blog - Left Sidebar</a></li>
-                            <li><a class="dropdown-item" href="blog-full-width.html"> Blog full width</a></li>
-                            <li><a class="dropdown-item" href="single-post.html">Blog Single Post</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="contact.html">
-                            Contact
-                        </a>
-                    </li>
+                }
+                else
+                {
                     <li class="nav-item">
                         <a class="nav-link" asp-action="Login" asp-controller="Account">Login</a>
                     </li>
-                    @if (User?.Identity?.IsAuthenticated == true && User.IsInRole("Employer"))
-                    {
-                        <li class="button-group">
-                            <a href="post-job.html" class="button btn btn-common">Post a Job</a>
-                        </li>
-                    }
-                </ul>
-            </div>
+                    <li class="nav-item">
+                        <a class="register-btn" asp-action="PreRegister" asp-controller="Account">Register</a>
+                    </li>
+                }
+            </ul>
         </div>
     </div>
-    <div class="mobile-menu" data-logo="/assets/img/logo-mobile.png"></div>
 </nav>
 <!-- Navbar End -->
+<!-- Add Bootstrap Icons CDN in your layout or header -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+
+<style>
+    /* Navbar Styling */
+    .navbar {
+        background-color: rgba(255, 255, 255, 0.98);
+        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.06);
+        padding: 15px 0;
+        transition: all 0.3s ease;
+    }
+
+    /* Brand Logo */
+    .navbar-brand {
+        display: flex;
+        align-items: center;
+    }
+
+    .logo-img {
+        height: 38px;
+        margin-right: 10px;
+    }
+
+    .brand-text {
+        font-weight: 700;
+        color: #00BCD4;
+        font-size: 18px;
+    }
+
+
+
+    /* Toggle Button */
+    .navbar-toggler {
+        border: none;
+        padding: 0.4rem 0.5rem;
+        border-radius: 5px;
+        background-color: #f8f9fa;
+    }
+
+        .navbar-toggler:focus {
+            box-shadow: 0 0 0 3px rgba(0, 188, 212, 0.2);
+        }
+
+    /* Nav Links */
+    .navbar-nav {
+        align-items: center;
+    }
+
+    .nav-item {
+        margin: 0 2px;
+    }
+
+    .nav-link {
+        color: #555;
+        font-weight: 500;
+        padding: 8px 16px;
+        border-radius: 6px;
+        transition: all 0.2s ease;
+    }
+
+        .nav-link:hover {
+            color: #00BCD4;
+            background-color: rgba(0, 188, 212, 0.08);
+        }
+
+        .nav-link.active {
+            color: #00BCD4;
+            font-weight: 600;
+        }
+
+    /* Dropdown Menu */
+    .dropdown-menu {
+        border: none;
+        border-radius: 10px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        padding: 8px;
+        min-width: 200px;
+        margin-top: 12px;
+    }
+
+    .dropdown-item {
+        border-radius: 6px;
+        padding: 8px 15px;
+        font-weight: 500;
+        color: #555;
+        transition: all 0.2s ease;
+    }
+
+        .dropdown-item:hover {
+            background-color: rgba(0, 188, 212, 0.08);
+            color: #00BCD4;
+        }
+
+    .dropdown-divider {
+        margin: 6px 0;
+    }
+
+    /* Register Button */
+    .register-btn {
+        background-color: #00BCD4;
+        color: white;
+        padding: 8px 20px;
+        border-radius: 50px;
+        font-weight: 500;
+        display: inline-block;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        margin-left: 8px;
+    }
+
+        .register-btn:hover {
+            background-color: #00acc1;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 188, 212, 0.25);
+            color: white;
+        }
+
+    /* Account Icon */
+    .bi-person-circle {
+        margin-right: 6px;
+    }
+
+    /* Logout Link */
+    .logout-link {
+        color: #dc3545;
+    }
+
+        .logout-link:hover {
+            background-color: rgba(220, 53, 69, 0.08);
+            color: #dc3545;
+        }
+
+    /* Scrolled Navbar */
+    .navbar.scrolled {
+        padding: 10px 0;
+        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+    }
+
+   
+    
+</style>
+
+<script>
+    // Add scroll behavior to navbar
+    document.addEventListener('DOMContentLoaded', function() {
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+    });
+</script>
+<!-- Add Bootstrap Icons CDN in your layout or header -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
 
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    @await Html.PartialAsync("_ValidationScriptsPartial")
 }

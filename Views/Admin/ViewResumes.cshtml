@@ -1,0 +1,88 @@
+﻿@using Job_Portal_Project.ViewModels.Admin
+@model List<ResumeViewModel>
+
+@{
+    ViewData["Title"] = "View Resumes";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2 class="mt-4 mb-3">View Resumes</h2>
+
+<!-- Search Form -->
+<form method="get" asp-action="ViewResumes" class="row g-2 mb-3">
+    <div class="col-md-6">
+        <input type="text" name="searchTerm" class="form-control" placeholder="Search by full name..." value="@ViewData["SearchTerm"]" />
+    </div>
+    <div class="col-md-3">
+        <button type="submit" class="btn btn-primary w-100">Search</button>
+    </div>
+    <div class="col-md-3">
+        <a asp-action="ViewResumes" class="btn btn-secondary w-100">Reset</a>
+    </div>
+</form>
+
+<!-- No Results Message -->
+@if (!Model.Any())
+{
+    <div class="alert alert-warning text-center">No resumes found matching your criteria.</div>
+}
+
+<!-- Resumes Table -->
+@if (Model.Any())
+{
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped align-middle">
+            <thead>
+                <tr>
+                    <th>Full Name</th>
+                    <th>Email</th>
+                    <th>Title</th>
+                    <th>Resume</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var resume in Model)
+                {
+                    <tr>
+                        <td>@resume.FullName</td>
+                        <td>@resume.Email</td>
+                        <td>@resume.Title</td>
+                        <td>
+                            @if (!string.IsNullOrEmpty(resume.ResumePath))
+                            {
+                                <a class="btn btn-sm btn-outline-info" href="@Url.Content(resume.ResumePath)" target="_blank">
+                                    View Resume
+                                </a>
+                            }
+                            else
+                            {
+                                <span class="text-muted text-danger">No Resume</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+<!-- Pagination -->
+@if (true)
+{
+    <nav aria-label="Resume pagination">
+        <ul class="pagination justify-content-center mt-4">
+            <li class="page-item @( (int)ViewData["CurrentPage"] == 1 ? "disabled" : "")">
+                <a class="page-link" href="?searchTerm=@ViewData["SearchTerm"]&page=@((int)ViewData["CurrentPage"] - 1)">«</a>
+            </li>
+            @for (int i = 1; i <= (int)ViewData["TotalPages"]; i++)
+            {
+                <li class="page-item @(i == (int)ViewData["CurrentPage"] ? "active" : "")">
+                    <a class="page-link" href="?searchTerm=@ViewData["SearchTerm"]&page=@i">@i</a>
+                </li>
+            }
+            <li class="page-item @( (int)ViewData["CurrentPage"] == (int)ViewData["TotalPages"] ? "disabled" : "")">
+                <a class="page-link" href="?searchTerm=@ViewData["SearchTerm"]&page=@((int)ViewData["CurrentPage"] + 1)">»</a>
+            </li>
+        </ul>
+    </nav>
+}

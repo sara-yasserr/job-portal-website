@@ -12,10 +12,10 @@ namespace Job_Portal_Project.Services
        public JobApplicationService( IJobApplicationRepository _jobApplicationRebo)
        {
             jobApplicationRebo = _jobApplicationRebo;
-       }
+        }
 
-       public List<JobApplication> GetUserApplications(string userId)
-       {
+        public List<JobApplication> GetUserApplications(string userId)
+        {
             return jobApplicationRebo.GetUserApplications(userId);
         }
 
@@ -35,7 +35,7 @@ namespace Job_Portal_Project.Services
             };
             jobApplicationRebo.Insert(application);
             jobApplicationRebo.Save();
-       }
+        }
 
         public void Insert(Job job , ApplicationUser user)
         {
@@ -54,7 +54,7 @@ namespace Job_Portal_Project.Services
        public JobApplication GetJobApplication(int id)
        {
             return jobApplicationRebo.GetById<int>(id);
-       }
+        }
 
        public void Delete<T>(T Id)
        {

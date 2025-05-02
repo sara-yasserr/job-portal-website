@@ -1,0 +1,80 @@
+﻿@model IEnumerable<Job_Portal_Project.Models.JobApplicantDetailsForApplicantViewModel>
+
+@{
+    ViewData["Title"] = "Applicants";
+}
+
+<h1 class="text-center mb-5 text-primary">Applicants</h1>
+
+
+<form method="get" asp-action="ShowAllApplicants" asp-controller="JobApplication">
+    <div class="row mb-4">
+        <input type="hidden" name="jobId" value="@ViewData["JobId"]" />
+
+        <div class="col-md-6">
+            <input type="text" class="form-control" placeholder="Search by Full Name" name="FullName" value="@ViewData["FullName"]" />
+        </div>
+
+        <div class="col-md-6">
+            <button type="submit" class="btn btn-primary">Apply Filter</button>
+
+            
+            <a href="@Url.Action("ShowAllApplicants", "JobApplication", new { jobId = ViewData["JobId"], FullName = "" })" class="btn btn-secondary ms-2">
+                Reset Filter
+            </a>
+        </div>
+    </div>
+</form>
+
+
+
+<div class="row row-cols-1 g-4">
+    @foreach (var item in Model)
+    {
+        
+        <div class="col">
+            <div class="card h-100 shadow-sm border-primary">
+                <div class="card-body text-center">
+
+                    @if (!string.IsNullOrEmpty(item.ProfilePicturePath))
+                    {
+                        <img src="~/Images/@item.ProfilePicturePath" alt="Profile Picture" class="rounded-circle mb-3" style="width:100px; height:100px; object-fit:cover;" />
+                    }
+                    else
+                    {
+                        <div class="mb-3 text-muted">No Image</div>
+                    }
+
+                    <h5 class="card-title">@item.FirstName @item.LastName</h5>
+
+                    <p class="card-text mb-1">
+                        <strong>Application Date:</strong> @item.ApplicationDate.ToString("dd/MM/yyyy")
+                    </p>
+
+                    <p class="card-text mb-2">
+                        <strong>Status:</strong>
+                        @switch (item.status?.ToLower())
+                        {
+                            case "accept":
+                                <span class="badge bg-success">Accepted</span>
+                                break;
+                            case "rejected":
+                                <span class="badge bg-danger">Rejected</span>
+                                break;
+                            case "interview process":
+                                <span class="badge bg-warning text-dark">Interview Process</span>
+                                break;
+                            default:
+                                <span class="badge bg-secondary">@item.status</span>
+                                break;
+                        }
+                    </p>
+
+                    <a asp-action="ShowDetialsOfApplicant" asp-controller="JobApplication" asp-route-ApplicantId="@item.ApplicantId" class="btn btn-primary btn-sm">
+                        Show Details
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+</div>

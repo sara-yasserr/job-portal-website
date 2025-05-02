@@ -1,0 +1,80 @@
+﻿@model Job
+@{
+    Layout = "_MyLayout";
+    ViewData["Title"] = "Delete";
+}
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+<style>
+    .delete-container {
+        max-width: 600px;
+        margin: 120px auto;
+        padding: 30px;
+        border-radius: 12px;
+        background-color: #f4f4f4;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
+
+        .delete-container h1 {
+            text-align: center;
+            color: #343a40; 
+            font-weight: bold;
+            margin-bottom: 25px;
+        }
+
+    .alert-danger {
+        background-color: #f8d7da;
+        color: #721c24;
+        padding: 15px;
+        border-radius: 8px;
+        font-size: 16px;
+    }
+
+    .btn-danger {
+        background-color: #dc3545;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 6px;
+        color: white;
+        font-weight: bold;
+    }
+
+    .btn-secondary {
+        background-color: #343a40;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 6px;
+        color: white;
+        font-weight: bold;
+        margin-left: 10px;
+    }
+
+    .btn i {
+        margin-right: 5px;
+    }
+</style>
+
+<div class="delete-container">
+    <h1><i class="fas fa-trash-alt"></i> Delete Job</h1>
+
+    <div class="alert alert-danger">
+        Are you sure you want to delete the job titled <strong>@Model.Title</strong>?
+    </div>
+
+    <form asp-action="Delete" method="post" class="d-flex justify-content-center">
+        <input type="hidden" asp-for="Id" />
+        <button type="submit" class="btn btn-danger">
+            <i class="fas fa-check-circle"></i> Yes, Delete
+        </button>
+        <a asp-action="Index" class="btn btn-secondary">
+            <i class="fas fa-times-circle"></i> Cancel
+        </a>
+    </form>
+</div>
+
+
+
+
+

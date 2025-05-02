@@ -25,6 +25,8 @@
   <ItemGroup>
     <Folder Include="Data\" />
     <Folder Include="wwwroot\Uploads\" />
+    <Folder Include="wwwroot\Uploads\resumes\" />
+    <Folder Include="wwwroot\Uploads\Profiles\" />
   </ItemGroup>
 
 </Project>
