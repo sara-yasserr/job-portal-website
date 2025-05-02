@@ -17,13 +17,15 @@ namespace Job_Portal_Project.Controllers
         private SignInManager<ApplicationUser> signInManager;
         IApplicationUserRepository _applicationUserRepository;
         IUserMappingService _userMappingService;
-        public AccountController(UserManager<ApplicationUser> _userManager, SignInManager<ApplicationUser> _signInManager,
-            IApplicationUserRepository applicationUserRepository, IUserMappingService userMappingService)
+        private readonly IUserService _userService;
+        public AccountController(UserManager<ApplicationUser> _userManager, SignInManager<ApplicationUser> _signInManager ,
+            IApplicationUserRepository applicationUserRepository, IUserService userService, IUserMappingService userMappingService)
         {
             userManager = _userManager;
             signInManager = _signInManager;
             _applicationUserRepository = applicationUserRepository;
             _userMappingService = userMappingService;
+            _userService = userService;
         }
 
         #region Register
@@ -69,7 +71,7 @@ namespace Job_Portal_Project.Controllers
                 userVM.ProfilePicturePath = uniqueFileName;
             }
             //to assign admins ==>>
-            //userVM.Role = Role.Admin;
+            // userVM.Role = Role.Admin;
             if (ModelState.IsValid)
             {
                 var existingUser = await _applicationUserRepository.GetByUserNameAsync(userVM.UserName);
@@ -100,7 +102,6 @@ namespace Job_Portal_Project.Controllers
             }
             return View("Register", userVM);
         }
-
         #endregion
 
         #region Login
@@ -128,8 +129,8 @@ namespace Job_Portal_Project.Controllers
                         List<Claim> claims = new List<Claim>();
                         claims.Add(new Claim(ClaimTypes.NameIdentifier, userFromDB.Id));
                         claims.Add(new Claim(ClaimTypes.Name, userFromDB.UserName));
-                        claims.Add(new Claim(ClaimTypes.Email, userFromDB.Email));
-                        claims.Add(new Claim("FirstName", userFromDB.FirstName));
+                        claims.Add(new Claim(ClaimTypes.Email, userFromDB.Email ?? string.Empty));
+                        claims.Add(new Claim("FirstName", userFromDB.FirstName ));
                         claims.Add(new Claim("LastName", userFromDB.LastName));
                         claims.Add(new Claim("City", userFromDB.City));
                         claims.Add(new Claim("Country", userFromDB.Country));
@@ -190,6 +191,42 @@ namespace Job_Portal_Project.Controllers
 
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(result.Principal.Identity));
             return RedirectToLocal(returnUrl);
+        }
+        #endregion
+
+        #region Change Password
+        //Change Password
+        [HttpGet("ChangePassword")]
+        public IActionResult ChangePassword()
+        {
+            return View(new ChangePasswordViewModel());
+        }
+
+        [HttpPost("ChangePassword")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var user = await userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var result = await _userService.ChangePasswordAsync(user.Id, model.CurrentPassword, model.NewPassword);
+            if (!result)
+            {
+                ModelState.AddModelError(string.Empty, "Error changing password. Please check your current password.");
+                return View(model);
+            }
+
+            await signInManager.RefreshSignInAsync(user);
+            TempData["SuccessMessage"] = "Your password has been changed successfully.";
+            return RedirectToAction(nameof(ChangePassword));
         }
         #endregion
 

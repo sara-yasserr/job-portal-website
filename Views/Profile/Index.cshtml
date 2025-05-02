@@ -1,0 +1,393 @@
+﻿@model Job_Portal_Project.ViewModels.ProfileViewModel
+@{
+    ViewData["Title"] = "My Profile";
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+
+<style>
+    .profile-section {
+        background-color: #f5f7fa;
+        padding: 80px 0;
+    }
+
+    .profile-card {
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        margin-bottom: 2rem;
+    }
+
+    .profile-sidebar {
+        border-right: 1px solid #eaeaea;
+        padding: 2rem;
+        text-align: center;
+        background-color: #fff;
+    }
+
+    .profile-main {
+        padding: 2rem;
+    }
+
+    .profile-header {
+        background: linear-gradient(135deg, #2F55D4 0%, #5976E1 100%);
+        padding: 1.5rem;
+        color: white;
+        border-radius: 8px 8px 0 0;
+    }
+
+    .profile-picture {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 5px solid white;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        margin: 0 auto 1.5rem;
+    }
+
+    .profile-info h4 {
+        color: #333;
+        margin-bottom: 0.25rem;
+    }
+
+    .profile-info p {
+        color: #6c757d;
+        margin-bottom: 1.5rem;
+    }
+
+    .contact-info {
+        text-align: left;
+        margin-top: 2rem;
+    }
+
+    .contact-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
+
+    .contact-icon {
+        width: 36px;
+        height: 36px;
+        background-color: rgba(47, 85, 212, 0.1);
+        color: #2F55D4;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 0.75rem;
+    }
+
+    .contact-text {
+        flex-grow: 1;
+    }
+
+        .contact-text h6 {
+            margin-bottom: 0.25rem;
+            font-size: 0.875rem;
+            color: #6c757d;
+        }
+
+        .contact-text p {
+            margin-bottom: 0;
+            font-weight: 500;
+            color: #333;
+        }
+
+    .details-section {
+        margin-bottom: 2rem;
+    }
+
+        .details-section h5 {
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid #eaeaea;
+        }
+
+    .detail-row {
+        margin-bottom: 1.25rem;
+        display: flex;
+    }
+
+    .detail-label {
+        font-weight: 600;
+        color: #495057;
+        width: 35%;
+    }
+
+    .detail-value {
+        color: #6c757d;
+        width: 65%;
+    }
+
+    .resume-section {
+        background-color: #f8f9fa;
+        border-radius: 6px;
+        padding: 1.5rem;
+    }
+
+    .resume-file {
+        display: flex;
+        align-items: center;
+        padding: 1rem;
+        background-color: white;
+        border-radius: 6px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .resume-icon {
+        width: 48px;
+        height: 48px;
+        background-color: rgba(47, 85, 212, 0.1);
+        color: #2F55D4;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 1rem;
+        font-size: 1.5rem;
+    }
+
+    .resume-details {
+        flex-grow: 1;
+    }
+
+        .resume-details h6 {
+            margin-bottom: 0.25rem;
+            font-weight: 600;
+        }
+
+        .resume-details p {
+            margin-bottom: 0;
+            font-size: 0.875rem;
+            color: #6c757d;
+        }
+
+    .btn-primary {
+        background-color: #2F55D4;
+        border-color: #2F55D4;
+        padding: 0.625rem 1.25rem;
+        border-radius: 6px;
+        font-weight: 500;
+    }
+
+        .btn-primary:hover {
+            background-color: #1E3CA2;
+            border-color: #1E3CA2;
+        }
+
+    .btn-outline-primary {
+        color: #2F55D4;
+        background-color: transparent;
+        border-color: #2F55D4;
+        padding: 0.625rem 1.25rem;
+        border-radius: 6px;
+        font-weight: 500;
+    }
+
+        .btn-outline-primary:hover {
+            background-color: #2F55D4;
+            color: white;
+        }
+
+    .badge-soft-primary {
+        background-color: rgba(47, 85, 212, 0.1);
+        color: #2F55D4;
+        font-weight: 500;
+        padding: 0.35rem 0.75rem;
+        border-radius: 50px;
+        font-size: 0.75rem;
+    }
+
+    .alert {
+        border-radius: 6px;
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    @@media (max-width: 991.98px) {
+        .profile-sidebar {
+            border-right: none;
+            border-bottom: 1px solid #eaeaea;
+            padding-bottom: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .detail-row {
+            flex-direction: column;
+        }
+
+        .detail-label, .detail-value {
+            width: 100%;
+        }
+
+        .detail-label {
+            margin-bottom: 0.25rem;
+        }
+    }
+</style>
+
+<section class="profile-section">
+    <div class="container">
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="fas fa-check-circle me-2"></i> @TempData["SuccessMessage"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+
+        <div class="profile-card">
+            <div class="profile-header">
+                <div class="container">
+                    <h3 class="mb-0">My Profile</h3>
+                    <p class="mb-0">Manage your personal information and resume</p>
+                </div>
+            </div>
+
+            <div class="container">
+                <div class="row">
+                    <!-- Profile Sidebar -->
+                    <div class="col-lg-4 profile-sidebar">
+                        @if (!string.IsNullOrEmpty(Model.ProfilePicturePath))
+                        {
+                            <img src="~/images/@Model.ProfilePicturePath" alt="Profile Picture" class="profile-picture" id="profile-preview">
+                        }
+                        else
+                        {
+                            <img src="/images/default-profile.png" alt="Default Picture" class="profile-picture">
+                        }
+
+                        <div class="profile-info">
+                            <h4>@Model.FirstName @Model.LastName</h4>
+                            <p>@Model.Title</p>
+
+                            <a asp-action="Edit" class="btn btn-primary">
+                              Edit Profile
+                            </a>
+                        </div>
+
+                        <div class="contact-info">
+                            <h5 class="mb-3">Contact Information</h5>
+
+                            <div class="contact-item">
+                              
+                                <div class="contact-text">
+                                    <h6>Email</h6>
+                                    <p>@Model.Email</p>
+                                </div>
+                            </div>
+
+                            @if (!string.IsNullOrEmpty(Model.PhoneNumber))
+                            {
+                                <div class="contact-item">
+
+                                    <div class="contact-text">
+                                        <h6>Phone</h6>
+                                        <p>@Model.PhoneNumber</p>
+                                    </div>
+                                </div>
+                            }
+
+                            <div class="contact-item">
+                               
+                                <div class="contact-text">
+                                    <h6>Location</h6>
+                                    <p>@Model.City, @Model.Country</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Profile Main Content -->
+                    <div class="col-lg-8 profile-main">
+                        <div class="details-section">
+                            <h5>Profile Details</h5>
+
+                            <div class="detail-row">
+                                <div class="detail-label">Full Name</div>
+                                <div class="detail-value">@Model.FirstName @Model.LastName</div>
+                            </div>
+
+                            <div class="detail-row">
+                                <div class="detail-label">Professional Title</div>
+                                <div class="detail-value">@Model.Title</div>
+                            </div>
+
+                            <div class="detail-row">
+                                <div class="detail-label">Email Address</div>
+                                <div class="detail-value">@Model.Email</div>
+                            </div>
+
+                            <div class="detail-row">
+                                <div class="detail-label">Phone Number</div>
+                                <div class="detail-value">@Model.PhoneNumber</div>
+                            </div>
+
+                            <div class="detail-row">
+                                <div class="detail-label">Location</div>
+                                <div class="detail-value">@Model.City, @Model.Country</div>
+                            </div>
+                        </div>
+
+                        @if (!string.IsNullOrEmpty(Model.ResumePath))
+                        {
+                            <div class="resume-section">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h5 class="mb-0">Resume</h5>
+                                </div>
+
+                                <div class="resume-file">
+                                    <div class="resume-icon">
+                                        <i class="fas fa-file-pdf"></i>
+                                    </div>
+                                    <div class="resume-details">
+                                        <h6>My Resume</h6>
+                                        <p>@System.IO.Path.GetFileName(Model.ResumePath)</p>
+                                    </div>
+                                    <div>
+                                        <a href="@Model.ResumePath" class="btn btn-sm btn-outline-primary" target="_blank">
+                                            <i class="fas fa-download me-1"></i> Download
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="resume-section">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h5 class="mb-0">Resume</h5>
+                                </div>
+
+                                <div class="text-center py-4">
+                                    <i class="fas fa-file-upload fs-1 text-muted mb-3"></i>
+                                    <h6 class="mb-2">No Resume Uploaded Yet</h6>
+                                    <p class="text-muted mb-3">Upload your resume to apply for jobs quickly</p>
+                                    <a asp-action="Edit" class="btn btn-outline-primary">
+                                        <i class="fas fa-upload me-1"></i> Upload Resume
+                                    </a>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        // Success message will close after 5 seconds
+        window.setTimeout(function() {
+            $(".alert-success").fadeTo(500, 0).slideUp(500, function() {
+                $(this).remove();
+            });
+        }, 5000);
+    </script>
+}

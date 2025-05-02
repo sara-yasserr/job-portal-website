@@ -1,0 +1,124 @@
+﻿@model Job_Portal_Project.ViewModels.BookmarkedJobsViewModel
+
+@{
+    ViewData["Title"] = "Bookmarked Jobs";
+}
+
+<div class="container my-5">
+    <!-- Page Title -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="fw-bold">Bookmarked Jobs</h1>
+            <p class="text-muted">Jobs you've saved for later</p>
+        </div>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <!-- Bookmarked Jobs List -->
+    <div class="row">
+        <div class="col-12">
+            @if (Model.BookmarkedJobs != null && Model.BookmarkedJobs.Any())
+            {
+                @foreach (var favourite in Model.BookmarkedJobs)
+                {
+                    <div class="card mb-3 job-card shadow-sm">
+                        <div class="card-body p-4">
+                            <div class="row align-items-center">
+                                <!-- Company Logo -->
+                                <div class="col-lg-1 col-md-2 col-3 text-center">
+                                    @if (favourite.Job.Company != null && !string.IsNullOrEmpty(favourite.Job.Company.LogoPath))
+                                    {
+                                        <img src="@favourite.Job.Company.LogoPath" alt="@favourite.Job.Company.Name Logo" class="company-logo img-fluid rounded" style="max-height: 60px;">
+                                    }
+                                    else
+                                    {
+                                        <div class="company-logo-placeholder rounded d-flex align-items-center justify-content-center bg-light" style="height: 60px; width: 60px;">
+                                            <span class="fs-4">@(favourite.Job.Company?.Name?.Substring(0, 1) ?? "J")</span>
+                                        </div>
+                                    }
+                                </div>
+
+                                <!-- Job Details -->
+                                <div class="col-lg-7 col-md-6 col-9">
+                                    <h5 class="card-title mb-1">
+                                        <a asp-controller="Jobs" asp-action="Details" asp-route-id="@favourite.JobId" class="text-decoration-none text-dark">@favourite.Job.Title</a>
+                                    </h5>
+                                    <p class="text-muted mb-0">@favourite.Job.Company?.Name</p>
+                                    <div class="d-flex flex-wrap gap-2 mt-2">
+                                        <span class="badge bg-light text-dark"><i class="bi bi-geo-alt"></i> @favourite.Job.Country</span>
+                                        <span class="badge bg-light text-dark"><i class="bi bi-briefcase"></i> @favourite.Job.EmploymentType</span>
+                                       
+                                    </div>
+                                </div>
+
+                                <!-- Posted Date and Action Buttons -->
+                                <div class="col-lg-4 col-md-4 mt-3 mt-md-0 d-flex justify-content-end">
+                                    <div class="text-end">
+                                        <p class="text-muted small mb-2">
+                                            <i class="bi bi-clock"></i> Posted @favourite.Job.DatePosted.ToShortDateString()
+                                        </p>
+                                        <div class="btn-group">
+                                            <a asp-controller="Jobs" asp-action="Details" asp-route-id="@favourite.JobId" class="btn btn-outline-primary btn-sm">View Details</a>
+                                            <form asp-action="Remove" asp-route-jobId="@favourite.JobId" method="post" class="d-inline">
+                                                @Html.AntiForgeryToken()
+                                                <button type="submit" class="btn btn-outline-danger btn-sm">Remove</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="text-center py-5">
+                    <div class="mb-4">
+                        <i class="bi bi-bookmark-x fs-1 text-muted"></i>
+                    </div>
+                    <h3>No bookmarked jobs yet</h3>
+                    <p class="text-muted">Start browsing jobs and bookmark the ones you're interested in.</p>
+                    <a asp-controller="JobSearch" asp-action="Index" class="btn btn-primary mt-2">Browse Jobs</a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .job-card {
+            transition: transform 0.2s ease;
+            border-left: 4px solid transparent;
+        }
+
+            .job-card:hover {
+                transform: translateY(-3px);
+                border-left: 4px solid #0d6efd;
+            }
+
+        .company-logo {
+            object-fit: contain;
+        }
+    </style>
+}
+
+@section Scripts {
+    <script>
+        // Enable Bootstrap tooltips
+        document.addEventListener('DOMContentLoaded', function() {
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+        });
+    </script>
+}

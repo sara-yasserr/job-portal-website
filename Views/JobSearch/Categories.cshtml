@@ -1,0 +1,156 @@
+﻿@model List<CategoryWithJobCount>
+@{
+    ViewData["Title"] = "Browse Categories";
+}
+
+
+
+
+<!-- Page Header Start -->
+<div class="page-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="inner-header">
+                    <h3>Browse Categories</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Page Header End -->
+
+<!-- Category Section Start -->
+<section class="category section bg-gray">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Browse Categories</h2>
+            <p>Most popular categories of portal, sorted by popularity</p>
+        </div>
+        <partial name="_CategoriesPartial" model="Model" />
+    </div>
+</section>
+<!-- Category Section End -->
+
+<!-- Featured Section Start -->
+<section class="featured-jobs section">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Popular Categories</h2>
+            <p>Hand-picked jobs featured depending on popularity and benefits</p>
+        </div>
+        <div class="row">
+            @foreach (var item in Model.OrderByDescending(c => c.JobCount).Take(4))
+            {
+                <div class="col-lg-6 col-md-12 col-xs-12">
+                    <div class="job-featured">
+                        <div class="icon bg-color-@(Math.Abs(item.Category.Id % 8) + 1)">
+                            @{
+                                string iconClass = "lni-home";
+                                switch (Math.Abs(item.Category.Id % 8))
+                                {
+                                    case 1: iconClass = "lni-world"; break;
+                                    case 2: iconClass = "lni-book"; break;
+                                    case 3: iconClass = "lni-display"; break;
+                                    case 4: iconClass = "lni-brush"; break;
+                                    case 5: iconClass = "lni-heart"; break;
+                                    case 6: iconClass = "lni-funnel"; break;
+                                    case 7: iconClass = "lni-cup"; break;
+                                }
+                            }
+                            <i class="@iconClass"></i>
+                        </div>
+                        <div class="content">
+                            <h3><a asp-action="CategoryJobs" asp-route-id="@item.Category.Id">@item.Category.Name</a></h3>
+                            <p class="brand">@( "Find jobs in " + item.Category.Name)</p>
+                            <div class="tags">
+                                <span><i class="lni-tag"></i> @item.JobCount jobs</span>
+                                <span class="ml-3"><i class="lni-star"></i> Popular</span>
+                            </div>
+                            <div class="mt-3">
+                                <a asp-action="CategoryJobs" asp-route-id="@item.Category.Id" class="btn btn-sm btn-primary">Browse Jobs</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="row">
+            <div class="col-12 text-center mt-4">
+                <a asp-action="Index" class="btn btn-primary">View All Categories</a>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Featured Section End -->
+@section Styles {
+    <style>
+        /* Popular Categories Section Enhancements */
+        .job-featured {
+            display: flex;
+            padding: 25px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+            border-left: 4px solid #12c1d7;
+        }
+
+            .job-featured:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            }
+
+            .job-featured .icon {
+                width: 70px;
+                height: 70px;
+                line-height: 70px;
+                text-align: center;
+                font-size: 28px;
+                border-radius: 50%;
+                margin-right: 20px;
+                flex-shrink: 0;
+            }
+
+            .job-featured .content {
+                flex-grow: 1;
+            }
+
+            .job-featured h3 {
+                font-size: 20px;
+                font-weight: 600;
+                margin-bottom: 5px;
+            }
+
+            .job-featured .brand {
+                color: #666;
+                margin-bottom: 10px;
+            }
+
+            .job-featured .tags {
+                font-size: 14px;
+                color: #777;
+            }
+
+                .job-featured .tags i {
+                    margin-right: 5px;
+                }
+
+                .job-featured .tags .lni-star {
+                    color: #ffc107;
+                }
+
+        .btn-primary {
+            background-color: #12c1d7;
+            border-color: #12c1d7;
+            padding: 8px 20px;
+            font-size: 14px;
+        }
+
+            .btn-primary:hover {
+                background-color: #12c1d7;
+                border-color: #12cld17;
+            }
+    </style>
+}

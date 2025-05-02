@@ -25,6 +25,31 @@
   <ItemGroup>
     <Folder Include="Data\" />
     <Folder Include="wwwroot\Uploads\" />
+    <Folder Include="Models\" />
+    <Folder Include="wwwroot\css\" />
+    <Folder Include="wwwroot\images\" />
+    <Folder Include="wwwroot\js\" />
+    <Folder Include="wwwroot\lib\bootstrap\" />
+    <Folder Include="wwwroot\lib\bootstrap\dist\js\" />
+    <Folder Include="wwwroot\lib\jquery-validation\" />
+    <Folder Include="wwwroot\lib\jquery-validation\dist\" />
+    <Folder Include="wwwroot\lib\jquery\" />
+    <Folder Include="wwwroot\lib\jquery\dist\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\assets\.DS_Store" />
+    <None Include="wwwroot\assets\css\.DS_Store" />
+    <None Include="wwwroot\assets\fonts\.DS_Store" />
+    <None Include="wwwroot\assets\img\.DS_Store" />
+    <None Include="wwwroot\assets\img\about\.DS_Store" />
+    <None Include="wwwroot\assets\img\bg\.DS_Store" />
+    <None Include="wwwroot\assets\img\features\.DS_Store" />
+    <None Include="wwwroot\assets\img\jobs\.DS_Store" />
+    <None Include="wwwroot\assets\img\product\.DS_Store" />
+    <None Include="wwwroot\assets\img\resume\.DS_Store" />
+    <None Include="wwwroot\assets\img\testimonial\.DS_Store" />
+    <None Include="wwwroot\assets\js\.DS_Store" />
     <Folder Include="wwwroot\Uploads\resumes\" />
     <Folder Include="wwwroot\Uploads\Profiles\" />
   </ItemGroup>

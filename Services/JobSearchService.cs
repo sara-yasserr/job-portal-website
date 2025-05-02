@@ -1,6 +1,7 @@
 ﻿// Services/JobSearchService.cs
 using Job_Portal_Project.Models;
 using Job_Portal_Project.Models.DbContext;
+using Job_Portal_Project.Repositories;
 using Job_Portal_Project.Repositories.ApplicationUserRepository;
 using Job_Portal_Project.Services.Contracts;
 using Job_Portal_Project.ViewModels;
@@ -16,11 +17,16 @@ namespace Job_Portal_Project.Services
     {
         private readonly JobPortalContext _context;
         private readonly IApplicationUserRepository _userRepository;
+        private readonly IJobCategoryRepository _jobCategoryRepository;
+        private readonly IJobRepository _jobRepository;
 
-        public JobSearchService(JobPortalContext context, IApplicationUserRepository userRepository)
+        public JobSearchService(JobPortalContext context, IApplicationUserRepository userRepository,
+            IJobCategoryRepository jobCategoryRepository, IJobRepository jobRepository)
         {
             _context = context;
             _userRepository = userRepository;
+            _jobCategoryRepository = jobCategoryRepository;
+            _jobRepository = jobRepository;   
         }
 
         public async Task<JobSearchViewModel> SearchJobs(JobSearchViewModel model)
@@ -164,11 +170,6 @@ namespace Job_Portal_Project.Services
                 .AnyAsync(ja => ja.ApplicantId == userId && ja.JobId == jobId);
         }
        
-        public async Task<bool> IsJobFavorite(string userId, int jobId)
-        {
-            return await _context.Favourites
-                .AnyAsync(f => f.UserId == userId && f.JobId == jobId);
-        }
 
         public async Task<List<Job>> GetRelatedJobs(int categoryId, int excludeJobId)
         {
@@ -191,6 +192,26 @@ namespace Job_Portal_Project.Services
         public Task<bool> ApplyForJob(string userId, int jobId)
         {
             throw new NotImplementedException();
+        //Categoriiies
+
+
+
+        public async Task<List<CategoryWithJobCount>> GetAllCategories()
+        {
+            // Get all categories and active jobs asynchronously
+            var categories =  _jobCategoryRepository.GetAll();
+            var activeJobs = ( _jobRepository.GetAll()).Where(j => j.IsActive).ToList();
+
+            // Create the view model
+            var result = categories.Select(category => new CategoryWithJobCount
+            {
+                Category = category,
+                JobCount = activeJobs.Count(j => j.JobCategoryId == category.Id)
+            })
+            .OrderByDescending(x => x.JobCount)
+            .ToList();
+
+            return result;
         }
     }
 }
