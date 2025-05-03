@@ -40,7 +40,7 @@
                             <div class="row">
                                 <div class="col-md-4" >
                                     <div class="thums">
-                                        <img src="/Images/@item.Job.Company.LogoPath" alt="" style="margin-left:10px; margin-right:10px;">
+                                        <img src="/Uploads/Logos/@item.Job.Company.LogoPath" alt="" style="margin-left:10px; margin-right:10px;">
                                     </div>
                                     <h3>@item.Job.Title Needed</h3>
                                     <span>@item.Job.Company.Name</span>
@@ -76,7 +76,7 @@
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                                    <form id="deleteForm" method="post" asp-action="Delete" asp-controller="Account">
+                                                    <form id="deleteForm" method="post" asp-action="Delete" asp-controller="JobApplication" asp-route-Id="@item.Id">
                                                         <button type="submit" class="btn btn-common log-btn">Ok</button>
                                                     </form>
                                                 </div>

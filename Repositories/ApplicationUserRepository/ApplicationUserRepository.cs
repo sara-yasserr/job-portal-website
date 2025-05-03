@@ -28,10 +28,6 @@ namespace Job_Portal_Project.Repositories.ApplicationUserRepository
         public async Task<ApplicationUser> GetByUserNameAsync(string userName)
         {
             var user = await _userManager.FindByNameAsync(userName);
-            if (user == null)
-            {
-                throw new InvalidOperationException($"User with username '{userName}' not found.");
-            }
             return user;
         }
         public async Task<ApplicationUser> GetByEmailAsync(string email)
