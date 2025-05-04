@@ -23,7 +23,6 @@ namespace Job_Portal_Project
 
             //Add services to the container.
 
-
            //builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
            //    .AddCookie(options =>
            //    {
@@ -95,6 +94,7 @@ namespace Job_Portal_Project
             // Services
         
             builder.Services.AddScoped<IApplicationUserRepository, ApplicationUserRepository>();
+            //builder.Services.AddScoped<JobApplicationService>();
             builder.Services.AddScoped<IJobSearchService, JobSearchService>();
             builder.Services.AddScoped<IProfileService, ProfileService>();
             builder.Services.AddScoped<IUserService, UserService>();

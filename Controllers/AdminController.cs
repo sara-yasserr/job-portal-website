@@ -14,7 +14,7 @@ using NuGet.Protocol;
 namespace Job_Portal_Project.Controllers
 {
     [Authorize(Roles = "Admin")]
-    public class Admin : Controller
+    public class AdminController : Controller
     {   
         private JobPortalContext _context;
         private ICompanyRepository _companyRepository;
@@ -28,7 +28,7 @@ namespace Job_Portal_Project.Controllers
         private UserManager<ApplicationUser> _userManager;
 
 
-        public Admin(IFavouritesRepository favouritesRepository , ICompanyRepository companyRepository
+        public AdminController(IFavouritesRepository favouritesRepository , ICompanyRepository companyRepository
                     , IJobApplicationRepository jobApplicationRepository, IJobRepository jobRepository
                     , IApplicationUserRepository applicationUserRepository, IJobCategoryRepository jobCategoryRepository
                     , IAdminDashboardService adminDashboardService, UserManager<ApplicationUser> userManager
@@ -47,6 +47,10 @@ namespace Job_Portal_Project.Controllers
         }
         public async Task<IActionResult> Dashboard()
         {
+            if (!User.IsInRole("Admin"))
+            {
+                return Unauthorized();
+            }
             var viewModel = await _dashboardService.GetDashboardDataAsync();
             return View("Dashboard" , viewModel);
         }
@@ -332,6 +336,151 @@ namespace Job_Portal_Project.Controllers
             await _applicationUserRepository.DeleteAsync(user);
             return RedirectToAction("Users");
         }
+
+        //Companies
+        [HttpGet]
+        public async Task<IActionResult> Companies(string searchTerm, string country, int page = 1, int pageSize = 10)
+        {
+            var companies = _companyRepository.GetAll();
+
+            // Filter by search term
+            if (!string.IsNullOrWhiteSpace(searchTerm))
+            {
+                searchTerm = searchTerm.ToLower().Trim();
+                companies = companies.Where(c => c.Name.ToLower().Contains(searchTerm)).ToList();
+            }
+
+            // Filter by country
+            if (!string.IsNullOrWhiteSpace(country))
+            {
+                companies = companies.Where(c => c.Country != null && c.Country.ToLower() == country.ToLower()).ToList();
+            }
+
+            var totalCompanies = companies.Count();
+            var totalPages = (int)Math.Ceiling(totalCompanies / (double)pageSize);
+
+            if (page > totalPages)
+                page = totalPages == 0 ? 1 : totalPages;
+
+            var pagedCompanies = companies
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            // Create the countries list
+            var countries = _companyRepository.GetAll()
+                .Where(c => !string.IsNullOrEmpty(c.Country))
+                .Select(c => c.Country)
+                .Distinct()
+                .OrderBy(c => c)
+                .ToList();
+
+            ViewData["SearchTerm"] = searchTerm;
+            ViewData["Country"] = country;
+            ViewData["Countries"] = countries; // Just List<string>
+            ViewData["CurrentPage"] = page;
+            ViewData["TotalPages"] = totalPages;
+
+            
+
+            return View(pagedCompanies);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateCompany(Company company, IFormFile? logoFile)
+        {
+            try
+            {
+                // Validate required fields
+                if (string.IsNullOrEmpty(company.Name))
+                {
+                    ModelState.AddModelError("Name", "Company name is required");
+                }
+                if (string.IsNullOrEmpty(company.Country))
+                {
+                    ModelState.AddModelError("Country", "Country is required");
+                }
+                if (string.IsNullOrEmpty(company.City))
+                {
+                    ModelState.AddModelError("City", "City is required");
+                }
+
+                // Explicitly remove any validation errors for logoFile
+                if (ModelState.ContainsKey("logoFile"))
+                {
+                    ModelState.Remove("logoFile");
+                }
+
+                if (ModelState.IsValid)
+                {
+                    // Handle logo upload
+                    if (logoFile != null && logoFile.Length > 0)
+                    {
+                        var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads/logos");
+                        Directory.CreateDirectory(uploadsFolder);
+                        var uniqueFileName = $"{Guid.NewGuid()}_{logoFile.FileName}";
+                        var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                        using (var fileStream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await logoFile.CopyToAsync(fileStream);
+                        }
+                        company.LogoPath = $"/uploads/logos/{uniqueFileName}";
+                    }
+                    else
+                    {
+                        company.LogoPath = "/default-logo.png";
+                    }
+
+                    // Save company to database
+                    _companyRepository.Insert(company);
+                    _companyRepository.Save();
+                    TempData["CompanySuccess"] = "Company created successfully.";
+                    return RedirectToAction("Companies");
+                }
+                else
+                {
+                    // If validation fails
+                    var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage);
+                    TempData["CompanyError"] = "Please fix the validation errors: " + string.Join(", ", errors);
+                    return RedirectToAction("Companies");
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["CompanyError"] = "Error creating company: " + ex.Message;
+                return RedirectToAction("Companies");
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteCompany(int id)
+        {
+            var company =  _companyRepository.GetById(id);
+
+            if (company == null)
+            {
+                TempData["CompanyError"] = "Company not found.";
+                return RedirectToAction("Companies");
+            }
+
+            // check if the company is linked to any jobs
+            var relatedJobs = _jobRepository.GetAll().Any(j => j.CompanyId == id);
+
+            if (relatedJobs)
+            {
+                TempData["CompanyError"] = "Cannot delete this company because it has related jobs.";
+                return RedirectToAction("Companies");
+            }
+
+            // safe to delete
+             _companyRepository.Delete(company);
+            TempData["CompanySuccess"] = "Company deleted successfully.";
+            return RedirectToAction("Companies");
+        }
+
+
+
         public IActionResult Role()
         {
             var roles = roleManager.Roles.ToList();
@@ -458,10 +607,19 @@ namespace Job_Portal_Project.Controllers
             if (user == null)
                 return NotFound();
 
+            // Get current roles and remove them
             var currentRoles = await _userManager.GetRolesAsync(user);
-            await _userManager.RemoveFromRolesAsync(user, currentRoles);
+            if (currentRoles.Any())
+            {
+                await _userManager.RemoveFromRolesAsync(user, currentRoles);
+            }
 
+            // Add the new role
             await _userManager.AddToRoleAsync(user, role);
+
+            // Update the user's Role column manually
+            user.Role = role;
+            await _applicationUserRepository.UpdateAsync(user); // <--- VERY IMPORTANT!
 
             return RedirectToAction("ManageUserRoles");
         }
@@ -509,6 +667,9 @@ namespace Job_Portal_Project.Controllers
 
             return View("ViewResumes", pagedResumes);
         }
+        
+
+
 
 
     }
