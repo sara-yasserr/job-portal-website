@@ -51,7 +51,7 @@ namespace Job_Portal_Project
     {
         OnRedirectToAuthorizationEndpoint = context =>
         {
-            // حفظ returnUrl في حالة التوجيه
+            
             context.Properties.SetString("returnUrl", context.Request.Query["returnUrl"]);
             context.Response.Redirect(context.RedirectUri);
             return Task.CompletedTask;
@@ -75,6 +75,7 @@ namespace Job_Portal_Project
 });
 
 
+           
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
             // service used insted of  method of on configuration to allow injecting the dbcontext in the repositories without using the service provider
             builder.Services.AddDbContext<JobPortalContext>(options =>
@@ -118,6 +119,7 @@ namespace Job_Portal_Project
             // Services
         
             builder.Services.AddScoped<IApplicationUserRepository, ApplicationUserRepository>();
+            //builder.Services.AddScoped<JobApplicationService>();
             builder.Services.AddScoped<IJobSearchService, JobSearchService>();
             builder.Services.AddScoped<IProfileService, ProfileService>();
             builder.Services.AddScoped<IUserService, UserService>();

@@ -1,0 +1,398 @@
+﻿@model List<Job_Portal_Project.Models.Company>
+
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Companies</h2>
+
+    @if (TempData["CompanyError"] != null)
+    {
+        <div class="alert alert-danger text-center mt-3">
+            @TempData["CompanyError"]
+        </div>
+    }
+
+    @if (TempData["CompanySuccess"] != null)
+    {
+        <div class="alert alert-success text-center mt-3">
+            @TempData["CompanySuccess"]
+        </div>
+    }
+
+    <!-- Add Company Button -->
+    <div class="mb-4">
+        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addCompanyModal">
+            + Add New Company
+        </button>
+    </div>
+
+    <!-- Add Company Modal -->
+    <div class="modal fade" id="addCompanyModal" tabindex="-1" aria-labelledby="addCompanyModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <form asp-action="CreateCompany" method="post" enctype="multipart/form-data">
+                    <div class="modal-header bg-primary text-white">
+                        <h5 class="modal-title" id="addCompanyModalLabel">Add New Company</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body row g-3">
+                        <!-- Add validation summary at the top -->
+                        <div class="col-12">
+                            <div asp-validation-summary="All" class="text-danger"></div>
+                        </div>
+
+                        @Html.AntiForgeryToken()
+                        <div class="col-md-6">
+                            <label class="form-label">Company Name *</label>
+                            <input name="Name" class="form-control" required />
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Country *</label>
+                            <input name="Country" class="form-control" required />
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">City *</label>
+                            <input name="City" class="form-control" required />
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Company Logo (Optional)</label>
+                            <input type="file" class="form-control" name="logoFile" />
+                        </div>
+
+                        <div class="col-12">
+                            <label class="form-label">Description</label>
+                            <textarea name="Description" class="form-control" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Add Company</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search and Filter Form -->
+    <form method="get" asp-action="Companies" class="row mb-4">
+        <div class="col-md-4 d-flex">
+            <input type="text" name="searchTerm" class="form-control me-2" placeholder="Search by Company Name..." value="@ViewData["SearchTerm"]" />
+        </div>
+        <div class="col-md-4 d-flex">
+            <select name="country" class="form-control me-2">
+                <option value="">All Countries</option>
+                @foreach (var country in (List<string>)ViewData["Countries"])
+                {
+                    <option value="@country" selected="@(ViewData["Country"] != null && ViewData["Country"].ToString() == country ? "selected" : null)">
+                        @country
+                    </option>
+                }
+            </select>
+        </div>
+        <div class="col-md-4 d-flex">
+            <button type="submit" class="btn btn-primary">Search</button>
+            <a asp-action="Companies" class="btn btn-secondary ms-2">Reset</a>
+        </div>
+    </form>
+
+    <!-- Companies Cards -->
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        @foreach (var company in Model)
+        {
+            <div class="col">
+                <div class="card shadow-sm border-light rounded">
+                    <div class="card-body">
+                        <!-- Company Logo -->
+                        <div class="text-center mb-3">
+                            <img src="@(string.IsNullOrEmpty(company.LogoPath) ? Url.Content("~/uploads/logos/default-logo.png") : Url.Content($"~/uploads/logos/{company.LogoPath}"))"
+                                 alt="Company Logo"
+                                 class="rounded-circle"
+                                 width="100"
+                                 height="100" />
+                        </div>
+                        <h5 class="card-title text-center">@company.Name</h5>
+                        <h6 class="card-subtitle mb-2 text-muted text-center">@company.Country, @company.City</h6>
+                        <p class="card-text">
+                            @company.Description.Substring(0, Math.Min(150, @company.Description.Length))
+                            @if (company.Description.Length > 150)
+                            {
+                                <text>...</text>
+                            }
+                        </p>
+
+                        <div class="d-flex justify-content-between">
+                            <a href="@Url.Action("EditCompany", "Admin", new { id = company.Id })" class="btn btn-sm btn-info">Edit</a>
+                            <form asp-action="DeleteCompany" method="post" asp-route-id="@company.Id" onsubmit="return confirm('Are you sure you want to delete this Company?');">
+                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    @if (ViewData["TotalPages"] != null && (int)ViewData["TotalPages"] > 1)
+    {
+        <nav aria-label="Page navigation" class="mt-4">
+            <ul class="pagination justify-content-center">
+                @for (int i = 1; i <= (int)ViewData["TotalPages"]; i++)
+                {
+                    <li class="page-item @(ViewData["CurrentPage"] != null && (int)ViewData["CurrentPage"] == i ? "active" : "")">
+                        <a class="page-link"
+                           asp-action="Companies"
+                           asp-route-page="@i"
+                           asp-route-searchTerm="@ViewData["SearchTerm"]"
+                           asp-route-country="@ViewData["Country"]">
+                            @i
+                        </a>
+                    </li>
+                }
+            </ul>
+        </nav>
+    }
+</div>
+
+@section Scripts {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            if ('@TempData["CompanyError"]' !== '') {
+                $('#addCompanyModal').modal('show');
+            }
+        });
+    </script>
+}
+
+<style>
+    <style >
+    /* Background Gradient for page */
+    body {
+        background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+        min-height: 100vh;
+    }
+
+    /* Main container */
+    .container {
+        background-color: rgba(255, 255, 255, 0.95);
+        border-radius: 16px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        padding: 2rem;
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    /* Page header */
+    h2 {
+        color: #2c3e50;
+        font-weight: 700;
+        position: relative;
+        padding-bottom: 1rem;
+        margin-bottom: 2rem;
+    }
+
+        h2:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, #3498db, #9b59b6);
+            border-radius: 2px;
+        }
+
+    /* Alert notifications */
+    .alert {
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        border: none;
+    }
+
+    /* Add Company Button */
+    .btn-success {
+        background: linear-gradient(135deg, #2ecc71, #27ae60);
+        border: none;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        padding: 0.5rem 1.5rem;
+        box-shadow: 0 4px 6px rgba(46, 204, 113, 0.3);
+        transition: all 0.3s ease;
+    }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(46, 204, 113, 0.4);
+        }
+
+    /* Modal styling */
+    .modal-content {
+        border-radius: 12px;
+        border: none;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    }
+
+    .modal-header {
+        border-radius: 12px 12px 0 0 !important;
+        background: linear-gradient(135deg, #3498db, #2980b9) !important;
+    }
+
+    /* Search and filter section */
+    .form-control {
+        border-radius: 8px;
+        padding: 0.5rem 1rem;
+        border: 1px solid #dfe6e9;
+        transition: all 0.3s;
+    }
+
+        .form-control:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.2);
+        }
+
+    /* Cards Design */
+    .card {
+        border: none;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        margin-bottom: 1.5rem;
+        background: white;
+    }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
+        }
+
+    .card-body {
+        padding: 1.5rem;
+    }
+
+    .card-title {
+        color: #2c3e50;
+        font-weight: 700;
+        margin-bottom: 0.75rem;
+    }
+
+    .card-subtitle {
+        color: #7f8c8d !important;
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+    }
+
+    .card-text {
+        color: #34495e;
+        font-size: 0.95rem;
+        line-height: 1.6;
+        margin-bottom: 1.5rem;
+    }
+
+    /* Company logo */
+    .card-body img {
+        object-fit: cover;
+        border-radius: 50%;
+        border: 3px solid white;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        margin-bottom: 1rem;
+    }
+
+    .card:hover img {
+        transform: scale(1.05);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Action buttons */
+    .btn-sm {
+        padding: 0.35rem 1rem;
+        border-radius: 8px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        transition: all 0.3s;
+        border: none;
+    }
+
+    .btn-info {
+        background: linear-gradient(135deg, #00cec9, #0984e3);
+        box-shadow: 0 4px 6px rgba(0, 206, 201, 0.3);
+    }
+
+        .btn-info:hover {
+            background: linear-gradient(135deg, #0984e3, #00cec9);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 206, 201, 0.4);
+        }
+
+    .btn-danger {
+        background: linear-gradient(135deg, #e74c3c, #c0392b);
+        box-shadow: 0 4px 6px rgba(231, 76, 60, 0.3);
+    }
+
+        .btn-danger:hover {
+            background: linear-gradient(135deg, #c0392b, #e74c3c);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(231, 76, 60, 0.4);
+        }
+
+    /* Pagination */
+    .pagination {
+        margin-top: 2rem;
+    }
+
+    .page-link {
+        border: none;
+        color: #7f8c8d;
+        font-weight: 600;
+        margin: 0 5px;
+        border-radius: 8px !important;
+        transition: all 0.3s;
+    }
+
+        .page-link:hover {
+            color: #3498db;
+            background-color: #f8f9fa;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+    .page-item.active .page-link {
+        background: linear-gradient(135deg, #3498db, #9b59b6);
+        border: none;
+        box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
+    }
+
+    @@keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Responsive adjustments */
+    @@media (max-width: 768px) {
+        .container {
+            padding: 1rem;
+            border-radius: 0;
+        }
+
+        .row-cols-md-2 > * {
+            flex: 0 0 auto;
+            width: 100%;
+        }
+    }
+</style>
+

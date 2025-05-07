@@ -11,54 +11,123 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
+    <style>
+        /* Background gradient for page */
+        body {
+            background: linear-gradient(to right, #f0f8ff, #e6e6ff);
+            font-family: 'Arial', sans-serif;
+        }
+
+        /* Card styles for filter form */
+        .filter-card {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        /* Table row hover effect */
+        .table tbody tr:hover {
+            background-color: #f1f1f1;
+            cursor: pointer;
+        }
+
+        /* Table header style */
+        .table thead {
+            background-color: #343a40;
+            color: white;
+        }
+
+        .pagination {
+            margin-top: 30px;
+        }
+
+            /* Pagination styling */
+            .pagination .page-link {
+                color: #0d6efd;
+                font-weight: bold;
+            }
+
+            .pagination .page-item.active .page-link {
+                background-color: #0d6efd;
+                border-color: #0d6efd;
+                color: white;
+            }
+
+        /* Button hover effects */
+        .btn-primary:hover, .btn-secondary:hover {
+            background-color: #0056b3;
+            border-color: #004085;
+        }
+
+        .btn-sm:hover {
+            background-color: #c82333;
+            border-color: #bd2130;
+        }
+
+        /* Custom style for the alert */
+        .alert {
+            font-weight: bold;
+        }
+
+        /* Adjusted heading spacing */
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 25px;
+        }
+    </style>
 </head>
 <body>
 
-    <!-- Main Content -->
-    <div class="content">
-        <h2 class="mb-4">Jobs</h2>
+    <div class="container mt-4">
+        <!-- Title -->
+        <h2 class="text-center">View Jobs</h2>
+
+        <!-- Error Message -->
         @if (TempData["JobError"] != null)
         {
             <div class="alert alert-danger text-center mt-3">
                 @TempData["JobError"]
             </div>
         }
-        <form method="get" asp-action="ViewJobs" class="row mb-4">
-            <div class="col-md-4">
-                <select name="companyId" class="form-select">
-                    <option value="">-- Filter by Company --</option>
-                    @foreach (var company in ViewBag.Companies)
-                    {
-                        <option value="@company.Id" selected="@(ViewBag.SelectedCompany != null && ViewBag.SelectedCompany == company.Id ? "selected" : null)">
-                            @company.Name
-                        </option>
 
-                    }
-                </select>
-            </div>
-            <div class="col-md-4">
-                <select name="categoryId" class="form-select">
-                    <option value="">-- Filter by Category --</option>
-                    @foreach (var category in ViewBag.Categories)
-                    {
-                        <option value="@category.Id" selected="@(ViewBag.SelectedCategory != null && ViewBag.SelectedCategory == category.Id ? "selected" : null)">
-                            @category.Name
-                        </option>
+        <!-- Filter Form -->
+        <div class="filter-card">
+            <form method="get" asp-action="ViewJobs" class="row mb-4">
+                <div class="col-md-4">
+                    <select name="companyId" class="form-select">
+                        <option value="">-- Filter by Company --</option>
+                        @foreach (var company in ViewBag.Companies)
+                        {
+                            <option value="@company.Id" selected="@(ViewBag.SelectedCompany != null && ViewBag.SelectedCompany == company.Id ? "selected" : null)">
+                                @company.Name
+                            </option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <select name="categoryId" class="form-select">
+                        <option value="">-- Filter by Category --</option>
+                        @foreach (var category in ViewBag.Categories)
+                        {
+                            <option value="@category.Id" selected="@(ViewBag.SelectedCategory != null && ViewBag.SelectedCategory == category.Id ? "selected" : null)">
+                                @category.Name
+                            </option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-4 d-flex gap-2">
+                    <button type="submit" class="btn btn-primary">Filter</button>
+                    <a asp-action="ViewJobs" class="btn btn-secondary">Reset</a>
+                </div>
+            </form>
+        </div>
 
-                    }
-                </select>
-            </div>
-            <div class="col-md-4 d-flex gap-2">
-                <button type="submit" class="btn btn-primary">Filter</button>
-                <a asp-action="ViewJobs" class="btn btn-secondary">Reset</a>
-            </div>
-        </form>
-
-
+        <!-- Jobs Table -->
         <div class="table-responsive">
             <table class="table table-bordered table-striped table-hover align-middle">
-                <thead class="table-dark">
+                <thead>
                     <tr>
                         <th>ID</th>
                         <th>Title</th>
@@ -106,6 +175,8 @@
                 </tbody>
             </table>
         </div>
+
+        <!-- Pagination -->
         @if (true)
         {
             <nav aria-label="Job pagination" class="mt-4">
@@ -125,7 +196,6 @@
                 </ul>
             </nav>
         }
-
     </div>
 
     <!-- Bootstrap JS -->

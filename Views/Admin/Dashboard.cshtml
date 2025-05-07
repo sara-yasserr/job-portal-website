@@ -6,136 +6,362 @@
 }
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+    :root {
+        --primary-color: #4361ee;
+        --secondary-color: #3f37c9;
+        --accent-color: #4895ef;
+        --success-color: #4cc9f0;
+        --warning-color: #f8961e;
+        --danger-color: #f94144;
+        --test-color: #a1b2c4;
+        --light-color: #f8f9fa;
+        --dark-color: #212529;
+        --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        --transition: all 0.3s ease;
+    }
+
+    body {
+        font-family: 'Poppins', sans-serif;
+        background-color: #c0cbd6;
+    }
+
+    .dashboard-header {
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .stat-card {
+        border: none;
+        border-radius: 12px;
+        overflow: hidden;
+        transition: var(--transition);
+        box-shadow: var(--card-shadow);
+        height: 100%;
+        position: relative;
+        overflow: hidden;
+        z-index: 1;
+    }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%);
+            z-index: -1;
+        }
+
+        .stat-card i {
+            font-size: 2.5rem;
+            opacity: 0.8;
+        }
+
+        .stat-card h6 {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            opacity: 0.9;
+        }
+
+        .stat-card h4 {
+            font-weight: 600;
+            margin-bottom: 0;
+        }
+
+    .bg-primary {
+        background-color: var(--primary-color) !important;
+    }
+
+    .bg-secondary {
+        background-color: var(--secondary-color) !important;
+    }
+
+    .bg-success {
+        background-color: var(--success-color) !important;
+    }
+
+    .bg-warning {
+        background-color: var(--warning-color) !important;
+    }
+
+    .bg-danger {
+        background-color: var(--danger-color) !important;
+    }
+
+    .bg-info {
+        background: linear-gradient(135deg, #4895ef 0%, #4361ee 100%);
+    }
+
+    .bg-dark {
+        background: linear-gradient(135deg, #212529 0%, #343a40 100%);
+    }
+
+    .bg-light {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    }
+
+    .section-title {
+        font-weight: 600;
+        margin: 2rem 0 1.5rem;
+        position: relative;
+        padding-bottom: 0.5rem;
+        color: var(--dark-color);
+    }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--accent-color);
+            border-radius: 3px;
+        }
+
+    .company-carousel {
+        background: white;
+        border-radius: 12px;
+        padding: 2rem;
+        box-shadow: var(--card-shadow);
+        margin-bottom: 3rem;
+    }
+
+    .carousel-item {
+        padding: 1rem;
+    }
+
+        .carousel-item img {
+            height: 80px;
+            width: auto;
+            object-fit: contain;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+            transition: var(--transition);
+        }
+
+            .carousel-item img:hover {
+                transform: scale(1.05);
+            }
+
+    .carousel-indicators.custom-indicators {
+        position: static;
+        margin: 1.5rem 0 0;
+        justify-content: center;
+    }
+
+        .carousel-indicators.custom-indicators button {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #dee2e6;
+            border: none;
+            margin: 0 5px;
+            transition: var(--transition);
+        }
+
+            .carousel-indicators.custom-indicators button.active {
+                background-color: var(--accent-color);
+                width: 30px;
+                border-radius: 5px;
+            }
+
+    .carousel-control-prev,
+    .carousel-control-next {
+        width: 5%;
+        color: var(--dark-color);
+        opacity: 1;
+    }
+
+        .carousel-control-prev:hover,
+        .carousel-control-next:hover {
+            color: var(--accent-color);
+        }
+
+    .carousel-control-prev-icon,
+    .carousel-control-next-icon {
+        filter: none;
+        background-size: 100% 100%;
+        width: 2rem;
+        height: 2rem;
+    }
+
+    .card-hover-effect:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .most-active-card {
+        background: linear-gradient(135deg, #7209b7 0%, #560bad 100%);
+        color: white;
+    }
+
+        .most-active-card h5 {
+            font-weight: 500;
+        }
+
+        .most-active-card h6 {
+            font-weight: 400;
+            opacity: 0.9;
+        }
+</style>
 
 <div class="container-fluid py-4">
-    <h2 class="mb-4">Overview</h2>
+    
+
     <div class="row g-4">
-
-        <!-- Total Users -->
-        <div class="col-md-3">
-            <div class="card bg-primary text-white shadow p-3 rounded-4 d-flex flex-row align-items-center">
-                <i class="fas fa-users fa-2x me-3"></i>
-                <div>
-                    <h6>Total Users</h6>
-                    <h4>@Model.TotalUsers</h4>
+        <!-- User Statistics -->
+        <div class="col-md-4">
+            <div class="stat-card bg-primary text-white p-4">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-users me-3"></i>
+                    <div>
+                        <h6>Total Users</h6>
+                        <h4>@Model.TotalUsers</h4>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Total Employers -->
-        <div class="col-md-3">
-            <div class="card bg-info text-white shadow p-3 rounded-4 d-flex flex-row align-items-center">
-                <i class="fas fa-building fa-2x me-3"></i>
-                <div>
-                    <h6>Total Employers</h6>
-                    <h4>@Model.TotalEmployers</h4>
+        <div class="col-md-4">
+            <div class="stat-card bg-info text-white p-4">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-building me-3"></i>
+                    <div>
+                        <h6>Total Employers</h6>
+                        <h4>@Model.TotalEmployers</h4>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Total Applicants -->
-        <div class="col-md-3">
-            <div class="card bg-warning text-dark shadow p-3 rounded-4 d-flex flex-row align-items-center">
-                <i class="fas fa-user-graduate fa-2x me-3"></i>
-                <div>
-                    <h6>Job Seekers</h6>
-                    <h4>@Model.TotalApplicants</h4>
+        <div class="col-md-4">
+            <div class="stat-card bg-warning text-white p-4">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-user-graduate me-3"></i>
+                    <div>
+                        <h6>Job Seekers</h6>
+                        <h4>@Model.TotalApplicants</h4>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Total Jobs -->
+        <!-- Job Statistics -->
         <div class="col-md-3">
-            <div class="card bg-success text-white shadow p-3 rounded-4 d-flex flex-row align-items-center">
-                <i class="fas fa-briefcase fa-2x me-3"></i>
-                <div>
-                    <h6>Total Jobs</h6>
-                    <h4>@Model.TotalJobs</h4>
+            <div class="stat-card bg-success text-white p-4">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-briefcase me-3"></i>
+                    <div>
+                        <h6>Total Jobs</h6>
+                        <h4>@Model.TotalJobs</h4>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Active Jobs -->
         <div class="col-md-3">
-            <div class="card bg-success text-white shadow p-3 rounded-4 d-flex flex-row align-items-center">
-                <i class="fas fa-toggle-on fa-2x me-3"></i>
-                <div>
-                    <h6>Active Jobs</h6>
-                    <h4>@Model.TotalActiveJobs</h4>
+            <div class="stat-card bg-success text-white p-4" style="background: linear-gradient(135deg, #38b000 0%, #70e000 100%)">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-toggle-on me-3"></i>
+                    <div>
+                        <h6>Active Jobs</h6>
+                        <h4>@Model.TotalActiveJobs</h4>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Inactive Jobs -->
         <div class="col-md-3">
-            <div class="card bg-danger text-white shadow p-3 rounded-4 d-flex flex-row align-items-center">
-                <i class="fas fa-toggle-off fa-2x me-3"></i>
-                <div>
-                    <h6>Inactive Jobs</h6>
-                    <h4>@Model.TotalInactiveJobs</h4>
+            <div class="stat-card bg-danger text-white p-4">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-toggle-off me-3"></i>
+                    <div>
+                        <h6>Inactive Jobs</h6>
+                        <h4>@Model.TotalInactiveJobs</h4>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Total Applications -->
         <div class="col-md-3">
-            <div class="card bg-dark text-white shadow p-3 rounded-4 d-flex flex-row align-items-center">
-                <i class="fas fa-file-alt fa-2x me-3"></i>
-                <div>
-                    <h6>Job Applications</h6>
-                    <h4>@Model.TotalApplications</h4>
+            <div class="stat-card bg-dark text-white p-4">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-file-alt me-3"></i>
+                    <div>
+                        <h6>Applications</h6>
+                        <h4>@Model.TotalApplications</h4>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Total Companies -->
-        <div class="col-md-3">
-            <div class="card bg-secondary text-white shadow p-3 rounded-4 d-flex flex-row align-items-center">
-                <i class="fas fa-industry fa-2x me-3"></i>
-                <div>
-                    <h6>Companies</h6>
-                    <h4>@Model.TotalCompanies</h4>
+        <!-- Other Statistics -->
+        <div class="col-md-4">
+            <div class="stat-card bg-secondary text-white p-4">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-industry me-3"></i>
+                    <div>
+                        <h6>Companies</h6>
+                        <h4>@Model.TotalCompanies</h4>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Total Categories -->
-        <div class="col-md-3">
-            <div class="card bg-light text-dark shadow p-3 rounded-4 d-flex flex-row align-items-center">
-                <i class="fas fa-layer-group fa-2x me-3"></i>
-                <div>
-                    <h6>Categories</h6>
-                    <h4>@Model.TotalCategories</h4>
+        <div class="col-md-4">
+            <div class="stat-card bg-dark text-light p-4">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-layer-group me-3"></i>
+                    <div>
+                        <h6>Categories</h6>
+                        <h4>@Model.TotalCategories</h4>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card bg-info text-white shadow p-3">
-                <h5>Most Active Category</h5>
-                <h6>@Model.MostActiveCategoryName @Model.MostActiveCategoryJobCount Jobs</h6>
+
+        <div class="col-md-4">
+            <div class="stat-card most-active-card p-4">
+                <div class="d-flex flex-column">
+                    <h5>Most Active Category</h5>
+                    <h6 class="mt-2">
+                        <span class="badge bg-white text-dark me-2">@Model.MostActiveCategoryName</span>
+                        <span>@Model.MostActiveCategoryJobCount Jobs</span>
+                    </h6>
+                </div>
             </div>
         </div>
-        <h4 class="mt-5">Top Companies</h4>
+    </div>
 
+    <!-- Top Companies Section -->
+    <h4 class="section-title">Top Companies</h4>
+    <div class="company-carousel">
         <div id="companyCarousel" class="carousel slide" data-bs-ride="carousel">
-            <!-- Carousel Items -->
             <div class="carousel-inner">
                 @for (int i = 0; i < Model.TopCompaniesByJobs.Count; i++)
                 {
                     var company = Model.TopCompaniesByJobs[i];
                     <div class="carousel-item @(i == 0 ? "active" : "") text-center">
                         <img src="@Url.Content("~/uploads/logos/" + (company.LogoPath ?? "no-logo.png"))"
-                             class="d-block mx-auto"
-                             style="height:100px;"
+                             class="d-block mx-auto mb-3"
                              alt="@company.CompanyName Logo">
-                        <h5 class="mt-3">@company.CompanyName</h5>
-                        <p>@company.JobCount Jobs</p>
+                        <h5 class="fw-semibold">@company.CompanyName</h5>
+                        <p class="text-muted">@company.JobCount Jobs Posted</p>
                     </div>
                 }
             </div>
 
-            <!-- Indicators (moved below images) -->
-            <div class="carousel-indicators custom-indicators mt-3">
+            <div class="carousel-indicators custom-indicators">
                 @for (int i = 0; i < Model.TopCompaniesByJobs.Count; i++)
                 {
                     <button type="button"
@@ -147,38 +373,32 @@
                 }
             </div>
 
-            <!-- Controls -->
             <button class="carousel-control-prev" type="button" data-bs-target="#companyCarousel" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon"></span>
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
             </button>
             <button class="carousel-control-next" type="button" data-bs-target="#companyCarousel" data-bs-slide="next">
-                <span class="carousel-control-next-icon"></span>
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
             </button>
         </div>
-
-        <!-- Custom CSS -->
-        <style>
-            .carousel-indicators.custom-indicators {
-                position: static;
-                margin-top: 10px;
-            }
-
-                .carousel-indicators.custom-indicators button {
-                    width: 12px;
-                    height: 12px;
-                    border-radius: 50%;
-                    background-color: #ccc;
-                    border: none;
-                    margin: 0 4px;
-                    transition: background-color 0.3s;
-                }
-
-                .carousel-indicators.custom-indicators .active {
-                    background-color: #0d6efd; /* Bootstrap primary */
-                }
-        </style>
-
-
-
     </div>
 </div>
+
+<script>
+    // Add animation to cards on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        const cards = document.querySelectorAll('.stat-card');
+        cards.forEach((card, index) => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            card.style.transitionDelay = `${index * 0.1}s`;
+
+            setTimeout(() => {
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, 100);
+        });
+    });
+</script>
