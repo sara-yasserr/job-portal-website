@@ -48,7 +48,7 @@ namespace Job_Portal_Project.Controllers
             ViewData["searchQuery"] = searchQuery;
 
             //--pagination--//
-            int pageSize = 5;
+            int pageSize = 10;
             int totalJobApp = UserJobApplications.Count();
             int NoPages = (int)(Math.Ceiling((double)totalJobApp / pageSize));
             UserJobApplications = UserJobApplications.Skip((page - 1) * pageSize).Take(pageSize).ToList();
@@ -64,6 +64,10 @@ namespace Job_Portal_Project.Controllers
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var user = await userManager.FindByIdAsync(userId);
             var job = jobRepo.GetById(jobId);
+            if (job.IsActive == false)
+            {
+                return NotFound();
+            }
             var jobApp = jobAppRepo.GetByJobIdAndApplicantId(jobId,userId);
             var jobAppVM = new JobApplicationViewModel
             {
@@ -125,7 +129,7 @@ namespace Job_Portal_Project.Controllers
 
         #region Edit
         public async Task<IActionResult> Edit(int jobId)
-        {
+        {    
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var user = await userManager.FindByIdAsync(userId);
             var job = jobRepo.GetById(jobId);
@@ -180,7 +184,7 @@ namespace Job_Portal_Project.Controllers
         {
             if (resumeFile != null && resumeFile.Length > 0)
             {
-                string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Uploads");
+                string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Uploads/resumes");
                 string uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(resumeFile.FileName);
                 string filePath = Path.Combine(uploadsFolder, uniqueFileName);
 
@@ -189,7 +193,7 @@ namespace Job_Portal_Project.Controllers
                     await resumeFile.CopyToAsync(stream);
                 }
 
-                return "/Uploads/" + uniqueFileName;
+                return "/Uploads/resumes/" + uniqueFileName;
             }
 
             return null;

@@ -1,4 +1,4 @@
-using Job_Portal_Project.Controllers.Profile;
+﻿using Job_Portal_Project.Controllers.Profile;
 //using Job_Portal_Project.Data;
 using System.Security.Claims;
 using Job_Portal_Project.Models;
@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authentication.OAuth;
 
 namespace Job_Portal_Project
 {
@@ -23,38 +25,55 @@ namespace Job_Portal_Project
 
             //Add services to the container.
 
-            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(options =>
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+            })
+.AddCookie(options =>
+{
+    options.LoginPath = "/Account/Login";
+    options.AccessDeniedPath = "/Account/AccessDenied";
+    options.SlidingExpiration = true;
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+    options.Cookie.SameSite = SameSiteMode.Lax;
+    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+})
+.AddGoogle(options =>
+{
+    options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+    options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+    options.Scope.Add("email");
+    options.Scope.Add("profile");
+    options.SaveTokens = true;
+
+    options.Events = new OAuthEvents
+    {
+        OnRedirectToAuthorizationEndpoint = context =>
+        {
+            // حفظ returnUrl في حالة التوجيه
+            context.Properties.SetString("returnUrl", context.Request.Query["returnUrl"]);
+            context.Response.Redirect(context.RedirectUri);
+            return Task.CompletedTask;
+        },
+        OnCreatingTicket = async ctx =>
+        {
+            var email = ctx.Identity.FindFirst(ClaimTypes.Email)?.Value;
+            if (!string.IsNullOrEmpty(email))
+            {
+                var claims = new List<Claim>
                 {
-                    options.LoginPath = "/Account/Login";
-                });
-               //.AddGoogle(options =>
-               //{
-               //    options.ClientId = "";
-               //    options.ClientSecret = "";
-               //    options.Scope.Add("email");
-               //    options.Scope.Add("profile");
-               //    options.SaveTokens = true;
+                    new Claim(ClaimTypes.Email, email),
+                    new Claim(ClaimTypes.NameIdentifier, ctx.Identity.FindFirst(ClaimTypes.NameIdentifier)?.Value)
+                };
 
-               //    options.Events.OnCreatingTicket = ctx =>
-               //    {
-               //        var email = ctx.User.GetProperty("email").GetString();
+                var identity = new ClaimsIdentity(claims, "Google");
+                ctx.Principal.AddIdentity(identity);
+            }
+        }
+    };
+});
 
-               //        if (!string.IsNullOrEmpty(email))
-               //        {
-               //            var claims = new List<Claim>
-               //            {
-               //               new Claim(ClaimTypes.Email, email)
-               //            };
-
-               //            var identity = new ClaimsIdentity(claims, "Google");
-               //            var principal = new ClaimsPrincipal(identity);
-               //            ctx.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
-               //        }
-
-               //        return Task.CompletedTask;
-               //    };
-               //});
 
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
             // service used insted of  method of on configuration to allow injecting the dbcontext in the repositories without using the service provider
@@ -66,7 +85,11 @@ namespace Job_Portal_Project
           
             builder.Services.AddRazorPages();
             builder.Services.AddSession();
-
+            builder.Services.AddHttpsRedirection(options =>
+            {
+                options.RedirectStatusCode = StatusCodes.Status307TemporaryRedirect;
+                options.HttpsPort = 443;
+            });
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {
                 options.User.RequireUniqueEmail = true;

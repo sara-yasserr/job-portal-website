@@ -15,7 +15,7 @@ namespace Job_Portal_Project.ViewModels
         [ValidateNever]
         public virtual Job job { get; set; }
         [ValidateNever]
-        public virtual ApplicationUser Applicant {  get; set; }
+        public virtual ApplicationUser? Applicant {  get; set; }
         [Required(ErrorMessage = "You must accept the terms to continue.")]
         public bool Consent { get; set; }
     }

@@ -19,95 +19,117 @@
         }
         <div class="row justify-content-center">
             <div class="col-lg-9 col-md-12 col-xs-12">
-                <div class="post-job box">
-                    <!-- Company Info Section -->
-                    <div class="company-info text-center">
-                        <img src="/Uploads/Logos/@Model?.job.Company.LogoPath" alt="Company Logo" style="max-height:200px; max-width:200px;">
-                        <h4 class="job-title mt-2">Job Application For <a asp-action="" asp-controller="">@Model?.job.Company.Name</a></h4>
-                    </div>
-
-                    <!-- Job Title Section -->
-                    <div class="job-title-section mt-3">
-                        <h4>@Model?.job.Title Needed</h4>
-                    </div>
-
-                    <!-- Job Details Section -->
-                    <div class="job-details mt-4">
-                        <div class="job-requirements-title mb-3">
-                            <strong>Job Requirements</strong>
+                <div class="application-card">
+                    <!-- Header with Company Info -->
+                    <div class="application-header">
+                        <div class="company-logo-container">
+                            <img src="/Uploads/Logos/@Model?.job.Company.LogoPath" alt="@Model?.job.Company.Name" class="company-logo">
                         </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="requirement-item">
-                                    <strong>Experience Level:</strong>
-                                    <span>@Model?.job.ExperienceLevel years</span>
+                        <div class="application-title">
+                            <h3><span class="job-name" style="color:#24324A;">@Model?.job.Title</span></h3>
+                            <p class="company-name">@Model?.job.Company.Name</p>
+                        </div>
+                    </div>
+
+                    <!-- Job Details Card -->
+                    <div class="job-details-card">
+                        <div class="details-header">
+                            <h4><i class="fas fa-info-circle"></i> Position Details</h4>
+                        </div>
+                        <div class="details-body">
+                            <div class="row">
+                                <div class="col-md-6 detail-item">
+                                    <i class="fas fa-briefcase"></i>
+                                    <div>
+                                        <span class="detail-label">Employment Type</span>
+                                        <span class="detail-value">@Model?.job.EmploymentType</span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="requirement-item">
-                                    <strong>Location:</strong>
-                                    <span>@Model?.job.City</span>
+                                <div class="col-md-6 detail-item">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <div>
+                                        <span class="detail-label">Location</span>
+                                        <span class="detail-value">@Model?.job.City</span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="requirement-item">
-                                    <strong>Employment Type:</strong>
-                                    <span>@Model?.job.EmploymentType</span>
+                                <div class="col-md-6 detail-item">
+                                    <i class="fas fa-user-tie"></i>
+                                    <div>
+                                        <span class="detail-label">Experience Level</span>
+                                        <span class="detail-value">@Model?.job.ExperienceLevel years</span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="requirement-item">
-                                    <strong>Work Mode:</strong>
-                                    <span>@Model?.job.WorkMode</span>
+                                <div class="col-md-6 detail-item">
+                                    <i class="fas fa-laptop-house"></i>
+                                    <div>
+                                        <span class="detail-label">Work Mode</span>
+                                        <span class="detail-value">@Model?.job.WorkMode</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <!-- Application Form -->
-                    <form asp-action="SaveEdit" method="post" enctype="multipart/form-data">
-                        <div asp-validation-summary="All" class="text-danger" style="display:none;"></div>
-                        <input type="hidden" asp-for="JobId" class="form-control" />
-                        <input type="hidden" asp-for="ApplicantId" class="form-control" />
+                    <form asp-action="SaveEdit" method="post" enctype="multipart/form-data" class="application-form">
+                        <input type="hidden" asp-for="JobId" />
+                        <input type="hidden" asp-for="ApplicantId" />
                         <input type="hidden" asp-for="job.Id" value="@Model?.job.Id" />
                         <input type="hidden" asp-for="Applicant.Id" value="@Model?.Applicant.Id" />
                         <input type="hidden" asp-for="ApplicationDate" />
+
                         <!-- Current CV Section -->
                         @if (!string.IsNullOrEmpty(Model?.ResumePath))
                         {
-                            <div class="mt-3">
-                                <button  class="btn btn-common log-btn">
-                                    <i class="fas fa-eye"></i> <a class="currentCV" href="@Model.ResumePath" target="_blank"> View Current CV</a>
-                                        </button>
+                            <div class="current-cv-section">
+                                <h5 class="subheading"><i class="fas fa-file-alt"></i> Your Current CV</h5>
+                                <a href="@Model?.ResumePath" target="_blank" class="current-cv-link">
+                                    <i class="fas fa-eye"></i> View Current CV
+                                </a>
                             </div>
                         }
-                        <!-- Upload New CV Section -->
-                        <div class="form-group mt-3">
-                            <label asp-for="ResumeFile" class="form-label d-block">Want to upload another CV?</label>
-                            <div class="cv-upload-box" onclick="document.getElementById('cvInput').click()">
-                                <i class="fas fa-file-upload fa-2x mb-2 text-primary"></i>
-                                <div>Click to upload another CV (PDF, DOC, DOCX)</div>
-                                <div class="file-name-preview" id="fileNamePreview">
+
+                        <!-- CV Upload Section -->
+                        <div class="form-section">
+                            <h5 class="subheading"><i class="fas fa-cloud-upload-alt"></i> Upload New CV </h5>
+                            <div class="upload-container">
+                                <div class="upload-box" id="uploadBox" onclick="document.getElementById('cvInput').click()">
+                                    <div class="upload-icon">
+                                        <i class="fas fa-file-upload"></i>
+                                    </div>
+                                    <div class="upload-text">
+                                        <p>Drag & drop your CV here or click to browse</p>
+                                        <p class="file-types">Supported formats: PDF, DOC, DOCX</p>
+                                    </div>
+                                    <input asp-for="ResumeFile" type="file" id="cvInput" accept=".pdf,.doc,.docx" class="d-none" onchange="previewFileName()" />
+                                </div>
+                                <div class="file-preview" id="fileNamePreview">
                                     @(string.IsNullOrEmpty(Model?.ResumePath) ? "No file selected" : System.IO.Path.GetFileName(Model.ResumePath))
                                 </div>
+                                <span asp-validation-for="ResumePath" class="text-danger"></span>
+
                             </div>
-                            <input asp-for="ResumeFile" type="file" id="cvInput" accept=".pdf,.doc,.docx" class="d-none" onchange="previewFileName()" />
                             <input type="hidden" asp-for="ResumePath" />
-                            <span asp-validation-for="ResumeFile" class="text-danger"></span>
                         </div>
 
                         <!-- Consent Section -->
-                        <div class="form-group form-check mt-3">
-                            <label class="form-check-label">
-                                <input type="checkbox" class="form-check-input" asp-for="Consent" required />
-                                I confirm that all information provided is accurate and I accept the terms.
-                                <span asp-validation-for="Consent" class="text-danger"></span>
-                            </label>
+                        <div class="consent-section">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" asp-for="Consent" id="consentCheck" required>
+                                <label class="form-check-label" for="consentCheck">
+                                    I certify that the information provided in this application is true and complete.
+                                    I understand that any false or misleading information may result in rejection of
+                                    my application or termination of employment if hired.
+                                </label>
+                            </div>
+                            <span asp-validation-for="Consent" class="text-danger"></span>
                         </div>
 
                         <!-- Submit Button -->
-                        <div class="form-group text-center mt-4">
-                            <button type="submit" value="Create" class="btn btn-common log-btn">Submit</button>
+                        <div class="submit-section">
+                            <button type="submit" class="btn btn-primary submit-btn">
+                                <i class="fas fa-paper-plane"></i> Submit Application
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -116,66 +138,346 @@
     </div>
 </section>
 
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
 
 <style>
-    .cv-upload-box {
-        border: 2px dashed #00BCD4;
-        border-radius: 10px;
-        padding: 20px;
-        text-align: center;
-        cursor: pointer;
-        background-color: #f8f9fa;
-        transition: 0.3s;
+    /* Main Application Styles */
+    .job-application-section {
+        padding: 40px 0;
     }
 
-        .cv-upload-box:hover {
-            background-color: #e9ecef;
-        }
-
-    .file-name-preview {
-        font-size: 0.9rem;
-        color: #6c757d;
-        margin-top: 10px;
+    .application-card {
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        padding: 30px;
+        margin-bottom: 30px;
     }
 
-    .log-btn{
-        color:white
-    }
-
-        .log-btn:hover {
-        color:#00BCD4 !important;
-    }
-
-    .currentCV {
-        color: white
-    }
-
-    .cv-view-box {
+    /* Header Styles */
+    .application-header {
         display: flex;
         align-items: center;
-        border: 1px solid #ccc;
-        padding: 15px;
-        border-radius: 8px;
-        background-color: #f8f9fa;
-        margin-top: 20px;
+        margin-bottom: 30px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid #eee;
     }
 
+    .company-logo-container {
+        width: 100px;
+        height: 100px;
+        border-radius: 8px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f8f9fa;
+        border: 1px solid #eee;
+        margin-right: 25px;
+    }
 
+    .company-logo {
+        max-width: 90%;
+        max-height: 90%;
+        object-fit: contain;
+    }
+
+    .application-title {
+        flex: 1;
+    }
+
+        .application-title h3 {
+            color: #2d3748;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+    .job-name {
+        color: #00bcd4;
+    }
+
+    .company-name {
+        color: #718096;
+        font-size: 1.1rem;
+    }
+
+    /* Job Details Card */
+    .job-details-card {
+        background: #f8fafc;
+        border-radius: 10px;
+        margin-bottom: 30px;
+        border: 1px solid #e2e8f0;
+    }
+
+    .details-header {
+        padding: 15px 20px;
+        border-bottom: 1px solid #e2e8f0;
+        background: #f1f5f9;
+        border-radius: 10px 10px 0 0;
+    }
+
+        .details-header h4 {
+            margin: 0;
+            color: #2d3748;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .details-header i {
+            color: #00bcd4;
+            margin-right: 10px;
+        }
+
+    .details-body {
+        padding: 20px;
+    }
+
+    .detail-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+
+        .detail-item i {
+            font-size: 1.2rem;
+            color: #00bcd4;
+            width: 30px;
+            text-align: center;
+            margin-right: 15px;
+        }
+
+    .detail-label {
+        display: block;
+        font-size: 0.85rem;
+        color: #718096;
+        margin-bottom: 3px;
+    }
+
+    .detail-value {
+        display: block;
+        color: #2d3748;
+        font-weight: 500;
+    }
+
+    /* Form Sections */
+    .form-section {
+        margin-bottom: 25px;
+    }
+
+        .form-section h5 {
+            color: #2d3748;
+            margin-bottom: 15px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+        }
+
+            .form-section h5 i {
+                margin-right: 10px;
+                color: #00bcd4;
+            }
+
+    /* Upload Section */
+    .upload-container {
+        margin-top: 15px;
+    }
+
+    .upload-box {
+        border: 2px dashed #cbd5e0;
+        border-radius: 8px;
+        padding: 30px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        background: #f8fafc;
+    }
+
+        .upload-box:hover {
+            border-color: #00bcd4;
+            background: #f0f9ff;
+        }
+
+    .upload-icon {
+        font-size: 2.5rem;
+        color: #00bcd4;
+        margin-bottom: 15px;
+    }
+
+    .upload-text p {
+        margin: 0;
+        color: #4a5568;
+    }
+
+    .file-types {
+        font-size: 0.85rem;
+        color: #718096;
+        margin-top: 5px;
+    }
+
+    .file-preview {
+        margin-top: 10px;
+        font-size: 0.9rem;
+        color: #4a5568;
+        padding: 8px 12px;
+        background: #edf2f7;
+        border-radius: 5px;
+        display: inline-block;
+    }
+
+    /* Current CV Section */
+    .current-cv-section {
+        margin-bottom: 25px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid #eee;
+    }
+
+        .current-cv-section h5 {
+            color: #2d3748;
+            margin-bottom: 15px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+        }
+
+            .current-cv-section h5 i {
+                margin-right: 10px;
+                color: #00bcd4;
+            }
+
+    .current-cv-link {
+        display: inline-flex;
+        align-items: center;
+        padding: 8px 15px;
+        background: #00bcd4;
+        color: white !important;
+        border-radius: 6px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+        .current-cv-link i {
+            margin-right: 8px;
+        }
+
+        .current-cv-link:hover {
+            background: #008fa1;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 188, 212, 0.2);
+            color: white !important;
+        }
+
+    /* Consent Section */
+    .consent-section {
+        background: #f8fafc;
+        padding: 20px;
+        border-radius: 8px;
+        margin: 30px 0;
+        border: 1px solid #e2e8f0;
+    }
+
+        .consent-section .form-check-label {
+            color: #4a5568;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .consent-section .form-check-input {
+            margin-top: 0.25rem;
+        }
+
+    /* Submit Button */
+    .submit-section {
+        text-align: center;
+        margin-top: 30px;
+    }
+
+    .submit-btn {
+        padding: 12px 30px;
+        font-size: 1rem;
+        font-weight: 500;
+        border-radius: 8px;
+        background: #00bcd4;
+        border: none;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .submit-btn i {
+            margin-right: 10px;
+        }
+
+        .submit-btn:hover {
+            background: #008fa1;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 188, 212, 0.3);
+            color: white !important;
+        }
+
+    /* Validation Styles */
+    .validation-summary {
+        padding: 15px;
+        background: #fff5f5;
+        border-radius: 8px;
+        margin-bottom: 25px;
+        border-left: 4px solid #f56565;
+    }
+
+    .field-validation-error {
+        font-size: 0.85rem;
+        color: #f56565;
+        margin-top: 5px;
+        display: block;
+    }
+
+    .subheading {
+        font-size: 1.3rem;
+        font-weight: 500;
+        color: #4a5568;
+    }
 </style>
 
 <script>
     function previewFileName() {
         const input = document.getElementById('cvInput');
         const preview = document.getElementById('fileNamePreview');
+        const uploadBox = document.getElementById('uploadBox');
+
         if (input.files.length > 0) {
             preview.textContent = input.files[0].name;
+            uploadBox.style.borderColor = "#00bcd4";
+            uploadBox.style.backgroundColor = "#f0f9ff";
         } else {
             preview.textContent = "No file selected";
+            uploadBox.style.borderColor = "#cbd5e0";
+            uploadBox.style.backgroundColor = "#f8fafc";
         }
     }
-</script>
 
+    // Drag and drop functionality
+    const uploadBox = document.getElementById('uploadBox');
+    const fileInput = document.getElementById('cvInput');
+
+    uploadBox.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        uploadBox.style.borderColor = "#00bcd4";
+        uploadBox.style.backgroundColor = "#f0f9ff";
+    });
+
+    uploadBox.addEventListener('dragleave', () => {
+        uploadBox.style.borderColor = "#cbd5e0";
+        uploadBox.style.backgroundColor = "#f8fafc";
+    });
+
+    uploadBox.addEventListener('drop', (e) => {
+        e.preventDefault();
+        fileInput.files = e.dataTransfer.files;
+        previewFileName();
+    });
+
+</script>

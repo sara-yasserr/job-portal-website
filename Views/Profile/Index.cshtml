@@ -7,7 +7,7 @@
 
 <style>
     .profile-section {
-        background-color: #f5f7fa;
+        background-color: white;
         padding: 80px 0;
     }
 
@@ -31,7 +31,7 @@
     }
 
     .profile-header {
-        background: linear-gradient(135deg, #2F55D4 0%, #5976E1 100%);
+        background: linear-gradient(135deg, #00BCD4 0%, #d8e7eb 100%);
         padding: 1.5rem;
         color: white;
         border-radius: 8px 8px 0 0;
@@ -125,7 +125,7 @@
     }
 
     .resume-section {
-        background-color: #f8f9fa;
+        background-color: #eeeeee;
         border-radius: 6px;
         padding: 1.5rem;
     }
@@ -168,35 +168,35 @@
         }
 
     .btn-primary {
-        background-color: #2F55D4;
-        border-color: #2F55D4;
+        background-color: #00BCD4;
+        border-color: #00BCD4;
         padding: 0.625rem 1.25rem;
         border-radius: 6px;
         font-weight: 500;
     }
 
         .btn-primary:hover {
-            background-color: #1E3CA2;
-            border-color: #1E3CA2;
+            background-color: #00BCD4;
+            border-color: #00BCD4;
         }
 
     .btn-outline-primary {
-        color: #2F55D4;
+        color: #00BCD4;
         background-color: transparent;
-        border-color: #2F55D4;
+        border-color: #00BCD4;
         padding: 0.625rem 1.25rem;
         border-radius: 6px;
         font-weight: 500;
     }
 
         .btn-outline-primary:hover {
-            background-color: #2F55D4;
+            background-color: #00BCD4;
             color: white;
         }
 
     .badge-soft-primary {
         background-color: rgba(47, 85, 212, 0.1);
-        color: #2F55D4;
+        color: #00BCD4;
         font-weight: 500;
         padding: 0.35rem 0.75rem;
         border-radius: 50px;
@@ -231,48 +231,51 @@
     }
 </style>
 
-<section class="profile-section">
-    <div class="container">
-        @if (TempData["SuccessMessage"] != null)
-        {
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <i class="fas fa-check-circle me-2"></i> @TempData["SuccessMessage"]
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        }
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="fas fa-check-circle me-2"></i> @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+<section class="profile-section" >
+    <div class="col-11 offset-1" style="display:flex; flex-direction:row;gap:30px;">
+        <partial name="_JobSeekerSideBar"></partial>
+
 
         <div class="profile-card">
             <div class="profile-header">
                 <div class="container">
-                    <h3 class="mb-0">My Profile</h3>
-                    <p class="mb-0">Manage your personal information and resume</p>
+                    <h3 class="mb-0" style="color:white;">My Profile</h3>
+                    <p class="mb-0" style="color:white;">Manage your personal information and resume</p>
                 </div>
             </div>
 
-            <div class="container">
+            <div class="container ">
                 <div class="row">
+
                     <!-- Profile Sidebar -->
                     <div class="col-lg-4 profile-sidebar">
                         @if (!string.IsNullOrEmpty(Model.ProfilePicturePath))
                         {
-                            <img src="~/images/@Model.ProfilePicturePath" alt="Profile Picture" class="profile-picture" id="profile-preview">
+                            <img src="/Images/@Model.ProfilePicturePath" alt="Profile Picture" class="profile-picture" id="profile-preview">
                         }
                         else
                         {
-                            <img src="/images/default-profile.png" alt="Default Picture" class="profile-picture">
+                            <img src="/Images/profile.jpg" alt="Default Picture" class="profile-picture">
                         }
 
                         <div class="profile-info">
                             <h4>@Model.FirstName @Model.LastName</h4>
                             <p>@Model.Title</p>
 
-                            <a asp-action="Edit" class="btn btn-primary">
+                            <a asp-action="Edit" class="btn btn-common">
                               Edit Profile
                             </a>
                         </div>
 
                         <div class="contact-info">
-                            <h5 class="mb-3">Contact Information</h5>
+                            <p class="mb-3">Contact Information</p>
 
                             <div class="contact-item">
                               
@@ -314,6 +317,11 @@
                             </div>
 
                             <div class="detail-row">
+                                <div class="detail-label">Username</div>
+                                @* <div class="detail-value">@Model.user</div> *@
+                            </div>
+
+                            <div class="detail-row">
                                 <div class="detail-label">Professional Title</div>
                                 <div class="detail-value">@Model.Title</div>
                             </div>
@@ -323,10 +331,10 @@
                                 <div class="detail-value">@Model.Email</div>
                             </div>
 
-                            <div class="detail-row">
-                                <div class="detail-label">Phone Number</div>
-                                <div class="detail-value">@Model.PhoneNumber</div>
-                            </div>
+                            @* <div class="detail-row"> *@
+                            @*     <div class="detail-label">Phone Number</div> *@
+                            @*     <div class="detail-value">@Model.PhoneNumber</div> *@
+                            @* </div> *@
 
                             <div class="detail-row">
                                 <div class="detail-label">Location</div>

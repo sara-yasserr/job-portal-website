@@ -4648,7 +4648,7 @@ footer .menu {
     }
 
 .btn-common {
-    background-color: #1A86CE;
+    background-color: #00BCD4;
     color: white;
     border: none;
     padding: 5px 15px;
@@ -4658,7 +4658,7 @@ footer .menu {
 }
 
     .btn-common:hover {
-        background-color: #0d6efd;
+        background-color: #00cfeb;
         color: white;
     }
 
@@ -4681,5 +4681,108 @@ footer .menu {
 
     .job-company-logo {
         margin-bottom: 10px;
+    }
+}
+
+/* button search style
+
+ <button type="submit" class="button-search"><i class="lni-search"></i></button>
+
+*/
+.button-search {
+    font-size: 22px;
+    line-height: 14px;
+    display: inline-block;
+    position: relative;
+    outline: none !important;
+    background: #00BCD4;
+    color: #fff;
+    cursor: pointer;
+    border: none;
+    text-align: center;
+    overflow: hidden;
+    padding: 11px 12px;
+    -webkit-transition: .3s;
+    -o-transition: .3s;
+    transition: .3s;
+    border-radius: 4px;
+    z-index: 1;
+}
+
+
+/*--Titles underline hover animation--*/
+/*  .alerts-titl ==> blue line */
+/*   .alert-title-reverse==> white line*/
+ .alert-title-reverse,.alerts-title {
+    position: relative;
+    display: inline-block;
+}
+
+    .alerts-title::after {
+        content: '';
+        width: 60px;
+        height: 3px;
+        background-color: #00bcd4;
+        position: absolute;
+        bottom: -8px;
+        left: 0;
+        border-radius: 10px;
+    }
+
+    .alerts-title-reverse::after {
+        content: '';
+        width: 60px;
+        height: 3px;
+        background-color: white;
+        position: absolute;
+        bottom: -8px;
+        left: 0;
+        border-radius: 10px;
+    }
+.alerts-title-reverse, .alerts-title:hover::after {
+    animation: hover-in 0.5s forwards;
+}
+
+@keyframes hover-in {
+    to {
+        width: 100%;
+    }
+}
+
+.alerts-title-reverse, .alerts-title:not(:hover)::after {
+    animation: hover-out 0.5s forwards;
+}
+
+@keyframes hover-out {
+    from {
+        width: 100%;
+    }
+
+    to {
+        width: 60px;
+    }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .application-header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .company-logo-container {
+        margin-right: 0;
+        margin-bottom: 15px;
+    }
+
+    .detail-item {
+        margin-bottom: 20px;
+    }
+}
+
+/* Confirm delete modal */
+@media (max-width: 576px) {
+    #confirmModal .modal-dialog {
+        width: 95%;
     }
 }

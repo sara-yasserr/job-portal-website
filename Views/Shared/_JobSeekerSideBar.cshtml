@@ -1,0 +1,135 @@
+﻿@* <div class="col-lg-2 col-md-12 col-xs-12"> *@
+@*     <div class="right-sideabr"> *@
+@*         <h4>Manage Account</h4> *@
+@*         <ul class="list-item"> *@
+@*             <li><a href="/Profile">Profile</a></li> *@
+@*             <li><a href="/Resume/Index">My Resume</a></li> *@
+@*             <li><a href="/Bookmarks">Bookmarked Jobs</a></li> *@
+@*             <li><a href="/JobApplication/Index">Applied Jobs</a></li> *@
+@*             <li><a href="/ChangePassword">Change Password</a></li> *@
+@*             <li><a href="/Account/Logout">Sing Out</a></li> *@
+@*         </ul> *@
+@*     </div> *@
+@* </div> *@
+
+<div class="col-lg-2 col-md-12 col-xs-12">
+    <div class="right-sideabr dashboard-sidebar">
+        <h4 class="sidebar-title">Manage Account</h4>
+        <ul class="list-item dashboard-menu">
+            <li>
+                <a href="/Profile" class="@(Context.Request.Path.Value.Contains("/Profile") ? "active" : "")">
+                    <i class="fas fa-user"></i> Profile
+                </a>
+            </li>
+            <li>
+                <a href="/Resume/Index" class="@(Context.Request.Path.Value.Contains("/Resume") ? "active" : "")">
+                    <i class="fas fa-file-alt"></i> My Resume
+                </a>
+            </li>
+            <li>
+                <a href="/Bookmarks" class="@(Context.Request.Path.Value.Contains("/Bookmarks") ? "active" : "")">
+                    <i class="fas fa-bookmark"></i> Bookmarked Jobs
+                </a>
+            </li>
+            <li>
+                <a href="/JobApplication/Index" class="@(Context.Request.Path.Value.Contains("/JobApplication") ? "active" : "")">
+                    <i class="fas fa-briefcase"></i> Applied Jobs
+                </a>
+            </li>
+            <li>
+                <a href="/ChangePassword" class="@(Context.Request.Path.Value.Contains("/ChangePassword") ? "active" : "")">
+                    <i class="fas fa-key"></i> Change Password
+                </a>
+            </li>
+            <li>
+                <a href="/Account/Logout" class="logout-link">
+                    <i class="fas fa-sign-out-alt"></i> Sign Out
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+<style>
+    /* التنسيق العام */
+    .dashboard-sidebar {
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        padding: 25px;
+        height: 100%;
+    }
+
+    .sidebar-title {
+        color: #2d3748;
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #00bcd4;
+    }
+
+    .dashboard-menu {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+        .dashboard-menu li {
+            margin-bottom: 8px;
+        }
+
+            .dashboard-menu li a {
+                display: flex;
+                align-items: center;
+                padding: 12px 15px;
+                color: #4a5568;
+                text-decoration: none;
+                border-radius: 6px;
+                transition: all 0.3s ease;
+                font-weight: 500;
+            }
+
+                .dashboard-menu li a i {
+                    margin-right: 10px;
+                    width: 20px;
+                    text-align: center;
+                    color: #718096;
+                }
+
+                /* العنصر النشط */
+                .dashboard-menu li a.active {
+                    background-color: rgba(0, 188, 212, 0.1);
+                    color: #00bcd4;
+                    font-weight: 600;
+                }
+
+                    .dashboard-menu li a.active i {
+                        color: #00bcd4;
+                    }
+
+                /* تأثيرات التحويم */
+                .dashboard-menu li a:not(.active):hover {
+                    background-color: #f7fafc;
+                    color: #00bcd4;
+                    transform: translateX(5px);
+                }
+
+                    .dashboard-menu li a:not(.active):hover i {
+                        color: #00bcd4;
+                    }
+
+    /* زر تسجيل الخروج */
+    .logout-link {
+        color: #e53e3e !important;
+    }
+
+        .logout-link i {
+            color: #e53e3e !important;
+        }
+
+        .logout-link:hover {
+            background-color: rgba(229, 62, 62, 0.1) !important;
+        }
+</style>

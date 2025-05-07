@@ -150,46 +150,63 @@ namespace Job_Portal_Project.Controllers
         }
         #endregion
         #region External login 
-        public IActionResult RedirectToLocal(string returnUrl)
+        private IActionResult RedirectToLocal(string returnUrl)
         {
-            if (Url.IsLocalUrl(returnUrl))
-            {
-                return Redirect(returnUrl);
-            }
-            else
+            if (string.IsNullOrEmpty(returnUrl) ||
+                returnUrl.Equals("/Account/Login", StringComparison.OrdinalIgnoreCase) ||
+                returnUrl.StartsWith("/Identity/Account/Login", StringComparison.OrdinalIgnoreCase))
             {
                 return RedirectToAction("Index", "Home");
             }
+
+            if (Url.IsLocalUrl(returnUrl))
+            {
+                return LocalRedirect(returnUrl);
+            }
+
+            return RedirectToAction("Index", "Home");
         }
 
         public IActionResult GoogleLogin(string returnUrl = null)
         {
-            var redirectUrl = Url.Action("GoogleCallBack", "Account", new { returnUrl });
-            var properties = new AuthenticationProperties { RedirectUri = redirectUrl };
+            returnUrl ??= Url.Content("~/");
+
+            var properties = new AuthenticationProperties
+            {
+                RedirectUri = Url.Action("GoogleCallback"),
+                Items =
+        {
+            { "returnUrl", returnUrl },
+            { "scheme", GoogleDefaults.AuthenticationScheme }
+        }
+            };
+
             return Challenge(properties, GoogleDefaults.AuthenticationScheme);
         }
 
-        public async Task<IActionResult> GoogleCallBack(string returnUrl = null)
+        public async Task<IActionResult> GoogleCallback()
         {
-            var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            var email = result.Principal.FindFirst(ClaimTypes.Email)?.Value;
+            var result = await HttpContext.AuthenticateAsync(GoogleDefaults.AuthenticationScheme);
 
-            if (!result.Succeeded || result.Principal == null)
+            if (result?.Succeeded != true)
             {
-                TempData["Email"] = email;
-                TempData.Keep("Email");
-                return RedirectToAction("PreRegister", "Account");
+                return RedirectToAction("Login");
             }
 
+            var returnUrl = result.Properties?.GetString("returnUrl") ?? Url.Content("~/");
+
+            // معالجة المستخدم وتسجيل الدخول
+            var email = result.Principal.FindFirst(ClaimTypes.Email)?.Value;
             var user = await userManager.FindByEmailAsync(email);
+
             if (user == null)
             {
                 TempData["Email"] = email;
-                TempData.Keep("Email");
                 return RedirectToAction("PreRegister", "Account");
             }
 
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(result.Principal.Identity));
+            await signInManager.SignInAsync(user, isPersistent: false);
+
             return RedirectToLocal(returnUrl);
         }
         #endregion
