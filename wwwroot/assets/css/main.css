@@ -941,7 +941,7 @@ button:focus {
 /* ==========================================================================
    Hero Area
    ========================================================================== */
-.hero-area {
+/*.hero-area {
     background: url(../img/bg/bg-intro.jpg) center center no-repeat;
     background-size: cover;
     overflow: hidden;
@@ -963,20 +963,96 @@ button:focus {
     .hero-area .contents {
         padding: 190px 0 120px;
         text-align: center;
+    }*/
+
+
+.hero-area {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    color: #fff;
+    margin-top: 20px; /* تنزل تحت النافبار */
+}
+
+.hero-img {
+    height: 700px;
+    object-fit: cover;
+    object-position: center;
+}
+
+/* كل شريحة من السلايدر */
+.carousel-item {
+    height: 700px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: background-image 1s ease-in-out;
+    background-color: #000;
+}
+
+    .carousel-item img {
+        opacity: 1 !important;
+        transition: opacity 0.3s ease-in;
     }
+
+
+/* التعتيم فوق الخلفية */
+.hero-area::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(42, 46, 50, 0.6), rgba(0, 0, 0, 0.7));
+    z-index: 1;
+}
+
+/* تأكيد ظهور المحتوى فوق الخلفية */
+.hero-area .container {
+    position: relative;
+    z-index: 2;
+}
+
+/* محتوى النصوص */
+.hero-area .contents {
+    padding: 180px 0 100px;
+    text-align: center;
+    color: white;
+}
+
+/* لضمان أن السلايدر لا يغطي المحتوى */
+#heroCarousel {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+
+
+
+
+
+
+
+
 
         .hero-area .contents h2 {
             color: #fff;
-            font-size: 42px;
+            font-size: 52px;
+            line-height: 70px;
             font-weight: 700;
-            line-height: 60px;
             margin-bottom: 25px;
         }
 
         .hero-area .contents p {
             color: #fff;
-            font-size: 14px;
-            line-height: 26px;
+            font-size: 18px;
+            line-height: 30px;
+            max-width: 700px;
+            margin: 0 auto;
         }
 
         .hero-area .contents .btn {
