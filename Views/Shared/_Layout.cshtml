@@ -10,7 +10,8 @@
     <title>Job Portal </title>
 
     <!-- Bootstrap CSS -->
-    
+    <link href="https://cdn.lineicons.com/5.0/lineicons.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.lineicons.com/3.0/lineicons.css">
     <link rel="stylesheet" href="~/assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="~/assets/css/line-icons.css">
     <link rel="stylesheet" href="~/assets/css/owl.carousel.min.css">
@@ -19,6 +20,7 @@
     <link rel="stylesheet" href="~/assets/css/animate.css">
     <link rel="stylesheet" href="~/assets/css/main.css">
     <link rel="stylesheet" href="~/assets/css/responsive.css">
+   
     @RenderSection("Styles", required: false)
 
 </head>
@@ -228,4 +230,7 @@
 
     @await RenderSectionAsync("Scripts", required: false)
     @* @RenderSection("Scripts", required: false) *@
+    @section Scripts {
+        <link rel="stylesheet" href="~/css/custom-category.css" />
+    }
 </body>
