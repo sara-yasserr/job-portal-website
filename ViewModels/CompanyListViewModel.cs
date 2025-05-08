@@ -1,4 +1,6 @@
-﻿namespace Job_Portal_Project.Models
+﻿using Job_Portal_Project.Models;
+
+namespace Job_Portal_Project.ViewModels
 {
     public class CompanyListViewModel
     {

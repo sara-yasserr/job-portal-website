@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 namespace Job_Portal_Project.Controllers
 {
@@ -20,12 +21,14 @@ namespace Job_Portal_Project.Controllers
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IJobRepository jobRepo;
         IJobApplicationRepository jobAppRepo;
-        public JobApplicationController(IJobApplicationRepository _jobAppRepo,IJobApplicationService _jobApplicationService,UserManager<ApplicationUser> _userManager, IJobRepository _jobRepo)
+        private readonly SmtpSettings _smtpSettings;
+        public JobApplicationController(IJobApplicationRepository _jobAppRepo,IJobApplicationService _jobApplicationService,UserManager<ApplicationUser> _userManager, IJobRepository _jobRepo, IOptions<SmtpSettings> _smtpSettings)
         {
             jobApplicationService = _jobApplicationService;
             userManager = _userManager;
             jobRepo = _jobRepo;
             jobAppRepo = _jobAppRepo;
+            this._smtpSettings = _smtpSettings.Value;
         }
         #region Index
         public IActionResult Index(int page = 1)
@@ -213,6 +216,178 @@ namespace Job_Portal_Project.Controllers
             return null;
         }
         #endregion
+
+        #region Make By Ahmed Ali
+        public async Task<IActionResult> ShowAllApplicants(int jobId, string fullName)
+        {
+            var model = await jobAppRepo.AllApplicantApplied(jobId, fullName);
+            ViewData["FullName"] = fullName;
+            ViewData["JobId"] = jobId;
+
+            return View("ShowAllApplicants", model);
+        }
+        public async Task<IActionResult> ShowDetialsOfApplicant(string ApplicantId)
+        {
+            var model = await jobAppRepo.ApplicantDetailsAsync(ApplicantId);
+
+            if (model == null)
+            {
+                TempData["ErrorMessage"] = "Applicant not found!";
+                return RedirectToAction("ShowAllApplicants");
+            }
+
+            return View(model);
+        }
+
+
+        public IActionResult ViewResume(string path)
+        {
+            if (string.IsNullOrEmpty(path))
+            {
+                return NotFound();
+            }
+
+
+            if (!Path.HasExtension(path))
+            {
+                path += ".pdf";
+            }
+
+            var fullPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", path.TrimStart('/'));
+
+            if (!System.IO.File.Exists(fullPath))
+            {
+                return NotFound();
+            }
+
+            string contentType = "application/pdf";
+
+            var fileBytes = System.IO.File.ReadAllBytes(fullPath);
+            return File(fileBytes, contentType);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangeApplicantStatus(string applicantId, string status)
+        {
+            var applicant = jobAppRepo.GetJobApplicationByApplicantId(applicantId);
+            if (applicant == null)
+            {
+                return NotFound();
+            }
+
+            var app = await jobAppRepo.ApplicantDetailsAsync(applicantId);
+            var job = jobRepo.GetById(applicant.JobId);
+
+            var oldStatus = applicant.Status;
+
+            if (oldStatus != status)
+            {
+                applicant.Status = status;
+                jobAppRepo.Update(applicant);
+
+
+                if (oldStatus == "Accept" && status != "Accept")
+                {
+                    job.VacancyCount += 1;
+                }
+                else if (oldStatus != "Accept" && status == "Accept")
+                {
+                    job.VacancyCount -= 1;
+                }
+
+                job.IsActive = job.VacancyCount > 0;
+                jobRepo.Update(job);
+
+                jobAppRepo.Save();
+                jobRepo.Save();
+
+
+                switch (status)
+                {
+                    case "Interview Process":
+                        SendInterviewProcessEmail(app.Email, app.FirstName, job.Company.Name, job.Title);
+                        break;
+                    case "Accept":
+                        SendAcceptEmail(app.Email, app.FirstName, job.Company.Name, job.Title);
+                        break;
+                    case "Rejected":
+                        SendRejectedEmail(app.Email, app.FirstName, job.Company.Name, job.Title);
+                        break;
+                }
+            }
+            ViewData["StatusMessage"] = $"Status for this applicant has been changed to: {status}";
+            return RedirectToAction("ShowDetialsOfApplicant", new { ApplicantId = applicantId });
+        }
+
+        private void SendEmail(string toEmail, string subject, string body, string displayName)
+        {
+            try
+            {
+                var smtpClient = new SmtpClient(_smtpSettings.Host)
+                {
+                    Port = _smtpSettings.Port,
+                    Credentials = new NetworkCredential(_smtpSettings.Email, _smtpSettings.Password),
+                    EnableSsl = true,
+                };
+
+                var mailMessage = new MailMessage
+                {
+                    From = new MailAddress(_smtpSettings.Email, displayName),
+                    Subject = subject,
+                    Body = body,
+                    IsBodyHtml = false,
+                };
+
+                mailMessage.To.Add(toEmail);
+
+                smtpClient.Send(mailMessage);
+
+                TempData["SuccessMessage"] = "Email has been sent successfully to the applicant.";
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = $"Failed to send email. Error: {ex.Message}";
+            }
+        }
+
+        public void SendInterviewProcessEmail(string emailAddress, string applicantName, string companyName, string jobTitle)
+        {
+            var interviewDate = DateTime.Now.AddDays(3).ToString("dddd, MMMM dd, yyyy 'at' 10:00 AM");
+            var subject = $"Interview Process Update - {companyName}";
+            var body = $"Dear {applicantName},\n\n" +
+                       $"Congratulations! You have moved to the interview stage for the \"{jobTitle}\" position at {companyName}.\n\n" +
+                       $"Your interview is scheduled for {interviewDate}.\n\n" +
+                       $"Please let us know if you have any questions prior to the interview.\n\n" +
+                       $"Best regards,\n" +
+                       $"{companyName} Recruitment Team";
+
+            SendEmail(emailAddress, subject, body, companyName);
+        }
+        public void SendAcceptEmail(string emailAddress, string applicantName, string companyName, string jobTitle)
+        {
+            var subject = $"Job Offer - {companyName}";
+            var body = $"Dear {applicantName},\n\n" +
+                       $"We are delighted to offer you the \"{jobTitle}\" position at {companyName}.\n\n" +
+                       $"We were impressed by your skills and are excited to welcome you to our team.\n\n" +
+                       $"Please reply to this email to confirm your acceptance.\n\n" +
+                       $"Best regards,\n" +
+                       $"{companyName} Recruitment Team";
+
+            SendEmail(emailAddress, subject, body, companyName);
+        }
+        public void SendRejectedEmail(string emailAddress, string applicantName, string companyName, string jobTitle)
+        {
+            var subject = $"Application Update - {companyName}";
+            var body = $"Dear {applicantName},\n\n" +
+                       $"Thank you for your interest in the \"{jobTitle}\" position at {companyName}.\n\n" +
+                       $"After careful review, we regret to inform you that we will not be moving forward with your application at this time.\n\n" +
+                       $"We encourage you to apply for future openings that match your profile.\n\n" +
+                       $"Best regards,\n" +
+                       $"{companyName} Recruitment Team";
+
+            SendEmail(emailAddress, subject, body, companyName);
+        }
     }
-  
+    #endregion
 }
+  

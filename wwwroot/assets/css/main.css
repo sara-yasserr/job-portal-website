@@ -4256,14 +4256,28 @@ textarea {
         color: #dd4b39;
     }
 
-input[type="checkbox"] {
-    background: #3d404e;
-    border: #7f83a2 1px solid;
+/* Checkbox Styles */
+.form-check-input
+{
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid #ddd;
+    border-radius: 4px;
+    outline: none;
+    transition: all 0.2s;
+    position: relative;
+    cursor: pointer;
 }
 
-.form-check input[type=checkbox].form-check-input {
-    background: #00BCD4;
-}
+    .form-check-input:checked
+ {
+        background-color: #00BCD4;
+        border-color: #00BCD4;
+        color: #fff;
+    }
 
 /* ==========================================================================
    Footer Style

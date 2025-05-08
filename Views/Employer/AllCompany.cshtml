@@ -1,4 +1,6 @@
-﻿@model CompanyListViewModel
+﻿@using Job_Portal_Project.ViewModels
+
+@model CompanyListViewModel
 
 @{
     ViewData["Title"] = "All Companies";
@@ -451,7 +453,7 @@
                         <div class="company-card-image-wrapper">
                             @if (!string.IsNullOrEmpty(item.LogoPath))
                             {
-                                <img src="~/images/@item.LogoPath" alt="@item.Name Logo" class="company-card-image" />
+                                <img src="/Uploads/Logos/@item.LogoPath" alt="@item.Name Logo" class="company-card-image" />
                             }
                             else
                             {
