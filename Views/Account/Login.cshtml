@@ -4,255 +4,370 @@
     ViewData["Title"] = "Login";
 }
 
-<!-- Header Section Start -->
+<!-- Header Section -->
 <header id="home" class="hero-area">
     <partial name="_NavbarPartial"></partial>
 </header>
-<!-- Header Section End -->
-<!-- Page Header Start -->
-<div class="page-header">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="inner-header">
-                    <h3>Login</h3>
-                </div>
-            </div>
-        </div>
-    </div>
+
+<!-- Login Title Section -->
+<div class="login-title">
+    <h3>Login</h3>
 </div>
-<!-- Page Header End -->
-<!-- Content section Start -->
-<section id="content" class="section-padding">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-5 col-md-6 col-xs-12">
-                <div class="page-login-form box">
-                    <h3 style="color:#68cad7">Welcome Back</h3>
-                    <form class="login-form" asp-action="Login" method="post">
-                        <div asp-validation-summary="All" class="text-danger" style="display:none;"></div>
 
-                        <!-- Username Field -->
-                        <div class="form-group">
-                            <label for="UserName">Username</label>
-                            <input type="text" asp-for="UserName" class="form-control" placeholder="Enter your username">
-                            <span asp-validation-for="UserName" class="text-danger"></span>
-                        </div>
+<!-- Login Form Section -->
+<section class="login-section">
+    <div class="login-container">
+        <div class="login-form-container">
+            <div class="form-header-image">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2368cad7'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z'/%3E%3C/svg%3E" alt="User Icon">
+            </div>
+            <h3 class="welcome-title">Welcome Back</h3>
+            <form class="login-form" asp-action="Login" method="post">
+                <div asp-validation-summary="All" class="text-danger"></div>
 
-                        <!-- Password Field -->
-                        <div class="form-group">
-                            <label for="Password">Password</label>
-                            <input type="password" asp-for="Password" class="form-control" placeholder="Enter your password">
-                            <span asp-validation-for="Password" class="text-danger"></span>
-                        </div>
-
-                        <!-- Remember Me -->
-                        <div class="form-group form-check remember-me">
-                            <input asp-for="RememberMe" type="checkbox" class="form-check-input" id="rememberMe">
-                            <label asp-for="RememberMe" class="form-check-label">Keep Me Signed In</label>
-                        </div>
-
-                        <!-- Login Button -->
-                        <button type="submit" class="btn primary-btn log-btn">Login</button>
-
-                        <!-- Or Separator -->
-                        <div class="separator">
-                            <span>OR</span>
-                        </div>
-
-                        <!-- Google Sign-In Button -->
-                        <a class="google-signin-btn" asp-action="GoogleLogin" asp-controller="Account" asp-route-returnUrl="@Context.Request.Path">
-                            <div class="google-icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="18" height="18">
-                                    <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path>
-                                    <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"></path>
-                                    <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"></path>
-                                    <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"></path>
-                                </svg>
-                            </div>
-                            <span>Continue with Google</span>
-                        </a>
-                    </form>
-
-                    <!-- Register Link -->
-                    <div class="register-link">
-                        <p>Don't have an account? <a asp-action="PreRegister" asp-controller="Account">Register Now</a></p>
+                <!-- Username Field -->
+                <div class="form-group">
+                    <div class="input-with-icon">
+                        <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#68cad7">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
+                        </svg>
+                        <input type="text" asp-for="UserName" class="form-control" placeholder="Enter your username">
                     </div>
+                    <span asp-validation-for="UserName" class="text-danger"></span>
                 </div>
+
+                <!-- Password Field -->
+                <div class="form-group">
+                    <div class="input-with-icon">
+                        <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#68cad7">
+                            <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>
+                        </svg>
+                        <input type="password" asp-for="Password" class="form-control" placeholder="Enter your password">
+                        <button type="button" class="password-toggle" id="togglePassword" tabindex="-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#68cad7">
+                                <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+
+                <!-- Remember Me -->
+                <div class="form-check remember-me">
+                    <input asp-for="RememberMe" type="checkbox" class="form-check-input" id="rememberMe">
+                    <label asp-for="RememberMe" class="form-check-label">Keep Me Signed In</label>
+                </div>
+
+                <!-- Login Button -->
+                <button type="submit" class="btn login-btn">Login</button>
+
+                <!-- Or Separator -->
+                <div class="separator">
+                    <span>OR</span>
+                </div>
+
+                <!-- Google Sign-In Button -->
+                <button class="google-signin-btn" asp-action="GoogleLogin" asp-controller="Account">
+                    <div class="google-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="18" height="18">
+                            <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path>
+                            <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"></path>
+                            <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"></path>
+                            <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"></path>
+                        </svg>
+                    </div>
+                    <span>Continue with Google</span>
+                </button>
+            </form>
+
+            <!-- Register Link -->
+            <div class="register-link">
+                <p>Don't have an account? <a asp-action="PreRegister" asp-controller="Account">Register Now</a></p>
             </div>
         </div>
     </div>
 </section>
-<!-- Content section End -->
+
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
-}
+    <style>
+        :root {
+            --primary: #00BCD4;
+            --primary-dark: #0097A7;
+            --secondary: #607D8B;
+            --light: #F5F7FA;
+            --dark: #333333;
+        }
 
-<style>
-    /* Login Form Styling */
-    .page-login-form {
-        border-radius: 12px;
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
-        padding: 40px 30px;
-        background-color: #fff;
-        max-width: 450px;
-        margin: 0 auto;
-    }
+        body {
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #00BCD4;
+            background-image: linear-gradient(135deg, #00BCD4 0%, #80DEEA 100%);
+            background-attachment: fixed;
+            color: var(--dark);
+            margin: 0;
+            padding: 0;
+        }
 
-        .page-login-form h3 {
-            font-size: 28px;
-            margin-bottom: 25px;
+        /* Login Title */
+        .login-title {
             text-align: center;
-            font-weight: 600;
-            color: #333;
+            padding: 30px 0;
+            margin-top: -80px;
         }
 
-    .form-group {
-        margin-bottom: 20px;
-    }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: #555;
-        }
-
-    .form-control {
-        height: 50px;
-        border-radius: 8px;
-        border: 1px solid #e0e0e0;
-        padding: 0 15px;
-        font-size: 15px;
-        transition: all 0.3s ease;
-        width: 100%;
-    }
-
-        .form-control:focus {
-            border-color: #00BCD4;
-            box-shadow: 0 0 0 3px rgba(0, 188, 212, 0.15);
-            outline: none;
-        }
-
-        .form-control::placeholder {
-            color: #aaa;
-        }
-
-    /* Remember Me Checkbox */
-    .remember-me {
-        display: flex;
-        align-items: center;
-        margin: 20px 0;
-    }
-
-    .form-check-input {
-        margin-right: 8px;
-    }
-
-    .form-check-label {
-        color: #666;
-        font-size: 14px;
-    }
-
-    /* Login Button */
-    .primary-btn {
-        background-color: #00BCD4;
-        color: white;
-        border: none;
-    }
-
-    .log-btn {
-        width: 100%;
-        height: 50px;
-        border-radius: 8px;
-        font-weight: 600;
-        font-size: 16px;
-        letter-spacing: 0.5px;
-        transition: all 0.3s ease;
-        margin-top: 10px;
-    }
-
-        .log-btn:hover {
-            background-color: #00acc1;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 188, 212, 0.3);
-        }
-
-    /* Separator */
-    .separator {
-        display: flex;
-        align-items: center;
-        text-align: center;
-        margin: 25px 0;
-    }
-
-        .separator::before,
-        .separator::after {
-            content: '';
-            flex: 1;
-            border-bottom: 1px solid #e0e0e0;
-        }
-
-        .separator span {
-            padding: 0 15px;
-            color: #888;
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-    /* Google Sign-In Button */
-    .google-signin-btn {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: #fff;
-        color: #555;
-        height: 50px;
-        width: 100%;
-        border-radius: 8px;
-        font-family: 'Roboto', sans-serif;
-        font-weight: 500;
-        font-size: 15px;
-        border: 1px solid #e0e0e0;
-        transition: all 0.3s ease;
-        cursor: pointer;
-    }
-
-        .google-signin-btn:hover {
-            background-color: #f8f9fa;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-    .google-icon {
-        margin-right: 12px;
-        display: flex;
-        align-items: center;
-    }
-
-    /* Register Link */
-    .register-link {
-        margin-top: 30px;
-        text-align: center;
-    }
-
-        .register-link p {
-            color: #666;
-            font-size: 15px;
-        }
-
-        .register-link a {
-            color: #00BCD4;
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.2s ease;
-        }
-
-            .register-link a:hover {
-                color: #00acc1;
-                text-decoration: underline;
+            .login-title h3 {
+                color: white;
+                font-weight: 600;
+                font-size: 32px;
+                margin: 0;
             }
 
-   
-</style>
+        /* Login Section */
+        .login-section {
+            padding: 20px 0 60px;
+        }
+
+        .login-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .login-form-container {
+            max-width: 450px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            padding: 40px 30px;
+            position: relative;
+        }
+
+        .form-header-image {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+            .form-header-image img {
+                width: 80px;
+                height: 80px;
+                border-radius: 50%;
+                background-color: #f5f5f5;
+                padding: 15px;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            }
+
+        .welcome-title {
+            color: #68cad7;
+            font-size: 28px;
+            text-align: center;
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .input-with-icon {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            z-index: 2;
+        }
+
+        .form-control {
+            width: 100%;
+            height: 50px;
+            padding: 0 15px 0 45px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+        }
+
+            .form-control:focus {
+                border-color: #00BCD4;
+                box-shadow: 0 0 0 3px rgba(0, 188, 212, 0.15);
+                outline: none;
+            }
+
+        /* Password Toggle */
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Remember Me */
+        .remember-me {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+        }
+
+        .form-check-input {
+            margin-right: 8px;
+            cursor: pointer;
+        }
+
+        .form-check-label {
+            color: #666;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        /* Login Button */
+        .login-btn {
+            width: 100%;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 16px;
+            margin-top: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+            .login-btn:hover {
+                background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+                transform: translateY(-2px);
+                box-shadow: 0 6px 18px rgba(0, 188, 212, 0.4);
+            }
+
+        /* Separator */
+        .separator {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 25px 0;
+        }
+
+            .separator::before,
+            .separator::after {
+                content: '';
+                flex: 1;
+                border-bottom: 1px solid #e0e0e0;
+            }
+
+            .separator span {
+                padding: 0 15px;
+                color: #888;
+                font-size: 14px;
+                font-weight: 500;
+            }
+
+        /* Google Sign-In Button */
+        .google-signin-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #fff;
+            color: #555;
+            height: 50px;
+            width: 100%;
+            border-radius: 25px;
+            font-weight: 500;
+            font-size: 15px;
+            border: 1px solid #e0e0e0;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+            .google-signin-btn:hover {
+                background-color: #f8f9fa;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            }
+
+        .google-icon {
+            margin-right: 12px;
+        }
+
+        /* Register Link */
+        .register-link {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+            .register-link p {
+                color: #666;
+                font-size: 15px;
+            }
+
+            .register-link a {
+                color: #00BCD4;
+                font-weight: 600;
+                text-decoration: none;
+                transition: all 0.3s ease;
+            }
+
+                .register-link a:hover {
+                    color: #00acc1;
+                    text-decoration: underline;
+                }
+
+        /* Validation */
+        .text-danger {
+            color: #dc3545;
+            font-size: 14px;
+            margin-top: 5px;
+            display: block;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Password toggle functionality
+            const togglePassword = document.getElementById('togglePassword');
+            const passwordInput = document.querySelector('input[type="password"]');
+            
+            if (togglePassword && passwordInput) {
+                togglePassword.addEventListener('click', function() {
+                    const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                    passwordInput.setAttribute('type', type);
+                    
+                    // Change the eye icon based on password visibility
+                    const eyeIcon = this.querySelector('svg');
+                    if (type === 'password') {
+                        eyeIcon.innerHTML = '<path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>';
+                    } else {
+                        eyeIcon.innerHTML = '<path d="M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.83l2.92 2.92c1.51-1.26 2.7-2.89 3.43-4.75-1.73-4.39-6-7.5-11-7.5-1.4 0-2.74.25-3.98.7l2.16 2.16C10.74 7.13 11.35 7 12 7zM2 4.27l2.28 2.28.46.46C3.08 8.3 1.78 10.02 1 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27zM7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53-2.76 0-5-2.24-5-5 0-.79.2-1.53.53-2.2zm4.31-.78l3.15 3.15.02-.16c0-1.66-1.34-3-3-3l-.17.01z"/>';
+                    }
+                });
+            }
+
+            // Form validation
+            const form = document.querySelector('.login-form');
+            if (form) {
+                form.addEventListener('submit', function(event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            }
+        });
+    </script>
+</section>}
