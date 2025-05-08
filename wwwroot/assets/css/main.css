@@ -4786,3 +4786,10 @@ footer .menu {
         width: 95%;
     }
 }
+
+
+.subheading {
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: #4a5568;
+}

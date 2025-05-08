@@ -7,11 +7,11 @@
 <h1>Index</h1>
 
 <div id="content">
-    <div class="container col-11">
+    <div class="container col-12">
         <div class="row">
          <partial name="_JobSeekerSideBar"></partial>
             <div class="col-lg-10 col-md-12 col-xs-12">
-                <div class="job-alerts-item">
+                <div class="job-alerts-item jobapps">
                     <h3 class="alerts-title">Your Job Applications</h3>
 
                     @using (Html.BeginForm("Index", "JobApplication", FormMethod.Get))
@@ -513,5 +513,12 @@
     .page-item .fa-chevron-left,
     .page-item .fa-chevron-right {
         font-size: 0.9rem;
+    }
+    #content{
+        background-color: #f8f9fa;
+    }
+
+    .jobapps{
+        background-color:white;
     }
 </style>
