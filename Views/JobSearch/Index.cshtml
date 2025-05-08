@@ -4,65 +4,82 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-
-<div class="page-header">
+<!-- Page Header Start -->
+<div class="category-hero-section" style="background-image: url('/assets/images/Dcover.jpg'); background-size: cover; padding: 100px 0; position: relative; z-index: 1; text-align: center; color: #fff; overflow: hidden;">
+    <div class="overlay-bg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(22, 28, 45, 0.8); z-index: -1;"></div>
     <div class="container">
         <div class="row">
-            <div class="col-lg-12">
-                <div class="inner-header text-left">
-                    <h3 class="mb-2">Browse Jobs</h3>
-                    <p class="header-description">
+            <div class="col-12">
+                <div class="breadcrumbs-content">
+                    <h1 class="page-title" style="font-size: 3rem; font-weight: 700; margin-bottom: 15px; color: #fff; text-shadow: 0px 2px 8px rgba(0,0,0,0.2); position: relative; display: inline-block;">
+                        Browse <span style="color: #00BCD4;">Jobs</span>
+                        <div class="title-accent" style="position: absolute; bottom: -5px; left: 50%; transform: translateX(-50%); width: 100px; height: 4px; background-color: #00BCD4; border-radius: 2px;"></div>
+                    </h1>
+                    <p style="font-size: 1.2rem; max-width: 700px; margin: 25px auto 0; color: #fff; line-height: 1.7; text-shadow: 0px 1px 2px rgba(0,0,0,0.2);">
                         Browse all available jobs and take the first step toward your future. <br />
-                        Find your perfect career opportunity from our curated job listings.</p>
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb bg-transparent p-0">
-                            <li class="breadcrumb-item"><a href="/Home/Index">Home</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Browse Jobs</li>
-                        </ol>
-                    </nav>
+                        Find your perfect career opportunity from our curated job listings.
+                    </p>
                 </div>
+                <ul class="breadcrumb-nav" style="display: flex; justify-content: center; list-style: none; margin-top: 30px; padding: 0; flex-wrap: wrap;">
+                    <li style="margin: 5px;"><a href="/Home/Index" style="color: #fff; text-decoration: none; font-weight: 500; transition: all 0.3s ease;">Home</a></li>
+                    <li style="margin: 5px; position: relative; padding-left: 20px;">
+                        @* <i class="lni lni-chevron-right" style="position: absolute; left: 0; top: 50%; transform: translateY(-50%); color: #00BCD4; font-size: 12px;"></i> *@
+                        <span style="color: #00BCD4; font-weight: 600;">Browse Jobs</span>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
 </div>
-
-<!-- Remove redundant hero section -->
-<!-- <div class="slider-area">...</div> -->
 <!-- Page Header End -->
-
-
-
+<!-- Spacing between header and content -->
+<div style="height: 80px;"></div>
 
 <!-- Job List Area Start -->
-<div class="job-listing-area pt-120 pb-120">
+<div class="job-listing-area pt-80 pb-120">
     <div class="container">
         <div class="row">
             <!-- Left content - Filters -->
-            <div class="col-xl-3 col-lg-3 col-md-4">
-                <div class="filter-wrapper">
-                    <div class="filter-header d-flex justify-content-between align-items-center">
-                        <h4 class="m-0"><i class="lni-filter mr-2"></i>Filter Jobs</h4>
-                        <button class="btn btn-sm btn-link d-md-none" type="button" data-toggle="collapse" data-target="#filterContent">
-                            <i class="lni-menu"></i>
+            <!-- Job Filter Section Start -->
+            <div class="col-xl-4 col-lg-4 col-md-5">
+                <div class="filter-wrapper" style="background: #fff; border-radius: 12px; box-shadow: 0 5px 20px rgba(0, 188, 212, 0.15); overflow: hidden; transition: transform 0.3s ease, box-shadow 0.3s ease; border-top: 4px solid #00BCD4; margin-bottom: 30px;">
+
+                    <!-- Filter Header -->
+                    <div class="filter-header d-flex justify-content-between align-items-center" style="padding: 22px 25px; border-bottom: 1px solid #eee; background-color: #f9f9f9;">
+                        <h4 class="m-0" style="font-size: 20px; font-weight: 600; color: #222; display: flex; align-items: center;">
+                            <i class="lni lni-filter" style="margin-right: 12px; color: #00BCD4; font-size: 22px;"></i>
+                            <span>Filter Jobs</span>
+                        </h4>
+                        <button class="btn btn-sm btn-link d-md-none" type="button" data-toggle="collapse" data-target="#filterContent" style="color: #00BCD4; border: none; background: transparent;">
+                            <i class="lni lni-menu" style="font-size: 18px;"></i>
                         </button>
                     </div>
 
-                    <div id="filterContent" class="collapse show">
+                    <!-- Filter Content -->
+                    <div id="filterContent" class="collapse show" style="padding: 25px;">
+
                         <!-- Keyword Search -->
-                        <div class="filter-group">
-                            <label>Search</label>
-                            <div class="input-group">
-                                <input type="text" class="form-control form-control-sm" id="keyword" placeholder="Job title or keywords" value="@Model.Keyword">
+                        <div class="filter-group" style="margin-bottom: 25px;">
+                            <label style="display: block; margin-bottom: 10px; font-weight: 600; color: #333; font-size: 15px; position: relative; padding-left: 15px; border-left: 3px solid #00BCD4;">
+                                <i class="lni lni-search-alt" style="margin-right: 8px; color: #00BCD4;"></i>
+                                Search Jobs
+                            </label>
+                            <div class="input-group" style="box-shadow: 0 2px 8px rgba(0,0,0,0.08); border-radius: 8px; overflow: hidden;">
+                                <input type="text" class="form-control" id="keyword" placeholder="Job title or keywords" value="@Model.Keyword" style="border: 1px solid #e8e8e8; padding: 12px 15px; font-size: 14px; border-right: none; transition: all 0.3s ease;">
                                 <div class="input-group-append">
-                                    <span class="input-group-text"><i class="lni-search"></i></span>
+                                    <span class="input-group-text" style="background: #f9f9f9; border: 1px solid #e8e8e8; border-left: none; color: #00BCD4; padding: 0 15px;"><i class="lni lni-search"></i></span>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Job Category -->
-                        <div class="filter-group">
-                            <label>Job Category</label>
-                            <select class="form-control form-control-sm h-auto" id="category">
+                        <div class="filter-group" style="margin-bottom: 25px;">
+                            <label style="display: block; margin-bottom: 10px; font-weight: 600; color: #333; font-size: 15px; position: relative; padding-left: 15px; border-left: 3px solid #00BCD4;">
+                                <i class="lni lni-briefcase" style="margin-right: 8px; color: #00BCD4;"></i>
+                                Job Category
+                            </label>
+                            <select class="form-control-sm h-auto" id="category" style="border: 1px solid #e8e8e8; padding: 12px 15px; font-size: 14px; border-radius: 8px; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); appearance: none; background-image: url('data:image/svg+xml;utf8,<svg xmlns=\" http: //www.w3.org/2000/svg\" width=\"12\" height=\"6\">
+                                <path d=\"M0 0l6 6 6-6z\" fill=\"%2300BCD4\" /></svg>'); background-repeat: no-repeat; background-position: right 15px center; transition: all 0.3s ease;">
                                 <option value="">All Categories</option>
                                 @foreach (var category in Model.Categories)
                                 {
@@ -72,175 +89,281 @@
                         </div>
 
                         <!-- Job Type -->
-                        <div class="filter-group">
-                            <label>Job Type</label>
-                            <div class="custom-control-compact">
+                        <!-- Replace the Job Type filter section with this -->
+                        <div class="filter-group" style="margin-bottom: 25px;">
+                            <label style="display: block; margin-bottom: 14px; font-weight: 600; color: #333; font-size: 15px; position: relative; padding-left: 15px; border-left: 3px solid #00BCD4;">
+                                <i class="lni lni-timer" style="margin-right: 8px; color: #00BCD4;"></i>
+                                Job Type
+                            </label>
+                            <div class="checkbox-container" style="display: flex; flex-direction: column; gap: 12px;">
                                 @foreach (var type in Model.EmploymentTypes)
                                 {
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" id="type-@type" name="employmentType" class="custom-control-input filter-checkbox"
-                                               value="@type" data-filter-group="jobType" @(Model.EmploymentType == type ? "checked" : "")>
-                                        <label class="custom-control-label" for="type-@type">@type</label>
+                                    <div class="form-check" style="display: flex; align-items: center;">
+                                        <input class="form-check-input filter-checkbox" type="checkbox"
+                                               id="type-@type" value="@type" data-filter-group="jobType"
+                                        @(Model.EmploymentType == type ? "checked" : "")
+                                               style="width: 18px; height: 18px; margin-right: 10px; cursor: pointer;">
+                                        <label class="form-check-label" for="type-@type"
+                                               style="cursor: pointer; font-size: 14px; color: #555;">
+                                            @type
+                                        </label>
                                     </div>
                                 }
                             </div>
                         </div>
-                          <!-- Job Location -->
-                                <div class="filter-group">
-                                    <label>Job Location</label>
-                                    <select class="form-control form-control-sm h-auto" id="location">
-                                        <option value="">Anywhere</option>
-                                        @foreach (var location in Model.Locations)
-                                        {
-                                            <option value="@location" selected="@(Model.Location == location)">@location</option>
-                                        }
-                                    </select>
-                                </div>
 
-                           <!-- Experience -->
-                        <div class="filter-group">
-                            <label>Experience</label>
-                             <div class="custom-control-compact">
-                                        @foreach (var level in Model.ExperienceLevels)
-                                        {
-                                        <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" id="exp-@level" name="experienceLevel" class="custom-control-input" value="@level" @(Model.ExperienceLevel == level ? "checked" : "")>
-                                                <label class="custom-control-label" for="exp-@level">@level</label>
-                                        </div>
-                                        }
+                        <!-- Job Location -->
+                        <div class="filter-group" style="margin-bottom: 25px;">
+                            <label style="display: block; margin-bottom: 10px; font-weight: 600; color: #333; font-size: 15px; position: relative; padding-left: 15px; border-left: 3px solid #00BCD4;">
+                                <i class="lni lni-map-marker" style="margin-right: 8px; color: #00BCD4;"></i>
+                                Job Location
+                            </label>
+                            <select class="form-control-sm h-auto" id="location" style="border: 1px solid #e8e8e8; padding: 12px 15px; font-size: 14px; border-radius: 8px; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); appearance: none; background-image: url('data:image/svg+xml;utf8,<svg xmlns=\" http: //www.w3.org/2000/svg\" width=\"12\" height=\"6\">
+                                <path d=\"M0 0l6 6 6-6z\" fill=\"%2300BCD4\" /></svg>'); background-repeat: no-repeat; background-position: right 15px center; transition: all 0.3s ease;">
+                                <option value="">Anywhere</option>
+                                @foreach (var location in Model.Locations)
+                                {
+                                    <option value="@location" selected="@(Model.Location == location)">@location</option>
+                                }
+                            </select>
+                        </div>
+
+                        <!-- Experience -->
+                        <!-- Replace the Experience Level filter section with this -->
+                        <div class="filter-group" style="margin-bottom: 25px;">
+                            <label style="display: block; margin-bottom: 14px; font-weight: 600; color: #333; font-size: 15px; position: relative; padding-left: 15px; border-left: 3px solid #00BCD4;">
+                                <i class="lni lni-graduation" style="margin-right: 8px; color: #00BCD4;"></i>
+                                Experience Level
+                            </label>
+                            <div class="checkbox-container" style="display: flex; flex-direction: column; gap: 12px;">
+                                @foreach (var level in Model.ExperienceLevels)
+                                {
+                                    <div class="form-check" style="display: flex; align-items: center;">
+                                        <input class="form-check-input" type="checkbox"
+                                               id="exp-@level" value="@level" name="experienceLevel"
+                                        @(Model.ExperienceLevel == level ? "checked" : "")
+                                               style="width: 18px; height: 18px; margin-right: 10px; cursor: pointer;">
+                                        <label class="form-check-label" for="exp-@level"
+                                               style="cursor: pointer; font-size: 14px; color: #555;">
+                                            @level
+                                        </label>
                                     </div>
-                         </div>
-                        <button type="button" class="btn btn-primary btn-block btn-sm mt-3" id="applyFilters">Apply Filters</button>
-                        <button type="button" id="clearAllFilters" class="btn btn-danger btn-block btn-sm">Clear All </button>
+                                }
+                            </div>
+                        </div>
 
+                        <!-- Action Buttons -->
+                        <div class="filter-actions" style="display: flex; flex-direction: column; gap: 12px; margin-top: 30px;">
+                            <button type="button" class="btn btn-primary btn-block" id="applyFilters"
+                                    style="background-color: #00BCD4; color: white; padding: 14px 20px; border-radius: 30px; border: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 6px 15px rgba(0, 188, 212, 0.3); display: flex; align-items: center; justify-content: center;">
+                                <i class="lni lni-check-mark-circle" style="margin-right: 10px; font-size: 18px;"></i> Apply Filters
+                            </button>
+                            <button type="button" id="clearAllFilters" class="btn btn-danger btn-block"
+                                    style="background-color: #f8f9fa; color: #555; padding: 14px 20px; border-radius: 30px; border: 1px solid #ddd; font-weight: 500; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center;">
+                                <i class="lni lni-reload" style="margin-right: 10px; font-size: 18px; color: #f44336;"></i> Clear All
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Job Search Stats -->
+                <div class="search-stats" style="background: #fff; border-radius: 12px; box-shadow: 0 5px 20px rgba(0, 188, 212, 0.15); overflow: hidden; transition: transform 0.3s ease, box-shadow 0.3s ease; border-left: 4px solid #00BCD4; margin-top: 30px; padding: 20px;">
+                    <h5 style="font-size: 16px; font-weight: 600; color: #333; margin-bottom: 15px;">
+                        <i class="lni lni-graph" style="color: #00BCD4; margin-right: 8px;"></i> Search Stats
+                    </h5>
+                    <div style="display: flex; flex-direction: column; gap: 10px;">
+                        <div style="display: flex; justify-content: space-between; padding: 10px; background: #f9f9f9; border-radius: 6px;">
+                            <span style="font-weight: 500; color: #555;">Total Jobs:</span>
+                            <span style="font-weight: 600; color: #00BCD4;">@Model.TotalJobs</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 10px; background: #f9f9f9; border-radius: 6px;">
+                            <span style="font-weight: 500; color: #555;">Top Category:</span>
+                            <span style="font-weight: 600; color: #00BCD4;">IT & Software</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 10px; background: #f9f9f9; border-radius: 6px;">
+                            <span style="font-weight: 500; color: #555;">Popular Location:</span>
+                            <span style="font-weight: 600; color: #00BCD4;">Remote</span>
+                        </div>
                     </div>
                 </div>
             </div>
-            
+            <!-- Job Filter Section End -->
             <!-- Right content - Job Listings -->
-            <div class="col-xl-9 col-lg-9 col-md-8">
-                @* condition to show the message if no job found  *@
+            <div class="col-xl-8 col-lg-8 col-md-7">
                 @if (!string.IsNullOrEmpty(ViewBag.NoResultsMessage))
                 {
-                    <div class="alert alert-info">
-                        @ViewBag.NoResultsMessage
+                    <div class="alert alert-info" style="border-radius: 8px; border-left: 4px solid #00BCD4; background-color: rgba(0, 188, 212, 0.1); padding: 15px 20px; display: flex; align-items: center;">
+                        <i class="lni lni-information" style="font-size: 24px; color: #00BCD4; margin-right: 15px;"></i>
+                        <span>@ViewBag.NoResultsMessage</span>
                     </div>
                 }
 
-              
-                @* <!--part of number of jobs founnd in the websitr --> *@
-                <section class="featured-job-area">
-                    <div class="container">
-                        <!-- Count of Job list -->
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="count-job mb-35">
-                                    <span class="text-primary fw-bold">@Model.TotalJobs Jobs found</span>
-                                    <div class="select-job-items">
-                                        <!-- Select options go here -->
-                                    </div>
-                                </div>
-                            </div>
+                <!-- Jobs Found Header -->
+                <div class="jobs-header" style="background: linear-gradient(135deg, #00BCD4 0%, #00838F 100%); border-radius: 12px; padding: 20px 25px; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 5px 15px rgba(0, 188, 212, 0.2);">
+                    <div class="d-flex align-items-center">
+                        <i class="lni lni-briefcase" style="font-size: 26px; color: #fff; margin-right: 15px;"></i>
+                        <div>
+                            <h4 style="color: #fff; font-size: 20px; margin-bottom: 0; font-weight: 600;">@Model.TotalJobs Jobs Found</h4>
+                            @* <p style="color: rgba(255, 255, 255, 0.8); margin: 0; font-size: 14px;">Showing page @Model.CurrentPage of @Model.TotalPages</p> *@
                         </div>
                     </div>
-                </section>
-                        
-                <!-- Job Listings view mode to view all jobs as cards  with partial view -->
-                <div id="jobListingsContainer">
-                            @await Html.PartialAsync("_JobListPartial", Model.Jobs)
                 </div>
-                    </div>
-                </section>
+
+                <!-- Job Listings -->
+                <div id="jobListingsContainer">
+                    @await Html.PartialAsync("_JobListPartial", Model.Jobs)
+                </div>
             </div>
         </div>
     </div>
 </div>
 <!-- Job List Area End -->
-
-<!-- Start pagination -->               
-
+<!-- Enhanced Pagination -->
+<!-- Enhanced Pagination -->
 @if (Model.TotalPages > 1)
 {
     <div class="pagination-area py-4 text-center">
         <div class="container">
             <div class="row">
                 <div class="col-xl-12">
-                    <nav aria-label="Page navigation">
-                        <ul class="pagination justify-content-center">
-                            @if (Model.CurrentPage > 1)
+                    <ul class="pagination justify-content-center" style="gap: 8px;">
+                        @if (Model.CurrentPage > 1)
+                        {
+                            <li class="page-item">
+                                <a class="page-link" href="#" data-page="@(Model.CurrentPage - 1)" aria-label="Previous"
+                                   style="border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
+                                          border: 1px solid #e8e8e8; color: #00BCD4; transition: all 0.3s;">
+                                    <i class="lni lni-chevron-left"></i>
+                                </a>
+                            </li>
+                        }
+
+                        @{
+                            int startPage = Math.Max(1, Model.CurrentPage - 2);
+                            int endPage = Math.Min(Model.TotalPages, Model.CurrentPage + 2);
+
+                            if (startPage > 1)
                             {
                                 <li class="page-item">
-                                    <a class="page-link" href="#" data-page="@(Model.CurrentPage - 1)" aria-label="Previous">
-                                        <span aria-hidden="true">&laquo;</span>
+                                    <a class="page-link" href="#" data-page="1"
+                                       style="border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
+                                                  border: 1px solid #e8e8e8; color: #555;">1</a>
+                                </li>
+                                if (startPage > 2)
+                                {
+                                    <li class="page-item disabled">
+                                        <span class="page-link" style="border: none; background: transparent;">...</span>
+                                    </li>
+                                }
+                            }
+
+                            for (int i = startPage; i <= endPage; i++)
+                            {
+                                <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                                    <a class="page-link" href="#" data-page="@i"
+                                       style="@(i == Model.CurrentPage ? "background-color: #00BCD4; color: #fff; border-color: #00BCD4;" : "color: #555; border: 1px solid #e8e8e8;")
+                                                  border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
+                                        @i
                                     </a>
                                 </li>
                             }
 
-                            @{
-                                var startPage = Math.Max(1, Model.CurrentPage - 2);
-                                var endPage = Math.Min(Model.TotalPages, startPage + 4);
-
-                                if (startPage > 1)
-                                {
-                                    <li class="page-item">
-                                        <a class="page-link" href="#" data-page="1">1</a>
-                                    </li>
-
-                                    if (startPage > 2)
-                                    {
-                                        <li class="page-item disabled">
-                                            <span class="page-link">...</span>
-                                        </li>
-                                    }
-                                }
-
-                                for (int i = startPage; i <= endPage; i++)
-                                {
-                                    <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
-                                        <a class="page-link" href="#" data-page="@i">@i</a>
-                                    </li>
-                                }
-
-                                if (endPage < Model.TotalPages)
-                                {
-                                    if (endPage < Model.TotalPages - 1)
-                                    {
-                                        <li class="page-item disabled">
-                                            <span class="page-link">...</span>
-                                        </li>
-                                    }
-
-                                    <li class="page-item">
-                                        <a class="page-link" href="#" data-page="@Model.TotalPages">@Model.TotalPages</a>
-                                    </li>
-                                }
-                            }
-
-                            @if (Model.CurrentPage < Model.TotalPages)
+                            if (endPage < Model.TotalPages)
                             {
+                                if (endPage < Model.TotalPages - 1)
+                                {
+                                    <li class="page-item disabled">
+                                        <span class="page-link" style="border: none; background: transparent;">...</span>
+                                    </li>
+                                }
                                 <li class="page-item">
-                                    <a class="page-link" href="#" data-page="@(Model.CurrentPage + 1)" aria-label="Next">
-                                        <span aria-hidden="true">&raquo;</span>
-                                    </a>
+                                    <a class="page-link" href="#" data-page="@Model.TotalPages"
+                                       style="border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
+                                                  border: 1px solid #e8e8e8; color: #555;">@Model.TotalPages</a>
                                 </li>
                             }
-                        </ul>
-                    </nav>
+                        }
+
+                        @if (Model.CurrentPage < Model.TotalPages)
+                        {
+                            <li class="page-item">
+                                <a class="page-link" href="#" data-page="@(Model.CurrentPage + 1)" aria-label="Next"
+                                   style="border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
+                                          border: 1px solid #e8e8e8; color: #00BCD4; transition: all 0.3s;">
+                                    <i class="lni lni-chevron-right"></i>
+                                </a>
+                            </li>
+                        }
+                    </ul>
                 </div>
             </div>
         </div>
     </div>
 }
 
+<!-- Job Search Tips Section -->
+<section class="job-tips-section" style="background-color: #f9f9f9; padding: 60px 0; margin-top: 30px;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center">
+                <h3 style="color: #333; font-weight: 600; margin-bottom: 20px; position: relative; display: inline-block;">
+                    Job Search Tips
+                    <div style="position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); width: 60px; height: 3px; background-color: #00BCD4;"></div>
+                </h3>
+                <p style="color: #666; margin-bottom: 30px; font-size: 16px;">Maximize your job search success with these helpful tips</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="tip-card" style="background: #fff; border-radius: 10px; padding: 25px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); height: 100%; border-top: 3px solid #00BCD4; transition: transform 0.3s ease;">
+                    <div style="font-size: 44px; color: #00BCD4; margin-bottom: 15px;">
+                        <i class="lni lni-search"></i>
+                    </div>
+                    <h5 style="font-size: 18px; margin-bottom: 12px; color: #333; font-weight: 600;">Use Specific Keywords</h5>
+                    <p style="color: #666; font-size: 14px; line-height: 1.6;">Use industry-specific keywords in your search to find the most relevant job opportunities that match your skills and experience.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="tip-card" style="background: #fff; border-radius: 10px; padding: 25px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); height: 100%; border-top: 3px solid #00BCD4; transition: transform 0.3s ease;">
+                    <div style="font-size: 44px; color: #00BCD4; margin-bottom: 15px;">
+                        <i class="lni lni-alarm-clock"></i>
+                    </div>
+                    <h5 style="font-size: 18px; margin-bottom: 12px; color: #333; font-weight: 600;">Set Job Alerts</h5>
+                    <p style="color: #666; font-size: 14px; line-height: 1.6;">Create personalized job alerts to receive notifications when new positions that match your criteria are posted.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="tip-card" style="background: #fff; border-radius: 10px; padding: 25px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); height: 100%; border-top: 3px solid #00BCD4; transition: transform 0.3s ease;">
+                    <div style="font-size: 44px; color: #00BCD4; margin-bottom: 15px;">
+                        <i class="lni lni-reload"></i>
+                    </div>
+                    <h5 style="font-size: 18px; margin-bottom: 12px; color: #333; font-weight: 600;">Check Back Regularly</h5>
+                    <p style="color: #666; font-size: 14px; line-height: 1.6;">New job opportunities are posted daily. Make it a habit to check back regularly to stay on top of the latest openings.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
 @section Scripts {
     <script>
         $(document).ready(function() {
-            // Filter application
+            // Load filters from URL when page loads
+            loadFiltersFromUrl();
+
+            // Apply filters if URL has parameters
+            if (window.location.search) {
+                const page = new URLSearchParams(window.location.search).get('page') || 1;
+                applyFilters(page);
+            }
+
+            // Apply filters button click
             $('#applyFilters').click(function() {
-                applyFilters(1); // Reset to page 1 when applying filters
+                applyFilters(1); // Reset to page 1 when applying new filters
             });
 
-            // Pagination click
+            // Pagination click handler
             $(document).on('click', '.page-link', function(e) {
                 e.preventDefault();
                 var page = $(this).data('page');
@@ -249,33 +372,76 @@
                 }
             });
 
-            // Handle all checkboxes with class "filter-checkbox"
-            $('.filter-checkbox').change(function() {
-                var filterGroup = $(this).data('filter-group');
-                console.log("Changed filter in group:", filterGroup);
+            // Clear All Filters button
+            $('#clearAllFilters').click(function() {
+                // Reset all input fields
+                $('#keyword').val('');
+                $('#category').val('');
+                $('#location').val('');
+
+                // Uncheck all checkboxes
+                $('input[name="employmentType"]').prop('checked', false);
+                $('input[name="experienceLevel"]').prop('checked', false);
+
+                // Load default jobs without filters
+                loadDefaultJobs();
             });
 
-            // Function to clear a specific filter group
-            function clearFilterGroup(groupName) {
-                $('input[data-filter-group="' + groupName + '"]').prop('checked', false);
+            // Function to load filters from URL parameters
+            function loadFiltersFromUrl() {
+                const params = new URLSearchParams(window.location.search);
+
+                if (params.has('keyword')) $('#keyword').val(params.get('keyword'));
+                if (params.has('categoryId')) $('#category').val(params.get('categoryId'));
+                if (params.has('location')) $('#location').val(params.get('location'));
+
+                if (params.has('employmentType')) {
+                    const types = params.get('employmentType').split(',');
+                    types.forEach(type => {
+                        $(`input[name="employmentType"][value="${type}"]`).prop('checked', true);
+                    });
+                }
+
+                if (params.has('experienceLevel')) {
+                    const levels = params.get('experienceLevel').split(',');
+                    levels.forEach(level => {
+                        $(`input[name="experienceLevel"][value="${level}"]`).prop('checked', true);
+                    });
+                }
             }
 
-              // clear all filters // Clear All Filters
-                $('#clearAllFilters').click(function() {
-                    // Reset input fields
-                    $('#keyword').val('');
-                    $('#category').val('');
-                    $('#location').val('');
+            // Function to load default jobs (no filters)
+            function loadDefaultJobs() {
+                // Show loading indicator
+                $('#jobListingsContainer').html('<div class="text-center py-5"><i class="lni lni-spinner-arrow spin" style="font-size: 40px; color: #00BCD4;"></i></div>');
 
-                    // Uncheck all checkboxes
-                    $('input[name="employmentType"]').prop('checked', false);
-                    $('input[name="experienceLevel"]').prop('checked', false);
-
-                    // Re-apply filters (load page 1)
-                    applyFilters(1);
+                $.ajax({
+                    url: '@Url.Action("Search", "JobSearch")',
+                    type: 'POST',
+                    data: {
+                        currentPage: 1,
+                        pageSize: @Model.PageSize
+                    },
+                    headers: {
+                        'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+                    },
+                    success: function(result) {
+                        $('#jobListingsContainer').html(result);
+                        // Reset URL to initial state
+                        history.pushState(null, '', window.location.pathname);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Error loading default jobs:", error);
+                        $('#jobListingsContainer').html('<div class="alert alert-danger">Error loading jobs. Please try again.</div>');
+                    }
                 });
-            // Apply filters function
+            }
+
+            // Main function to apply filters
             function applyFilters(page = 1) {
+                // Show loading indicator
+                $('#jobListingsContainer').html('<div class="text-center py-5"><i class="lni lni-spinner-arrow spin" style="font-size: 40px; color: #00BCD4;"></i></div>');
+
                 // Get all checked employment types
                 var employmentTypes = [];
                 $('input[name="employmentType"]:checked').each(function() {
@@ -288,6 +454,7 @@
                     experienceLevels.push($(this).val());
                 });
 
+                // Prepare filters object
                 var filters = {
                     keyword: $('#keyword').val(),
                     categoryId: $('#category').val(),
@@ -298,11 +465,7 @@
                     pageSize: @Model.PageSize
                 };
 
-                console.log("Applying filters:", filters);
-
-                // Show loading indicator if needed
-                
-
+                // AJAX call to get filtered jobs
                 $.ajax({
                     url: '@Url.Action("Search", "JobSearch")',
                     type: 'POST',
@@ -313,31 +476,206 @@
                     success: function(result) {
                         $('#jobListingsContainer').html(result);
                         updateUrl(filters, page);
-                    
                     },
                     error: function(xhr, status, error) {
                         console.error("Error applying filters:", error);
-                
+                        $('#jobListingsContainer').html('<div class="alert alert-danger">Error loading jobs. Please try again.</div>');
                     }
                 });
             }
 
+            // Function to update URL with current filters
             function updateUrl(filters, currentPage) {
-                
-                var url = window.location.pathname + '?';
-                var params = [];
+                var params = new URLSearchParams();
 
-                if (filters.keyword) params.push('keyword=' + encodeURIComponent(filters.keyword));
-                if (filters.categoryId) params.push('categoryId=' + encodeURIComponent(filters.categoryId));
-                if (filters.location) params.push('location=' + encodeURIComponent(filters.location));
-                if (filters.employmentType) params.push('employmentType=' + encodeURIComponent(filters.employmentType));
-                if (filters.experienceLevel) params.push('experienceLevel=' + encodeURIComponent(filters.experienceLevel));
-                params.push('page=' + currentPage);
+                if (filters.keyword) params.append('keyword', filters.keyword);
+                if (filters.categoryId) params.append('categoryId', filters.categoryId);
+                if (filters.location) params.append('location', filters.location);
+                if (filters.employmentType) params.append('employmentType', filters.employmentType);
+                if (filters.experienceLevel) params.append('experienceLevel', filters.experienceLevel);
+                params.append('page', currentPage);
 
-                history.pushState(null, '', url + params.join('&'));
+                var newUrl = window.location.pathname + '?' + params.toString();
+                history.pushState(null, '', newUrl);
             }
         });
-
-               
+                // Add click effect to Clear All button
+        $('#clearAllFilters').on('mousedown', function() {
+            $(this).css('transform', 'translateY(1px)');
+        }).on('mouseup mouseleave', function() {
+            $(this).css('transform', 'translateY(0)');
+        });
     </script>
+    }
+
+    <style>
+        /* Loading spinner animation */
+        @@keyframes spin {
+            0%
+
+        {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+
+        }
+
+        @@keyframes pulse {
+            0%
+
+        {
+            transform: scale(1);
+        }
+
+        50% {
+            transform: scale(1.1);
+        }
+
+        100% {
+            transform: scale(1);
+        }
+
+        }
+
+       
+        /* Checkbox Styles */
+        .form-check-input,
+        .custom-control-input {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            width: 18px;
+            height: 18px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            outline: none;
+            transition: all 0.2s;
+            position: relative;
+            cursor: pointer;
+        }
+
+            .form-check-input:checked,
+            .custom-control-input:checked ~ .custom-control-label::before {
+                background-color: #00BCD4;
+                border-color: #00BCD4;
+                color: #fff;
+            }
+
+                .form-check-input:checked::after {
+                    content: "";
+                    position: absolute;
+                    left: 5px;
+                    top: 1px;
+                    width: 5px;
+                    height: 10px;
+                    border: solid white;
+                    border-width: 0 2px 2px 0;
+                    transform: rotate(45deg);
+                }
+
+        /* Pagination Styles */
+        .page-link {
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 3px;
+            transition: all 0.3s ease;
+        }
+
+        .page-item.active .page-link {
+            background-color: #00BCD4;
+            border-color: #00BCD4;
+            color: white;
+            z-index: 1;
+        }
+
+        .page-link:hover {
+            background-color: #f5f5f5;
+            color: #00BCD4;
+        }
+
+        .page-item.active .page-link:hover {
+            background-color: #00BCD4;
+            color: white;
+        }
+
+        /* Form Controls */
+        .form-control,
+        .input-group-text {
+            height: 46px;
+        }
+
+            .form-control:focus {
+                border-color: #00BCD4;
+                box-shadow: 0 0 0 0.2rem rgba(0, 188, 212, 0.25);
+            }
+
+        /* Layout Components */
+        .custom-control {
+            padding-left: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .filter-wrapper,
+        .tip-card {
+            transition: all 0.3s ease;
+        }
+
+            .filter-wrapper:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 8px 25px rgba(0, 188, 212, 0.15);
+            }
+
+            .tip-card:hover {
+                transform: translateY(-8px);
+                box-shadow: 0 10px 25px rgba(0, 188, 212, 0.2);
+            }
+
+            .filter-wrapper:hover .filter-header i.lni-filter {
+                animation: pulse 1s infinite;
+                color: #00BCD4;
+            }
+
+        .lni-spinner-arrow.spin {
+            animation: spin 1s linear infinite;
+        }
+
+        /* Responsive Adjustments */
+        @@media (max-width: 767px) {
+            .filter-wrapper
+
+        {
+            margin-bottom: 20px;
+        }
+
+        }
+    /* Clear All Button Styles */
+    #clearAllFilters {
+        transition: all 0.3s ease;
+        background-color: #f8f9fa !important;
+        color: #555 !important;
+        border: 1px solid #ddd !important;
+    }
+
+        #clearAllFilters:hover {
+            background-color: #f44336 !important;
+            color: white !important;
+            border-color: #f44336 !important;
+        }
+
+            #clearAllFilters:hover i {
+                color: white !important;
+            }
+
+        #clearAllFilters:active {
+            background-color: #d32f2f !important;
+            transform: translateY(1px);
+        }
+    </style>
 }

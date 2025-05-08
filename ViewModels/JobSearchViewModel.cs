@@ -33,10 +33,14 @@ namespace Job_Portal_Project.ViewModels
         //catigories
         public string? CategoryName { get; set; }
 
+        public List<Favourites> BookmarkedJobs { get; set; }
+        public bool IsBookmarked { get; set; }
+
+
 
         // browser pagination 
         public int CurrentPage { get; set; } = 1;
-        public int PageSize { get; set; } = 6;
+        public int PageSize { get; set; } = 5;
         public int TotalJobs { get; set; }
         public int TotalPages => (int)Math.Ceiling(TotalJobs / (double)PageSize);
 

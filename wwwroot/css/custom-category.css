@@ -1,0 +1,72 @@
+.col-lg-3.col-md-6.col-xs-12.f-category {
+    background: linear-gradient(135deg, rgba(0, 188, 212, 0.15) 0%, rgba(0, 151, 167, 0.15) 100%) !important;
+}
+/* Custom styles for category items */
+.category-item {
+    background: linear-gradient(135deg, rgba(0, 188, 212, 0.15) 0%, rgba(0, 151, 167, 0.15) 100%) !important;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    text-align: center;
+    padding: 20px 10px;
+    margin-bottom: 30px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+    .category-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    }
+
+.category-icon {
+    font-size: 40px;
+    padding: 20px;
+    border-radius: 50%;
+    margin-bottom: 15px;
+    transition: background-color 0.3s ease;
+    display: inline-block;
+    color: #fff;
+    background-color: #00BCD4;
+}
+
+.category-item:hover .category-icon {
+    background-color: #0097A7;
+}
+
+.category-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    transition: color 0.3s ease;
+    margin-bottom: 5px;
+}
+
+.category-item:hover .category-title {
+    color: #00BCD4;
+}
+
+.job-count {
+    margin: 5px 0 0;
+    color: #666;
+    font-size: 14px;
+}
+
+/* For existing f-category class if you still need to style it */
+.f-category {
+    background: linear-gradient(135deg, rgba(0, 188, 212, 0.15) 0%, rgba(0, 151, 167, 0.15) 100%) !important;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .category-item {
+        padding: 15px 8px;
+    }
+
+    .category-icon {
+        font-size: 32px;
+        padding: 15px;
+    }
+
+    .category-title {
+        font-size: 16px;
+    }
+}

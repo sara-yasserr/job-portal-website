@@ -1,62 +1,110 @@
 ﻿@model IEnumerable<Job_Portal_Project.Models.Job>
 
-<div class="row">
-    @if (Model.Any())
+@if (Model.Any())
+{
+    foreach (var job in Model)
     {
-        foreach (var job in Model)
-        {
-            <div class="col-lg-12 col-md-12 col-xs-12">
-                <div class="job-listings">
-                    <div class="row align-items-center">
-                        <div class="col-lg-2 col-md-2 col-xs-12">
-                            <div class="job-company-logo text-center">
-                                <a href="/JobSearch/Details/@job.Id'">
-                                    <img src="/@(job.Company?.LogoPath )" alt="@job.Company?.Name">
-                                </a>
-                            </div>
+        <div class="job-card" style="background: #fff; border-radius: 12px; box-shadow: 0 3px 15px rgba(0,0,0,0.08); margin-bottom: 20px; transition: all 0.3s ease;  overflow: hidden;">
+            <div class="job-card-inner" style="padding: 25px;">
+                <div class="row align-items-center">
+                    <!-- Company Logo -->
+                    <div class="col-lg-2 col-md-3 col-sm-4">
+                        <div class="company-logo" style="text-align: center; background: #f9f9f9; border-radius: 8px; padding: 15px; height: 100px; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+                            <a href="/JobSearch/Details/@job.Id">
+                                <img src="/@(job.Company?.LogoPath)" alt="@job.Company?.Name" style="max-width: 100%; max-height: 70px; object-fit: contain;">
+                            </a>
                         </div>
-                        <div class="col-lg-7 col-md-7 col-xs-12">
-                            <div class="job-details">
-                                <h3><a asp-action="Details" asp-route-id="@job.Id">@job.Title</a></h3>
-                                <div class="job-meta">
-                                    <span class="location"><i class="lni-alarm-clock"></i> @job.DatePosted.ToString("dd MMM yyyy")</span> &nbsp;&nbsp;&nbsp; <br />
-                                    <span class="job-type @job.EmploymentType.ToLower()"><i class="lni-tag"></i> @job.EmploymentType</span>
-                                </div>
-                                <div class="job-description">
-                                    @{
-                                        var preview = string.Join(" ", job.Description.Split(' ').Take(10)) + "...";
-                                    }
-                                    <p>@preview</p>
-                                    <a data-bs-toggle="collapse" href="/JobSearch/Details/@job.Id'" class="read-more">Read More</a>
-                                </div>
-                                <div class="job-meta">
-                                    <span class="company-name"><i class="lni-briefcase"></i> @job.Company?.Name</span>
-                                    <span class="location"><i class="lni-map-marker"></i> @job.City, @job.Country</span> &nbsp;&nbsp;&nbsp; <br />
-                                
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-3 col-xs-12">
-                            <div class="job-actions text-right">
-                                <a href="#" class="save-job mr-2" data-job-id="@job.Id">
-                                    <i class="lni-heart" style="padding: 10px;"></i>
-                                </a>
+                    </div>
 
-                                <a asp-action="EasyApply" asp-controller="JobApplication" asp-route-jobId="@job.Id" class="btn btn-sm btn-common">Easy apply</a>
-                               
+                    <!-- Job Details -->
+                    <div class="col-lg-7 col-md-6 col-sm-8">
+                        <div class="job-info" style="padding-left: 10px;">
+                            <h3 style="font-size: 20px; font-weight: 600; margin-bottom: 12px; color: #333;">
+                                <a href="/JobSearch/Details/@job.Id" style="color: #333; text-decoration: none; transition: all 0.2s ease;">@job.Title</a>
+                            </h3>
+
+                            <div class="company-name" style="margin-bottom: 10px; font-size: 15px;">
+                                <i class="lni lni-briefcase" style="color: #00BCD4; margin-right: 5px;"></i>
+                                <span style="color: #555; font-weight: 500;">@job.Company?.Name</span>
                             </div>
+
+                            <div class="job-meta" style="display: flex; flex-wrap: wrap; margin-bottom: 12px; gap: 15px;">
+                                <div class="location" style="display: flex; align-items: center;">
+                                    <i class="lni lni-map-marker" style="color: #00BCD4; margin-right: 5px;"></i>
+                                    <span style="color: #666; font-size: 14px;">@job.City, @job.Country</span>
+                                </div>
+
+                                <div class="job-type" style="display: flex; align-items: center;">
+                                    <i class="lni lni-tag" style="color: #00BCD4; margin-right: 5px;"></i>
+                                    <span class="badge" style="background-color: @GetJobTypeBadgeColor(job.EmploymentType); color: white; padding: 5px 10px; border-radius: 20px; font-size: 12px; font-weight: 500;">@job.EmploymentType</span>
+                                </div>
+
+                                <div class="posted-date" style="display: flex; align-items: center;">
+                                    <i class="lni lni-alarm-clock" style="color: #00BCD4; margin-right: 5px;"></i>
+                                    <span style="color: #666; font-size: 14px;">@job.DatePosted.ToString("dd MMM yyyy")</span>
+                                </div>
+                            </div>
+
+                            <div class="job-description" style="color: #777; font-size: 14px; line-height: 1.6; margin-bottom: 15px;">
+                                @{
+                                    var preview = string.Join(" ", job.Description.Split(' ').Take(20)) + "...";
+                                }
+                                <p>@preview</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Job Actions -->
+                    <div class="col-lg-3 col-md-3 col-sm-12">
+                        <div class="job-actions" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 15px;">
+                            <a href="/JobSearch/Details/@job.Id" class="btn details-btn" style="background-color: #00BCD4; color: white; padding: 10px 24px; border-radius: 25px; text-decoration: none; display: flex; align-items: center; justify-content: center; font-weight: 500; transition: all 0.3s ease; border: none; box-shadow: 0 4px 10px rgba(108, 117, 125, 0.2); width: 100%; max-width: 160px;">
+                                Show Details
+                            </a>
+                            <a href="/JobSearch/Details/@job.Id" class="btn apply-btn" style="background-color: #00BCD4; color: white; padding: 10px 24px; border-radius: 25px; text-decoration: none; display: flex; align-items: center; justify-content: center; font-weight: 500; transition: all 0.3s ease; border: none; box-shadow: 0 4px 10px rgba(0, 188, 212, 0.2); width: 100%; max-width: 160px;">
+                                <i class="lni lni-arrow-right" style="margin-right: 8px;"></i> Apply Now
+                            </a>
+                          
+                           
                         </div>
                     </div>
                 </div>
             </div>
-        }
-    }
-    else
-    {
-        <div class="col-lg-12 col-md-12 col-xs-12">
-            <div class="alert alert-warning">
-                No jobs found matching your criteria.
-            </div>
         </div>
     }
-</div>
+}
+else
+{
+    <div class="no-jobs-found" style="background: #fff; border-radius: 12px; box-shadow: 0 3px 15px rgba(0,0,0,0.08); padding: 40px; text-align: center; margin-bottom: 30px;">
+        <div style="font-size: 60px; color: #ddd; margin-bottom: 20px;">
+            <i class="lni lni-search"></i>
+        </div>
+        <h3 style="font-size: 24px; color: #555; margin-bottom: 15px;">No Results Found</h3>
+        <p style="color: #777; margin-bottom: 25px;">We couldn't find any jobs matching your search criteria. Try adjusting your filters.</p>
+        <a href="/JobSearch" class="btn reset-search" style="background-color: #00BCD4; color: white; padding: 12px 30px; border-radius: 30px; text-decoration: none; font-weight: 500; transition: all 0.3s ease;">
+            <i class="lni lni-reload" style="margin-right: 8px;"></i> Reset Search
+        </a>
+    </div>
+}
+
+@functions {
+    public string GetJobTypeBadgeColor(string jobType)
+    {
+        switch (jobType?.ToLower())
+        {
+            case "full-time":
+                return "#00BCD4";
+            case "part-time":
+                return "#FFA000";
+            case "freelance":
+                return "#8BC34A";
+            case "internship":
+                return "#9C27B0";
+            case "remote":
+                return "#3F51B5";
+            case "contract":
+                return "#FF5722";
+            default:
+                return "#607D8B";
+        }
+    }
+}

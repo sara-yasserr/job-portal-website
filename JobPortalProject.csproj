@@ -27,7 +27,6 @@
     <Folder Include="Data\" />
     <Folder Include="wwwroot\Uploads\" />
     <Folder Include="Models\" />
-    <Folder Include="wwwroot\css\" />
     <Folder Include="wwwroot\images\" />
     <Folder Include="wwwroot\js\" />
     <Folder Include="wwwroot\lib\bootstrap\" />

@@ -10,22 +10,27 @@ namespace Job_Portal_Project.Repositories
         {
             _context = context;
         }
+
         public List<Company> GetAll()
         {
             return _context.Companies.ToList();
         }
+
         public Company GetById<I>(I id)
         {
             return _context.Companies.Find(id);
         }
+
         public void Insert(Company entity)
         {
             _context.Companies.Add(entity);
         }
+
         public void Update(Company entity)
         {
             _context.Companies.Update(entity);
         }
+
         public void Delete<I>(I id)
         {
             var company = _context.Companies.Find(id);
@@ -34,10 +39,12 @@ namespace Job_Portal_Project.Repositories
                 _context.Companies.Remove(company);
             }
         }
+
         public void Save()
         {
             _context.SaveChanges();
         }
+
         public List<Company> FilterCompanies(string name, string city, string country)
         {
             var query = _context.Companies.AsQueryable();

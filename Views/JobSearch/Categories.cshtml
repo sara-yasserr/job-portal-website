@@ -3,154 +3,216 @@
     ViewData["Title"] = "Browse Categories";
 }
 
-
-
-
-<!-- Page Header Start -->
-<div class="page-header">
+<!-- Hero Section Start -->
+<div class="category-hero-section" style="background-image: url('/assets/images/Dcover.jpg'); background-size: cover; padding: 80px 0; position: relative; z-index: 1; text-align: center; color: #fff; overflow: hidden;">
+    <div class="overlay-bg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(22, 28, 45, 0.7); z-index: -1;"></div>
     <div class="container">
         <div class="row">
-            <div class="col-lg-12">
-                <div class="inner-header">
-                    <h3>Browse Categories</h3>
+            <div class="col-12">
+                <div class="breadcrumbs-content">
+                    <h1 class="page-title" style="font-size: 2.5rem; font-weight: 700; margin-bottom: 15px; color: #fff; text-shadow: 0px 2px 8px rgba(0,0,0,0.2); position: relative; display: inline-block;">
+                        Browse Job <span style="color: #00BCD4;">Categories</span>
+                        <div class="title-accent" style="position: absolute; bottom: -5px; left: 50%; transform: translateX(-50%); width: 80px; height: 4px; background-color: #00BCD4; border-radius: 2px;"></div>
+                    </h1>
+                    <p style="font-size: 1.1rem; max-width: 700px; margin: 20px auto 0; color: #fff; line-height: 1.6; text-shadow: 0px 1px 2px rgba(0,0,0,0.2);">
+                        Explore a wide range of job categories to find the perfect role that matches your skills and passion.
+                    </p>
                 </div>
+                <ul class="breadcrumb-nav" style="display: flex; justify-content: center; list-style: none; margin-top: 25px; padding: 0; flex-wrap: wrap;">
+                    <li style="margin: 5px;"><a href="/" style="color: #fff; text-decoration: none; font-weight: 500; transition: all 0.3s ease;">Home</a></li>
+                    <li style="margin: 5px; position: relative; padding-left: 15px;">
+                        <a href="/JobSearch/Index" style="color: #fff; text-decoration: none; font-weight: 500; transition: all 0.3s ease;">Jobs</a>
+                    </li>
+                    <li style="margin: 5px; position: relative; padding-left: 15px;">
+                        <span style="color: #00BCD4; font-weight: 600;">Categories</span>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
 </div>
-<!-- Page Header End -->
+<!-- Hero Section End -->
 
-<!-- Category Section Start -->
-<section class="category section bg-gray">
-    <div class="container">
-        <div class="section-header">
-            <h2 class="section-title">Browse Categories</h2>
-            <p>Most popular categories of portal, sorted by popularity</p>
-        </div>
-        <partial name="_CategoriesPartial" model="Model" />
-    </div>
-</section>
+
+<!-- Categories partial will be included here -->
+<div>
+    <partial name="_CategoryPartial" model="Model" />
+</div>
 <!-- Category Section End -->
 
-<!-- Featured Section Start -->
-<section class="featured-jobs section">
+<!-- Featured Categories Section -->
+<section class="featured-categories-section" style="background-color: #f8f9fa; position: relative; overflow: hidden;">
+    <!-- Decorative Elements -->
+    <div style="position: absolute; top: 50px; left: 5%; width: 100px; height: 100px; border-radius: 50%; background: linear-gradient(135deg, rgba(0, 188, 212, 0.05) 0%, rgba(0, 151, 167, 0.05) 100%);"></div>
+    <div style="position: absolute; bottom: 80px; right: 10%; width: 150px; height: 150px; border-radius: 50%; background: linear-gradient(135deg, rgba(0, 188, 212, 0.03) 0%, rgba(0, 151, 167, 0.03) 100%);"></div>
+
     <div class="container">
-        <div class="section-header">
-            <h2 class="section-title">Popular Categories</h2>
-            <p>Hand-picked jobs featured depending on popularity and benefits</p>
+        <div class="section-header text-center" style="margin-bottom: 40px;">
+            <div class="section-icon" style="margin-bottom: 15px;">
+                <i class="lni lni-star-filled" style="font-size: 28px; color: #00BCD4; display: inline-block; padding: 15px; border-radius: 50%; background: rgba(0, 188, 212, 0.1); box-shadow: 0 8px 15px rgba(0, 188, 212, 0.15);"></i>
+            </div>
+            <h2 class="section-title" style="font-size: 2rem; font-weight: 700; color: #333; margin-bottom: 15px; position: relative; display: inline-block;">
+                Featured <span style="color: #00BCD4;">Categories</span>
+                <div style="width: 80px; height: 3px; background: linear-gradient(90deg, #00BCD4, #0097A7); margin: 12px auto 0; border-radius: 2px;"></div>
+            </h2>
+            <p style="color: #666; font-size: 1rem; max-width: 650px; margin: 15px auto 0; line-height: 1.6;">The most in-demand job categories with excellent opportunities for your career growth</p>
         </div>
-        <div class="row">
+
+        <div class="row justify-content-center">
             @foreach (var item in Model.OrderByDescending(c => c.JobCount).Take(4))
             {
-                <div class="col-lg-6 col-md-12 col-xs-12">
-                    <div class="job-featured">
-                        <div class="icon bg-color-@(Math.Abs(item.Category.Id % 8) + 1)">
-                            @{
-                                string iconClass = "lni-home";
-                                switch (Math.Abs(item.Category.Id % 8))
-                                {
-                                    case 1: iconClass = "lni-world"; break;
-                                    case 2: iconClass = "lni-book"; break;
-                                    case 3: iconClass = "lni-display"; break;
-                                    case 4: iconClass = "lni-brush"; break;
-                                    case 5: iconClass = "lni-heart"; break;
-                                    case 6: iconClass = "lni-funnel"; break;
-                                    case 7: iconClass = "lni-cup"; break;
-                                }
-                            }
-                            <i class="@iconClass"></i>
+                <div class="col-lg-5 col-md-6 mb-4">
+                    <div class="featured-category-card" style="border-radius: 12px; overflow: hidden; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08); background: #fff; transition: all 0.3s ease; text-align: center; padding: 20px 15px; height: auto; max-height: 280px; border: 1px solid rgba(0, 188, 212, 0.15); position: relative; cursor: pointer; display: flex; flex-direction: column; align-items: center;"
+                         onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 15px 30px rgba(0, 188, 212, 0.15)'; this.querySelector('.category-icon').style.transform='scale(1.05) rotate(3deg)'; this.querySelector('.category-title').style.color='#00BCD4';"
+                         onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 10px 25px rgba(0, 0, 0, 0.08)'; this.querySelector('.category-icon').style.transform='scale(1) rotate(0)'; this.querySelector('.category-title').style.color='#333';">
+
+                        <!-- Decorative elements -->
+                        <div style="position: absolute; top: 15px; right: 15px; display: flex; flex-wrap: wrap; width: 25px;">
+                            <span style="width: 4px; height: 4px; background-color: rgba(0, 188, 212, 0.3); margin: 2px; border-radius: 50%;"></span>
+                            <span style="width: 4px; height: 4px; background-color: rgba(0, 188, 212, 0.3); margin: 2px; border-radius: 50%;"></span>
+                            <span style="width: 4px; height: 4px; background-color: rgba(0, 188, 212, 0.3); margin: 2px; border-radius: 50%;"></span>
+                            <span style="width: 4px; height: 4px; background-color: rgba(0, 188, 212, 0.3); margin: 2px; border-radius: 50%;"></span>
                         </div>
-                        <div class="content">
-                            <h3><a asp-action="CategoryJobs" asp-route-id="@item.Category.Id">@item.Category.Name</a></h3>
-                            <p class="brand">@( "Find jobs in " + item.Category.Name)</p>
-                            <div class="tags">
-                                <span><i class="lni-tag"></i> @item.JobCount jobs</span>
-                                <span class="ml-3"><i class="lni-star"></i> Popular</span>
-                            </div>
-                            <div class="mt-3">
-                                <a asp-action="CategoryJobs" asp-route-id="@item.Category.Id" class="btn btn-sm btn-primary">Browse Jobs</a>
+
+                        <div style="position: absolute; bottom: 10px; left: 10px; width: 40px; height: 40px; border-radius: 8px; background: linear-gradient(135deg, rgba(0, 188, 212, 0.05) 0%, rgba(0, 151, 167, 0.05) 100%);"></div>
+
+                        <div class="card-content-wrapper" style="display: flex; width: 100%; align-items: center; justify-content: space-between; margin-bottom: 15px;">
+                            <!-- Category Icon (smaller size) -->
+                            @* <div class="category-icon" style="width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #00BCD4 0%, #0097A7 100%); display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 20px rgba(0, 188, 212, 0.25); position: relative; transition: all 0.3s ease; margin: 0 15px 0 0;"> *@
+                            @*     <div style="position: absolute; width: 92%; height: 92%; border-radius: 50%; border: 2px dashed rgba(255, 255, 255, 0.6); animation: spin 15s linear infinite;"></div> *@
+                            @*     <div style="position: absolute; width: 80%; height: 80%; border-radius: 50%; background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 70%);"></div> *@
+                            @*     <i class="lni lni-briefcase" style="font-size: 24px; color: #fff; position: relative;"></i> *@
+                            @* </div> *@
+
+                            <div style="flex: 1; text-align: left;">
+                                <h3 class="category-title" style="font-size: 1.2rem; font-weight: 700; color: #333; margin-bottom: 8px; transition: color 0.3s ease;">
+                                    <a style="text-decoration: none; color: inherit;">@item.Category.Name</a>
+                                </h3>
+
+                                <div class="job-count" style="display: inline-block; padding: 4px 12px; background: linear-gradient(135deg, rgba(0, 188, 212, 0.15) 0%, rgba(0, 151, 167, 0.15) 100%); color: #00BCD4; border-radius: 50px; font-weight: 600; font-size: 0.85rem; box-shadow: 0 4px 10px rgba(0, 188, 212, 0.1);">
+                                    <span style="font-weight: 700;">@item.JobCount</span> jobs
+                                </div>
                             </div>
                         </div>
+
+                        <p style="margin: 0 0 15px; color: #666; font-size: 0.9rem; line-height: 1.5; padding: 0 5px; text-align: center;">Find the best opportunities in this high-demand field with competitive salaries.</p>
+
+                        <a  href="/JobSearch/Index" style="display: inline-flex; align-items: center; padding: 8px 18px;background: linear-gradient(135deg, rgb(0, 188, 212) 0%, rgb(0, 151, 167) 100%); color: rgb(255, 255, 255); font-weight: 600; border-radius: 50px; font-size: 0.85rem; text-decoration: none; transition: all 0.3s ease; box-shadow: 0 6px 15px rgba(0, 188, 212, 0.2); margin-top: auto;"
+                           onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 20px rgba(0, 188, 212, 0.3)';"
+                           onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 15px rgba(0, 188, 212, 0.2)';">
+                            Explore Jobs <i class="lni lni-arrow-right" style="margin-left: 6px; font-size: 10px;"></i>
+                        </a>
                     </div>
                 </div>
             }
         </div>
-        <div class="row">
-            <div class="col-12 text-center mt-4">
-                <a asp-action="Index" class="btn btn-primary">View All Categories</a>
-            </div>
-        </div>
     </div>
 </section>
-<!-- Featured Section End -->
+
 @section Styles {
     <style>
-        /* Popular Categories Section Enhancements */
-        .job-featured {
-            display: flex;
-            padding: 25px;
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            margin-bottom: 30px;
-            transition: all 0.3s ease;
-            border-left: 4px solid #12c1d7;
+  
+        @@keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        .category-card:hover {
+            transform: translateY(-5px) !important;
+            box-shadow: 0 15px 30px rgba(0, 188, 212, 0.1) !important;
+            border-color: rgba(0, 188, 212, 0.3) !important;
         }
 
-            .job-featured:hover {
-                transform: translateY(-5px);
-                box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            .category-card:hover .category-icon {
+                transform: scale(1.1) !important;
+                background: linear-gradient(135deg, rgba(0, 188, 212, 0.2) 0%, rgba(0, 151, 167, 0.2) 100%) !important;
             }
 
-            .job-featured .icon {
-                width: 70px;
-                height: 70px;
-                line-height: 70px;
-                text-align: center;
-                font-size: 28px;
-                border-radius: 50%;
-                margin-right: 20px;
-                flex-shrink: 0;
+            .category-card:hover h3 {
+                color: #00BCD4 !important;
             }
 
-            .job-featured .content {
-                flex-grow: 1;
+            .category-card:hover a {
+                background: linear-gradient(135deg, #00BCD4 0%, #0097A7 100%) !important;
+                color: #fff !important;
             }
 
-            .job-featured h3 {
-                font-size: 20px;
-                font-weight: 600;
-                margin-bottom: 5px;
+        /* Responsive adjustments */
+        @@media (max-width: 1200px) {
+            .category-card {
+                padding: 20px 15px !important;
             }
-
-            .job-featured .brand {
-                color: #666;
-                margin-bottom: 10px;
-            }
-
-            .job-featured .tags {
-                font-size: 14px;
-                color: #777;
-            }
-
-                .job-featured .tags i {
-                    margin-right: 5px;
-                }
-
-                .job-featured .tags .lni-star {
-                    color: #ffc107;
-                }
-
-        .btn-primary {
-            background-color: #12c1d7;
-            border-color: #12c1d7;
-            padding: 8px 20px;
-            font-size: 14px;
         }
 
-            .btn-primary:hover {
-                background-color: #12c1d7;
-                border-color: #12cld17;
+        @@media (max-width: 992px) {
+            .category-card {
+                padding: 18px 12px !important;
             }
+
+            .category-icon {
+                width: 60px !important;
+                height: 60px !important;
+            }
+
+            h3 {
+                font-size: 1rem !important;
+            }
+        }
+
+        @@media (max-width: 768px) {
+            .category-hero-section {
+                padding: 60px 0 !important;
+            }
+
+            .page-title {
+                font-size: 2rem !important;
+            }
+
+            .featured-category-card {
+                padding: 15px 12px !important;
+                max-height: 250px !important;
+            }
+
+            .category-icon {
+                width: 50px !important;
+                height: 50px !important;
+            }
+
+            .category-title {
+                font-size: 1.1rem !important;
+            }
+        }
+
+        @@media (max-width: 576px) {
+            .section-title {
+                font-size: 1.5rem !important;
+            }
+
+            .featured-categories-section .row > div {
+                flex: 0 0 100% !important;
+                max-width: 100% !important;
+            }
+
+            .card-content-wrapper {
+                flex-direction: column !important;
+                text-align: center !important;
+            }
+
+            .category-icon {
+                margin: 0 0 10px 0 !important;
+            }
+
+            .card-content-wrapper div:nth-child(2) {
+                text-align: center !important;
+            }
+
+            .category-card {
+                padding: 15px 10px !important;
+            }
+        }
     </style>
 }
