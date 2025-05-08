@@ -4,54 +4,269 @@
     ViewData["Title"] = "AddCompany";
 }
 
-<div class="container py-4">
+<style>
+    body {
+        background: linear-gradient(-45deg, #f5f9fc, #e0f7fa, #f1f8e9, #fce4ec);
+        background-size: 400% 400%;
+        animation: gradientBG 15s ease infinite;
+        font-family: 'Roboto', sans-serif;
+    }
+
+    @@keyframes gradientBG {
+        0%
+
+    {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+
+    }
+
+
+    .container {
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    .page-title {
+        text-align: center;
+        color: #00BCD4;
+        font-size: 2rem;
+        font-weight: 600;
+        margin-bottom: 20px;
+    }
+
+    .form-container {
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        animation: fadeIn 0.8s ease-out;
+        margin-top: 20px;
+        display: flex;
+        gap: 30px;
+        height: 100%;
+        min-height: 500px;
+    }
+
+    @@keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .image-section {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: stretch;
+        animation: rotateIn 0.6s ease-out;
+    }
+
+    @@keyframes rotateIn {
+        from {
+            opacity: 0;
+            transform: rotate(-10deg) scale(0.9);
+        }
+
+        to {
+            opacity: 1;
+            transform: rotate(0deg) scale(1);
+        }
+    }
+
+    .image-section img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-section {
+        flex: 2;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        height: 100%;
+    }
+
+    .form-label {
+        font-weight: 500;
+        color: #2D3748;
+        margin-bottom: 8px;
+        font-size: 1rem;
+    }
+
+    .form-control {
+        border: 1px solid #e0e0e0;
+        border-radius: 6px;
+        padding: 12px;
+        font-size: 1rem;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        animation: slideInRight 0.5s ease-out;
+        animation-fill-mode: backwards;
+    }
+
+    @@keyframes slideInRight {
+        from {
+            opacity: 0;
+            transform: translateX(15px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    .form-control:focus {
+        border-color: #00BCD4;
+        box-shadow: 0 0 0 0.2rem rgba(0, 188, 212, 0.25);
+        outline: none;
+    }
+
+    .form-control.is-invalid {
+        border-color: #dc3545;
+    }
+
+    .invalid-feedback {
+        color: #dc3545;
+        font-size: 0.875rem;
+    }
+
+    .text-danger {
+        color: #dc3545 !important;
+        font-size: 0.875rem;
+    }
+
+    .btn-primary {
+        background-color: #00BCD4;
+        border: none;
+        border-radius: 6px;
+        padding: 12px 30px;
+        font-weight: 500;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+
+        .btn-primary:hover {
+            background-color: #0097a7;
+            transform: scale(1.05);
+            box-shadow: 0 4px 10px rgba(0, 188, 212, 0.3);
+        }
+
+    .text-center {
+        margin-top: 25px;
+    }
+
+    .back-link {
+        display: inline-block;
+        margin-top: 25px;
+        color: #00BCD4;
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 1rem;
+        transition: color 0.3s ease, transform 0.3s ease;
+    }
+
+        .back-link:hover {
+            color: #0097a7;
+            transform: translateX(5px);
+        }
+
+    .mb-3:nth-child(1) .form-control {
+        animation-delay: 0.1s;
+    }
+
+    .mb-3:nth-child(2) .form-control {
+        animation-delay: 0.2s;
+    }
+
+    .mb-3:nth-child(3) .form-control {
+        animation-delay: 0.3s;
+    }
+
+    .mb-3:nth-child(4) .form-control {
+        animation-delay: 0.4s;
+    }
+
+    .mb-3:nth-child(5) .form-control {
+        animation-delay: 0.5s;
+    }
+</style>
+
+<div class="container">
+    <h2 class="page-title">Add New Company</h2>
     <div class="row justify-content-center">
-        <div class="col-md-6">
-            <form asp-action="SaveNew" method="post" asp-controller="Employer" enctype="multipart/form-data">
-                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
-
-
-                <div class="mb-3">
-                    <label asp-for="Name" class="form-label"></label>
-                    <input asp-for="Name" class="form-control @(ViewData.ModelState["Name"]?.Errors.Count > 0 ? "is-invalid" : "")" />
-                    <span asp-validation-for="Name" class="invalid-feedback"></span>
+        <div class="col-12">
+            <div class="form-container">
+                <div class="image-section">
+                    <img src="https://images.pexels.com/photos/443383/pexels-photo-443383.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Company Image" />
                 </div>
+                <div class="form-section">
+                    <form asp-action="SaveNew" method="post" asp-controller="Employer" enctype="multipart/form-data">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
-                <div class="mb-3">
-                    <label asp-for="Description" class="form-label">Description</label>
-                    <input asp-for="Description" class="form-control" placeholder="Enter Description" />
-                    <span asp-validation-for="Description" class="text-danger"></span>
-                </div>
+                        <div class="mb-3">
+                            <label asp-for="Name" class="form-label"></label>
+                            <input asp-for="Name" class="form-control @(ViewData.ModelState["Name"]?.Errors.Count > 0 ? "is-invalid" : "")" />
+                            <span asp-validation-for="Name" class="invalid-feedback"></span>
+                        </div>
 
-                
-                <div class="mb-3">
-                    <label asp-for="City" class="form-label">City</label>
-                    <input asp-for="City" class="form-control" placeholder="Enter City" />
-                    <span asp-validation-for="City" class="text-danger"></span>
-                </div>
+                        <div class="mb-3">
+                            <label asp-for="Description" class="form-label">Description</label>
+                            <input asp-for="Description" class="form-control" placeholder="Enter Description" />
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
 
-                <div class="mb-3">
-                    <label asp-for="Country" class="form-label">Country</label>
-                    <input asp-for="Country" class="form-control" placeholder="Enter Country" />
-                    <span asp-validation-for="Country" class="text-danger"></span>
-                </div>
+                        <div class="mb-3">
+                            <label asp-for="City" class="form-label">City</label>
+                            <input asp-for="City" class="form-control" placeholder="Enter City" />
+                            <span asp-validation-for="City" class="text-danger"></span>
+                        </div>
 
-                <div class="mb-3">
-                    <label for="LogoFile" class="form-label">Company Logo</label>
-                    <input type="file" name="LogoFile" class="form-control" accept="image/*" />
-                    <span asp-validation-for="LogoPath" class="text-danger"></span>
-                </div>
+                        <div class="mb-3">
+                            <label asp-for="Country" class="form-label">Country</label>
+                            <input asp-for="Country" class="form-control" placeholder="Enter Country" />
+                            <span asp-validation-for="Country" class="text-danger"></span>
+                        </div>
 
-                <div class="text-center">
-                    <input type="submit" value="Create" class="btn btn-primary px-4" />
+                        <div class="mb-3">
+                            <label for="LogoFile" class="form-label">Company Logo</label>
+                            <input type="file" name="LogoFile" class="form-control" accept="image/*" />
+                            <span asp-validation-for="LogoPath" class="text-danger"></span>
+                        </div>
+
+                        <div class="text-center">
+                            <input type="submit" value="Create" class="btn btn-primary" />
+                        </div>
+                    </form>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
-</div>>
-<div>
-    <a asp-action="AllCompany">Back to List</a></div>
+</div>
+
+<div class="text-center">
+    <a asp-action="AllCompany" class="back-link">Back to List</a>
+</div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
