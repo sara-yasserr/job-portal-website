@@ -111,6 +111,20 @@ namespace Job_Portal_Project.Controllers
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var user = await userManager.FindByIdAsync(userId);
             var job = jobRepo.GetById(jobId);
+            var jobApp = jobAppRepo.GetByJobIdAndApplicantId(jobId, userId);
+            if (jobApp != null)
+            {
+                var jobAppVM = new JobApplicationViewModel
+                {
+                    JobId = jobId,
+                    ApplicantId = userId,
+                    ResumePath = user.ResumePath,
+                    job = job,
+                    Applicant = user
+                };
+                TempData["Applied"] = true;
+                return RedirectToAction("Edit", jobAppVM);
+            }
             jobApplicationService.Insert(job,user);
 
             return RedirectToAction("Index");

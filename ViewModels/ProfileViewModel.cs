@@ -36,10 +36,10 @@ namespace Job_Portal_Project.ViewModels
         public string Role { get; set; }
 
         [Display(Name = "Profile Picture")]
-        public IFormFile ProfilePicture { get; set; }
+        public IFormFile? ProfilePicture { get; set; }
        
 
-        public string ProfilePicturePath { get; set; }
+        public string? ProfilePicturePath { get; set; }
 
         [Display(Name = "Resume")]
         public IFormFile Resume { get; set; }

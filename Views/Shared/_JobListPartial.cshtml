@@ -60,8 +60,8 @@
                             <a href="/JobSearch/Details/@job.Id" class="btn details-btn" style="background-color: #00BCD4; color: white; padding: 10px 24px; border-radius: 25px; text-decoration: none; display: flex; align-items: center; justify-content: center; font-weight: 500; transition: all 0.3s ease; border: none; box-shadow: 0 4px 10px rgba(108, 117, 125, 0.2); width: 100%; max-width: 160px;">
                                 Show Details
                             </a>
-                            <a href="/JobSearch/Details/@job.Id" class="btn apply-btn" style="background-color: #00BCD4; color: white; padding: 10px 24px; border-radius: 25px; text-decoration: none; display: flex; align-items: center; justify-content: center; font-weight: 500; transition: all 0.3s ease; border: none; box-shadow: 0 4px 10px rgba(0, 188, 212, 0.2); width: 100%; max-width: 160px;">
-                                <i class="lni lni-arrow-right" style="margin-right: 8px;"></i> Apply Now
+                            <a href='@Url.Action("EasyApply", "JobApplication", new { jobId = job.Id })' class="btn apply-btn" style="background-color: #00BCD4; color: white; padding: 10px 24px; border-radius: 25px; text-decoration: none; display: flex; align-items: center; justify-content: center; font-weight: 500; transition: all 0.3s ease; border: none; box-shadow: 0 4px 10px rgba(0, 188, 212, 0.2); width: 100%; max-width: 160px;">
+                                <i class="lni lni-arrow-right" style="margin-right: 8px;"></i> Easy Apply
                             </a>
                           
                            
