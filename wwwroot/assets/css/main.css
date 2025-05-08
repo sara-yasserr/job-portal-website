@@ -941,7 +941,7 @@ button:focus {
 /* ==========================================================================
    Hero Area
    ========================================================================== */
-.hero-area {
+/*.hero-area {
     background: url(../img/bg/bg-intro.jpg) center center no-repeat;
     background-size: cover;
     overflow: hidden;
@@ -963,20 +963,96 @@ button:focus {
     .hero-area .contents {
         padding: 190px 0 120px;
         text-align: center;
+    }*/
+
+
+.hero-area {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    color: #fff;
+    margin-top: 20px; /* تنزل تحت النافبار */
+}
+
+.hero-img {
+    height: 700px;
+    object-fit: cover;
+    object-position: center;
+}
+
+/* كل شريحة من السلايدر */
+.carousel-item {
+    height: 700px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: background-image 1s ease-in-out;
+    background-color: #000;
+}
+
+    .carousel-item img {
+        opacity: 1 !important;
+        transition: opacity 0.3s ease-in;
     }
+
+
+/* التعتيم فوق الخلفية */
+.hero-area::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(42, 46, 50, 0.6), rgba(0, 0, 0, 0.7));
+    z-index: 1;
+}
+
+/* تأكيد ظهور المحتوى فوق الخلفية */
+.hero-area .container {
+    position: relative;
+    z-index: 2;
+}
+
+/* محتوى النصوص */
+.hero-area .contents {
+    padding: 180px 0 100px;
+    text-align: center;
+    color: white;
+}
+
+/* لضمان أن السلايدر لا يغطي المحتوى */
+#heroCarousel {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+
+
+
+
+
+
+
+
 
         .hero-area .contents h2 {
             color: #fff;
-            font-size: 42px;
+            font-size: 52px;
+            line-height: 70px;
             font-weight: 700;
-            line-height: 60px;
             margin-bottom: 25px;
         }
 
         .hero-area .contents p {
             color: #fff;
-            font-size: 14px;
-            line-height: 26px;
+            font-size: 18px;
+            line-height: 30px;
+            max-width: 700px;
+            margin: 0 auto;
         }
 
         .hero-area .contents .btn {
@@ -4648,7 +4724,7 @@ footer .menu {
     }
 
 .btn-common {
-    background-color: #1A86CE;
+    background-color: #00BCD4;
     color: white;
     border: none;
     padding: 5px 15px;
@@ -4658,7 +4734,7 @@ footer .menu {
 }
 
     .btn-common:hover {
-        background-color: #0d6efd;
+        background-color: #00cfeb;
         color: white;
     }
 
@@ -4681,5 +4757,108 @@ footer .menu {
 
     .job-company-logo {
         margin-bottom: 10px;
+    }
+}
+
+/* button search style
+
+ <button type="submit" class="button-search"><i class="lni-search"></i></button>
+
+*/
+.button-search {
+    font-size: 22px;
+    line-height: 14px;
+    display: inline-block;
+    position: relative;
+    outline: none !important;
+    background: #00BCD4;
+    color: #fff;
+    cursor: pointer;
+    border: none;
+    text-align: center;
+    overflow: hidden;
+    padding: 11px 12px;
+    -webkit-transition: .3s;
+    -o-transition: .3s;
+    transition: .3s;
+    border-radius: 4px;
+    z-index: 1;
+}
+
+
+/*--Titles underline hover animation--*/
+/*  .alerts-titl ==> blue line */
+/*   .alert-title-reverse==> white line*/
+ .alert-title-reverse,.alerts-title {
+    position: relative;
+    display: inline-block;
+}
+
+    .alerts-title::after {
+        content: '';
+        width: 60px;
+        height: 3px;
+        background-color: #00bcd4;
+        position: absolute;
+        bottom: -8px;
+        left: 0;
+        border-radius: 10px;
+    }
+
+    .alerts-title-reverse::after {
+        content: '';
+        width: 60px;
+        height: 3px;
+        background-color: white;
+        position: absolute;
+        bottom: -8px;
+        left: 0;
+        border-radius: 10px;
+    }
+.alerts-title-reverse, .alerts-title:hover::after {
+    animation: hover-in 0.5s forwards;
+}
+
+@keyframes hover-in {
+    to {
+        width: 100%;
+    }
+}
+
+.alerts-title-reverse, .alerts-title:not(:hover)::after {
+    animation: hover-out 0.5s forwards;
+}
+
+@keyframes hover-out {
+    from {
+        width: 100%;
+    }
+
+    to {
+        width: 60px;
+    }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .application-header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .company-logo-container {
+        margin-right: 0;
+        margin-bottom: 15px;
+    }
+
+    .detail-item {
+        margin-bottom: 20px;
+    }
+}
+
+/* Confirm delete modal */
+@media (max-width: 576px) {
+    #confirmModal .modal-dialog {
+        width: 95%;
     }
 }

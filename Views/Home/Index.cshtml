@@ -2,26 +2,50 @@
     ViewData["Title"] = "Home";
 }
 
-<!-- Hero Area Start -->
+<!-- المنطقة الرئيسية -->
 <div class="hero-area">
-    <div class="container">
-        <div class="row space-100 justify-content-center">
+    <div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="3000">
+
+          <div class="carousel-indicators">
+            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+        </div>
+
+
+
+
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="/assets/img/bg/job-search-in-newspaper-vector.jpg" class="d-block w-100 hero-img" alt="Slide 1" loading="eager">
+            </div>
+            <div class="carousel-item">
+                <img src="/assets/img/bg/dd.jpg" class="d-block w-100 hero-img" alt="Slide 2" loading="eager">
+            </div>
+            <div class="carousel-item">
+                <img src="/assets/img/bg/shutterstock_412257712-2.webp" class="d-block w-100 hero-img" alt="Slide 3" loading="eager">
+            </div>
+        </div>
+    </div>
+
+    
+
+    <!-- المحتوى فوق الصورة -->
+    <div class="container position-relative text-white z-2">
+        <div class="row justify-content-center">
             <div class="col-lg-10 col-md-12 col-xs-12">
-                <div class="contents">
+                <div class="contents text-center">
                     <h2 class="head-title">Find the job that fits your life</h2>
                     <p>Browse thousands of job listings from top companies around the world. Find your perfect job today.</p>
+
                     <div class="job-search-form">
                         <form asp-controller="JobSearch" asp-action="Index" method="get">
                             <div class="row">
                                 <div class="col-lg-5 col-md-5 col-xs-12">
-                                    <div class="form-group">
-                                        <input class="form-control" type="text" name="Keyword" placeholder="Job Title or Keywords">
-                                    </div>
+                                    <input class="form-control" type="text" name="Keyword" placeholder="Job Title or Keywords">
                                 </div>
                                 <div class="col-lg-5 col-md-5 col-xs-12">
-                                    <div class="form-group">
-                                        <input class="form-control" type="text" name="Location" placeholder="Location">
-                                    </div>
+                                    <input class="form-control" type="text" name="Location" placeholder="Location">
                                 </div>
                                 <div class="col-lg-2 col-md-2 col-xs-12">
                                     <button type="submit" class="button"><i class="lni-search"></i></button>
@@ -29,11 +53,34 @@
                             </div>
                         </form>
                     </div>
+
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <!-- Hero Area End -->
 
 <!-- Browse jobs Section Start -->
