@@ -5,6 +5,8 @@ namespace Job_Portal_Project.Services
     public interface IJobService
     {
         List<Job> GetAllJobs();
+        IQueryable<Job> GetAllJobsIQ(); 
+
         Job GetJobById(int id);
         void CreateJob(Job job);
         void UpdateJob(Job job);

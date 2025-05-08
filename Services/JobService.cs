@@ -25,7 +25,12 @@ namespace Job_Portal_Project.Services
 
         public List<Job> GetAllJobs()
         {
-           return    _jobRepository.GetAll();
+            return _jobRepository.GetAll();
+        }
+
+        public IQueryable<Job> GetAllJobsIQ()
+        {
+            return _jobRepository.GetAllIQ();   
         }
 
         public Job GetJobById(int id)

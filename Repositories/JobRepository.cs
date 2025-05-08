@@ -12,11 +12,24 @@ namespace Job_Portal_Project.Repositories
             _context = context;
         }
 
-       
+
         public List<Job> GetAll()
         {
             return _context.Jobs.Include(j => j.Company).Include(j => j.JobCategory).ToList();
         }
+
+        public IQueryable<Job> GetAllIQ()
+        {
+            return _context.Jobs
+                .Include(j => j.Company)
+                .Include(j => j.JobCategory)
+                .AsQueryable(); 
+        }
+
+
+
+
+
         public Job? GetById<I>(I id)
         {
             return _context.Jobs

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Job_Portal_Project.ViewModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace Job_Portal_Project.Controllers
 {
@@ -25,57 +26,128 @@ namespace Job_Portal_Project.Controllers
             _companyRepository = companyRepository;
             _jobCategoryRepository = jobCategoryRepository;
         }
-       
+
 
         [Authorize(Roles = "Employer")]
-        public async Task<IActionResult> IndexAsync(string? title, string? companyName, int? categoryId)
+        public async Task<IActionResult> IndexAsync(string? title, string? companyName, int? categoryId, int page = 1)
         {
+          
 
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return Unauthorized(); 
+                return Unauthorized();
             }
 
-            //var jobs = _jobService.GetAllJobs();
-
-            var jobs = _jobService.GetAllJobs()
-                         .Where(j => j.EmployerId == user.Id)
-                         .ToList();
-
+            var jobsQuery = _jobService.GetAllJobs()
+                                .Where(j => j.EmployerId == user.Id);
 
             if (!string.IsNullOrWhiteSpace(title))
             {
-                title = title.Trim();   
-                
-                jobs = jobs.Where(j => j.Title.Contains(title, StringComparison.OrdinalIgnoreCase)).ToList();
+                title = title.Trim();
+                jobsQuery = jobsQuery.Where(j => j.Title.Contains(title, StringComparison.OrdinalIgnoreCase));
             }
 
-           
             if (!string.IsNullOrWhiteSpace(companyName))
             {
                 companyName = companyName.Trim();
-                jobs = jobs.Where(j => j.Company != null && j.Company.Name.Contains(companyName, StringComparison.OrdinalIgnoreCase)).ToList();
+                jobsQuery = jobsQuery.Where(j => j.Company != null && j.Company.Name.Contains(companyName, StringComparison.OrdinalIgnoreCase));
             }
 
-          
             if (categoryId.HasValue)
             {
-                jobs = jobs.Where(j => j.JobCategoryId == categoryId.Value).ToList();
+                jobsQuery = jobsQuery.Where(j => j.JobCategoryId == categoryId.Value);
             }
 
-            
+
+            var totalJobs =  jobsQuery.Count();  
+            int PageSize = totalJobs < 3 ? totalJobs : 3;
+            var totalPages = (int)Math.Ceiling(totalJobs / (double)PageSize);
+
+
+            var jobs = jobsQuery
+                .Skip((page - 1) * PageSize)
+                .Take(PageSize)
+                .ToList();
+
             var model = new JobFilterViewModel
             {
                 Jobs = jobs,
                 Title = title,
                 CompanyName = companyName,
                 CategoryId = categoryId,
-                Categories = _jobCategoryRepository.GetAll()
+                Categories = _jobCategoryRepository.GetAll(),
+                CurrentPage = page,
+                TotalPages = totalPages
             };
 
             return View(model);
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        //[Authorize(Roles = "Employer")]
+        //public async Task<IActionResult> IndexAsync(string? title, string? companyName, int? categoryId)
+        //{
+
+        //    var user = await _userManager.GetUserAsync(User);
+        //    if (user == null)
+        //    {
+        //        return Unauthorized(); 
+        //    }
+
+        //    //var jobs = _jobService.GetAllJobs();
+
+        //    var jobs = _jobService.GetAllJobs()
+        //                 .Where(j => j.EmployerId == user.Id)
+        //                 .ToList();
+
+
+        //    if (!string.IsNullOrWhiteSpace(title))
+        //    {
+        //        title = title.Trim();   
+
+        //        jobs = jobs.Where(j => j.Title.Contains(title, StringComparison.OrdinalIgnoreCase)).ToList();
+        //    }
+
+
+        //    if (!string.IsNullOrWhiteSpace(companyName))
+        //    {
+        //        companyName = companyName.Trim();
+        //        jobs = jobs.Where(j => j.Company != null && j.Company.Name.Contains(companyName, StringComparison.OrdinalIgnoreCase)).ToList();
+        //    }
+
+
+        //    if (categoryId.HasValue)
+        //    {
+        //        jobs = jobs.Where(j => j.JobCategoryId == categoryId.Value).ToList();
+        //    }
+
+
+        //    var model = new JobFilterViewModel
+        //    {
+        //        Jobs = jobs,
+        //        Title = title,
+        //        CompanyName = companyName,
+        //        CategoryId = categoryId,
+        //        Categories = _jobCategoryRepository.GetAll()
+        //    };
+
+        //    return View(model);
+        //}
 
 
 
