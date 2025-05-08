@@ -12,16 +12,18 @@ namespace Job_Portal_Project.Controllers.Profile
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IProfileService _profileService;
-        private readonly IUserService _userService;
+        private readonly IUserMappingService userMapping;
+     
 
         public ProfileController(
             UserManager<ApplicationUser> userManager,
             IProfileService profileService,
-            IUserService userService)
+          IUserMappingService userMapping
+        )
         {
             _userManager = userManager;
             _profileService = profileService;
-            _userService = userService;
+            this.userMapping = userMapping;
         }
 
         public async Task<IActionResult> Index()
@@ -42,42 +44,135 @@ namespace Job_Portal_Project.Controllers.Profile
                 PhoneNumber = user.PhoneNumber,
                 City = user.City,
                 Country = user.Country,
-                ProfilePicturePath = user.ProfilePicturePath
+                ProfilePicturePath = user.ProfilePicturePath,
+                ResumePath = user.ResumePath
             };
 
             return View(viewModel);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Index(ProfileViewModel model)
+        [HttpGet]
+        public async Task<IActionResult> Edit()
         {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
                 return NotFound();
             }
 
-            user.FirstName = model.FirstName;
-            user.LastName = model.LastName;
-            user.Title = model.Title;
-            user.PhoneNumber = model.PhoneNumber;
-            user.City = model.City;
-            user.Country = model.Country;
-
-            if (model.ProfilePicture != null)
+            var viewModel = new ProfileViewModel
             {
-                await _profileService.UploadProfilePictureAsync(user.Id, model.ProfilePicture);
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Title = user.Title,
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                City = user.City,
+                Country = user.Country,
+                ProfilePicturePath = user.ProfilePicturePath,
+                ResumePath = user.ResumePath
+            };
+
+            return View(viewModel);
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+
+        public async Task<IActionResult> Edit(ApplicationUser user, string id, IFormFile ProfilePicture)
+        {
+            if (ModelState.IsValid == true)
+            {
+                var existingUser = await _userManager.GetUserAsync(User);
+                
+
+                if (existingUser == null)
+                {
+                    ModelState.AddModelError("", "User not found.");
+                    return View("Edit", user);
+                }
+
+
+                if (ProfilePicture != null && ProfilePicture.Length > 0)
+                {
+
+                    try
+                    {
+
+                        var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
+                        var extension = Path.GetExtension(ProfilePicture.FileName).ToLowerInvariant();
+
+                        if (!allowedExtensions.Contains(extension))
+                        {
+                            ModelState.AddModelError("ProfilePicture", "Only image files (.jpg, .jpeg, .png, .gif) are allowed.");
+                            return View("Update", user);
+                        }
+
+
+                        var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images");
+                        if (!Directory.Exists(uploadsFolder))
+                        {
+                            Directory.CreateDirectory(uploadsFolder);
+                        }
+
+
+                        var fileName = Guid.NewGuid().ToString() + extension;
+                        var filePath = Path.Combine(uploadsFolder, fileName);
+
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await ProfilePicture.CopyToAsync(stream);
+                        }
+
+                        existingUser.ProfilePicturePath = fileName;
+                    }
+                    catch (Exception ex)
+                    {
+                        ModelState.AddModelError("ProfilePicture", $"Error uploading file: {ex.Message}");
+                        return View("Update", user);
+                    }
+                }
+                userMapping.MapToUpdateUser(existingUser, user);
+
+
+                await _userManager.UpdateAsync(existingUser);
+                TempData["SuccessMessage"] = "Profile updated successfully!";
+                return RedirectToAction("Index");
+            }
+            ModelState.AddModelError("", "Error");
+            return View("Edit", user);
+        }
+
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteResume()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound();
             }
 
-            await _userService.UpdateUserAsync(user);
-            TempData["SuccessMessage"] = "Your profile has been updated successfully.";
-            return RedirectToAction(nameof(Index));
+            if (string.IsNullOrEmpty(user.ResumePath))
+            {
+                return RedirectToAction(nameof(Edit));
+            }
+
+            var result = await _profileService.DeleteResumeAsync(user.Id, user.ResumePath);
+            if (result)
+            {
+                TempData["SuccessMessage"] = "Resume deleted successfully.";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Failed to delete resume.";
+            }
+
+            return RedirectToAction(nameof(Edit));
         }
     }
 }

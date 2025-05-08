@@ -31,7 +31,7 @@ namespace Job_Portal_Project.Controllers.Jobs
 
             var bookmarkedJobs = await _bookmarkService.GetBookmarkedJobsAsync(user.Id);
 
-            return View(new BookmarkedJobsViewModel
+            return View("Index",new BookmarkedJobsViewModel
             {
                 BookmarkedJobs = bookmarkedJobs
             });
@@ -64,7 +64,7 @@ namespace Job_Portal_Project.Controllers.Jobs
 
             await _bookmarkService.BookmarkJobAsync(user.Id, jobId);
             TempData["SuccessMessage"] = "Job has been added to bookmarks.";
-            return RedirectToAction("Details", "Jobs", new { id = jobId });
+            return RedirectToAction("Details", "JobSearch", new { id = jobId });
         }
     }
 }

@@ -45,39 +45,9 @@ namespace Job_Portal_Project.Controllers
             return PartialView("_JobListPartial", results.Jobs);
         }
 
-        // Show job details
-        [HttpGet]
-        //public async Task<IActionResult> Details(int id)
-        //{
-        //    var job = await _jobSearchService.GetJobDetails(id);
-        //    if (job == null)
-        //    {
-        //        TempData["ErrorMessage"] = "The requested job doesn't exist or has been closed";
-        //        return RedirectToAction(nameof(Index));
-        //    }
+       
 
-        //    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        //    if (string.IsNullOrEmpty(userId))
-        //    {
-        //        TempData["ErrorMessage"] = "User is not authenticated.";
-        //        return RedirectToAction(nameof(Index));
-        //    }
-
-        //    var user = await _jobSearchService.GetCurrentUser(userId);
-
-        //    var viewModel = new JobDetailsViewModel
-        //    {
-        //        Job = job,
-        //        CurrentUser = user,
-        //        HasApplied = await _jobSearchService.HasUserApplied(userId, id),
-        //        IsFavorite = await _jobSearchService.IsJobFavorite(userId, id),
-        //        RelatedJobs = await _jobSearchService.GetRelatedJobs(job.JobCategoryId, id)
-        //    };
-
-        //    return View("Details", viewModel);
-        //}
-
-        // this in Authenticated
+        // this in Authenticated ...>>>>Finisheddddd
         public async Task<IActionResult> Details(int id)
         {
             var job = await _jobSearchService.GetJobDetails(id);
@@ -98,11 +68,46 @@ namespace Job_Portal_Project.Controllers
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 viewModel.CurrentUser = await _jobSearchService.GetCurrentUser(userId);
                 viewModel.HasApplied = await _jobSearchService.HasUserApplied(userId, id);
-                viewModel.IsFavorite = await _jobSearchService.IsJobFavorite(userId, id);
+       
             }
 
             return View("Details", viewModel);
         }
+
+        // Display all categories
+        [HttpGet]
+        public async Task<IActionResult> Categories()
+        {
+            var categoriesWithCounts = await _jobSearchService.GetAllCategories();
+            return View("Categories", categoriesWithCounts);
+        }
+       
+     
+
+        // Browse jobs by category
+        [HttpGet]
+        public async Task<IActionResult> CategoryJobs(int id, string name)
+        {
+            var model = new JobSearchViewModel
+            {
+                CurrentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier),
+                CategoryId = id,
+                CategoryName = name
+            };
+
+            var results = await _jobSearchService.SearchJobs(model);
+
+            ViewBag.CategoryName = name;
+            ViewBag.CategoryId = id;
+
+            if (!results.Jobs.Any())
+            {
+                ViewBag.NoResultsMessage = $"No jobs found in {name} category.";
+            }
+
+            return View(results);
+        }
+
         // Show recent jobs
         [HttpGet]
         public async Task<IActionResult> RecentJobs()
@@ -134,20 +139,6 @@ namespace Job_Portal_Project.Controllers
             return RedirectToAction(nameof(Details), new { id = jobId });
         }
 
-        // Apply for job
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Apply(int jobId)
-        {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var result = await _jobSearchService.ApplyForJob(userId, jobId);
 
-            if (result)
-                TempData["SuccessMessage"] = "Application submitted successfully";
-            else
-                TempData["ErrorMessage"] = "Error submitting application or you've already applied";
-
-            return RedirectToAction(nameof(Details), new { id = jobId });
-        }
     }
 }

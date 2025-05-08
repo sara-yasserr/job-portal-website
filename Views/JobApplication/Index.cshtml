@@ -6,60 +6,519 @@
 
 <h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ApplicationDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Status)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SpecificResumePath)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.JobId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ApplicantId)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ApplicationDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SpecificResumePath)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.JobId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ApplicantId)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
-        </tr>
+<div id="content">
+    <div class="container col-12">
+        <div class="row">
+         <partial name="_JobSeekerSideBar"></partial>
+            <div class="col-lg-10 col-md-12 col-xs-12">
+                <div class="job-alerts-item jobapps">
+                    <h3 class="alerts-title">Your Job Applications</h3>
+
+                    @using (Html.BeginForm("Index", "JobApplication", FormMethod.Get))
+                    {
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" name="searchQuery" value="@ViewData["searchQuery"]" placeholder="Search for Job Applications">
+                            @* <button class="btn btn-common" type="submit">Search</button> *@
+                            <button type="submit" class="button-search btn btn-common"><i class="lni-search"></i></button>
+                        </div>
+                    }
+                    @if(Model.Any()){
+                        @foreach (var item in Model)
+                        {
+                            
+                            <div class="applications-content @(item.Job.IsActive==true?"active":"disabled")">
+                                <div class="row">
+                                    <div class="col-md-4" >
+                                        <div class="thums">
+                                            <img src="/Uploads/Logos/@item.Job.Company.LogoPath" alt="" style="margin-left:10px; margin-right:10px;">
+                                        </div>
+                                        <h3>@item.Job.Title Needed</h3>
+                                        <span>@item.Job.Company.Name</span>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <p>
+                                            <span class="@(item.Job.EmploymentType == "Full-time" ? "full-time" : "part-time")">
+                                                @item.Job.EmploymentType
+                                            </span>
+                                        </p>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <p>@item.ApplicationDate.ToString("dd-MMM-yyyy")</p>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <p>@item.Status</p>
+                                    </div>
+                                    <div class="col-md-2" style="text-align:center;" >
+                                        @if (item.Job.IsActive == true||item.Status == "Pending")
+                                        {
+                                            <!--Edit button-->
+                                            <a class="action-icons" href="/JobApplication/Edit?jobId=@item.JobId"><i class="fa-regular fa-pen-to-square" style="color: #00bcd4;"></i></a>
+                                        }else{
+                                            <a href="/JobApplication/Edit?jobId=@item.JobId"><i class="fa-regular fa-pen-to-square" style="visibility:hidden;color: #00bcd4;"></i></a>
+                                            <p style="visibility:hidden;"> </p>
+                                        }
+                                        
+                                   <!-- delete Button -->
+                                        <a href="javascript:void(0);" class="delete" data-id="@item.Id"><i class="fa-solid fa-trash" style="color: #00bcd4;opacity: 1 !important;"></i></a>
+                                </div>
+                            </div>
+                        </div>
+
+                    }
+                    }
+                    else
+                    {
+                        <div class="text-center my-5">
+                            <h4 class="mb-3 text-muted">You haven't applied for any jobs yet.</h4>
+                            <p class="text-secondary mb-4">Start your journey now and find the opportunity that suits you best.</p>
+
+                            <div class="position-relative d-inline-block" style="max-height: 300px; border-radius: 20px; overflow: hidden;">
+                                <img src="/Images/filters_quality(85).webp"
+                                     alt="Apply now and begin a new career"
+                                     class="img-fluid"
+                                     style="max-height: 300px;" />
+
+                                <a href="/JobSearch/Index"
+                                   class="btn btn-common position-absolute translate-middle-x"
+                                   style="bottom: 70px; left: 12%; padding:10px;">
+                                    Browse Jobs
+                                </a>
+                            </div>
+                        </div>
+                    }
+
+                    <br>
+                    <!-- Start Pagination -->
+                    <div class="d-flex justify-content-center mt-4">
+                        <nav>
+                            <ul class="pagination">
+                                @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                                {
+                                    <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                                        <a class="page-link"
+                                           asp-action="Index"
+                                           asp-route-page="@i"
+                                           style="@(i == ViewBag.CurrentPage ? "background-color: #00bcd4; border-color: #00bcd4;" : "")">
+                                            @i
+                                        </a>
+                                    </li>
+                                }
+                            </ul>
+                        </nav>
+                    </div>
+                    <!-- End Pagination -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Modal confirm delete-->
+<div class="modal fade" id="confirmModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" style="color:white;">Confirm Deletion</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <i class="fas fa-exclamation-triangle text-warning me-2"></i>
+                Are you sure you want to delete this job application? This action cannot be undone.
+            </div>
+            <div class="modal-footer d-flex justify-content-between">
+                <button type="button" class="btn btn-border" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-2"></i>  Cancel
+                </button>
+                <form id="deleteForm" method="post">
+                    <button type="submit" class="btn" style="background-color:#24324A;">
+                        <i class="fas fa-trash-alt me-2"></i>  Delete
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
-    </tbody>
-</table>
+
+<!-- Scripts -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+        $(document).ready(function() {
+        $(".delete").click(function(e) {
+            e.preventDefault();
+            var id = $(this).data("id");
+            $("#deleteForm").attr("action", "/JobApplication/Delete/" + id);
+
+            $("#confirmModal").modal('show').css({
+                'background-color': 'rgba(0,0,0,0.5)',
+                'backdrop-filter': 'blur(3px)'
+            });
+        });
+    });
+</script>
+
+
+
+<style>
+
+    .log-btn {
+        color: white
+    }
+
+        .log-btn:hover {
+            color: #00BCD4 !important;
+        }
+
+        .delete , .action-icons{
+            font-size:larger;
+        display: inline-block;
+        transition: transform 0.1s ease-in, color 0.1s ease-in;
+        }
+
+        .delete, .action-icons:hover {
+            transform:scale(1.05);
+            color: #008fa1;
+        }
+
+    .applications-content {
+        transition: all 0.3s ease-in-out;
+    }
+
+        .applications-content:hover {
+            @* background-color: #eeeeee; *@
+            transform: scale(1.01);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); 
+            z-index: 1;
+            position: relative;
+        }
+
+        .applications-content.disabled:hover {
+            background-color: inherit;
+            transform: none;
+            box-shadow: none;
+            cursor: default;
+        }
+
+    .disabled {
+        position: relative;
+        opacity: 0.6;
+        background-color: #f8f8f8;
+    }
+
+        .disabled::after {
+            content: "Closed";
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #dc3545;
+            color: white;
+            padding: 2px 8px;
+            font-size: 12px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+    .delete {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        z-index: 10;
+        opacity: 1 !important;
+    }
+
+    .action-icons {
+        position: absolute;
+        top: 10px;
+        left: 70px;
+    }
+
+    /* تنسيقات أساسية للمودال */
+    #confirmModal {
+        font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+        z-index: 99999;
+        background-color: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(8px) saturate(180%);
+        -webkit-backdrop-filter: blur(8px) saturate(180%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+    }
+
+        #confirmModal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        #confirmModal .modal-dialog {
+            max-width: 480px;
+            width: 90%;
+            margin: 0 auto;
+        }
+
+        #confirmModal .modal-content {
+            border: none;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+            transform: scale(0.9);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+            background: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+
+        #confirmModal.show .modal-content {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        #confirmModal .modal-header {
+            background: linear-gradient(135deg, #00bcd4, #006874);
+            color: white;
+            border-bottom: none;
+            padding: 22px 28px;
+            position: relative;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+            #confirmModal .modal-header::after {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 80%;
+                height: 1px;
+                background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+            }
+
+        #confirmModal .modal-title {
+            font-weight: 700;
+            font-size: 1.4rem;
+            letter-spacing: 0.3px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+            #confirmModal .modal-title i {
+                font-size: 1.6rem;
+            }
+
+        #confirmModal .close {
+            color: white;
+            text-shadow: none;
+            opacity: 0.8;
+            font-size: 1.8rem;
+            transition: all 0.3s;
+            background: rgba(255, 255, 255, 0.15);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: auto;
+            border: none;
+        }
+
+            #confirmModal .close:hover {
+                opacity: 1;
+                background: rgba(255, 255, 255, 0.25);
+                transform: rotate(90deg);
+            }
+
+        #confirmModal .modal-body {
+            padding: 32px 28px;
+            font-size: 1.1rem;
+            color: #333;
+            line-height: 1.7;
+            background: #fff;
+        }
+
+        #confirmModal .modal-footer {
+            border-top: none;
+            padding: 20px 28px;
+            background: linear-gradient(to right, #f9f9f9, #f0f0f0);
+            display: flex;
+            justify-content: flex-end;
+            gap: 16px;
+            border-bottom-left-radius: 16px;
+            border-bottom-right-radius: 16px;
+        }
+
+        /* **** تصميم الأزرار بشكل احترافي **** */
+        #confirmModal .btn {
+            border: none;
+            padding: 12px 28px;
+            border-radius: 8px;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.08);
+            position: relative;
+            overflow: hidden;
+            font-size: 1rem;
+            min-width: 100px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+            #confirmModal .btn i {
+                font-size: 1.2rem;
+            }
+
+            #confirmModal .btn::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: -100%;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+                transition: all 0.6s;
+            }
+
+            #confirmModal .btn:hover::before {
+                left: 100%;
+            }
+
+        #confirmModal .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        #confirmModal .btn-common {
+            background: linear-gradient(135deg, #00bcd4, #008c9e);
+            color: white;
+        }
+
+        #confirmModal .btn-secondary:hover {
+            background-color: #5a6268;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        #confirmModal .btn-common:hover {
+            background: linear-gradient(135deg, #008c9e, #006874);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        #confirmModal .btn:active {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* تأثيرات الضوء عند التركيز */
+        #confirmModal .btn:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(0, 188, 212, 0.4);
+        }
+
+        /* **** تأثيرات إضافية للمحتوى **** */
+        #confirmModal .modal-body p {
+            margin-bottom: 0;
+            position: relative;
+            padding-left: 20px;
+        }
+
+            #confirmModal .modal-body p::before {
+                content: '•';
+                position: absolute;
+                left: 0;
+                color: #00bcd4;
+                font-size: 1.5rem;
+                line-height: 1;
+            }
+
+        /* **** رسوم متحركة عند الإغلاق **** */
+        #confirmModal.hiding {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+            #confirmModal.hiding .modal-content {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+
+
+    #confirmModal .modal-header,
+    #confirmModal .modal-body,
+    #confirmModal .modal-footer {
+        padding: 18px 20px;
+    }
+
+    #confirmModal .btn {
+        padding: 10px 20px;
+        min-width: 80px;
+    }
+
+    /* تنسيقات Pagination العامة */
+    .pagination {
+        margin: 20px 0;
+        gap: 5px; /* تباعد بين العناصر */
+    }
+
+    .page-item {
+        transition: all 0.3s ease;
+    }
+
+    .page-link {
+        color: #2d3748;
+        background-color: #f8f9fa; /* خلفية فاتحة للعناصر غير النشطة */
+        border: 1px solid #e2e8f0;
+        padding: 8px 15px;
+        border-radius: 6px;
+        transition: all 0.3s ease;
+        font-weight: 500;
+    }
+
+    /* العناصر غير النشطة */
+    .page-item.inactive .page-link {
+        background-color: #f8f9fa; /* خلفية فاتحة */
+        color: #4a5568;
+    }
+
+        .page-item.inactive .page-link:hover {
+            background-color: #e9ecef;
+            color: #00bcd4;
+            transform: translateY(-1px);
+        }
+
+    /* الصفحة النشطة */
+    .page-item.active .page-link {
+        background-color: #00bcd4;
+        border-color: #00bcd4;
+        color: white;
+        box-shadow: 0 2px 8px rgba(0, 188, 212, 0.3);
+    }
+
+    /* تأثيرات إضافية */
+    .page-link:focus {
+        box-shadow: 0 0 0 0.25rem rgba(0, 188, 212, 0.25);
+    }
+
+    /* أيقونات التصفح (إن وجدت) */
+    .page-item .fa-chevron-left,
+    .page-item .fa-chevron-right {
+        font-size: 0.9rem;
+    }
+    #content{
+        background-color: #f8f9fa;
+    }
+
+    .jobapps{
+        background-color:white;
+    }
+</style>

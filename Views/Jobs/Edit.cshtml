@@ -2,109 +2,635 @@
 @model JobCreateViewModel
 @{
     Layout = "_MyLayout";
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edit Job";
     SelectList ComOptions = new SelectList(ViewBag.Companies, "Id", "Name", Model.CompanyId);
     SelectList CatOptions = new SelectList(ViewBag.Categories, "Id", "Name", Model.JobCategoryId);
 }
 
-
 <style>
+    /* Base styles */
+    body {
+        background-color: #f0f2f5;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        position: relative;
+        animation: fadeInBody 1.2s ease;
+    }
+
+    @@keyframes fadeInBody {
+        from
+
+    {
+        opacity: 0.3;
+    }
+
+    to {
+        opacity: 1;
+    }
+
+    }
+
+    body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, rgba(0, 188, 212, 0.05) 0%, rgba(0, 172, 193, 0.1) 100%);
+        z-index: -1;
+        pointer-events: none;
+    }
+
+    /* Page Animation */
+    .page-wrapper {
+        animation: fadeInUp 0.8s ease;
+        padding-top: 30px;
+        padding-bottom: 60px;
+        margin-top: 80px;
+    }
+
+    @@keyframes fadeInUp {
+        from
+
+    {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    }
+
+    /* Header styles - removed background */
+    .page-header {
+        text-align: center;
+        padding: 35px 0 25px;
+        margin-bottom: 30px;
+        position: relative;
+        background:none;
+    }
+
+        .page-header h2 {
+            color: #00BCD4;
+            font-weight: 700;
+            font-size: 2.2rem;
+            position: relative;
+            display: inline-block;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            animation: fadeInDown 0.8s ease;
+        }
+
+    @@keyframes fadeInDown {
+        from
+
+    {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    }
+
+    .page-header h2::after {
+        content: '';
+        display: block;
+        width: 60px;
+        height: 3px;
+        background: #00BCD4;
+        margin: 12px auto 0;
+        border-radius: 2px;
+        animation: expandLine 1s ease-out;
+    }
+
+    @@keyframes expandLine {
+        from
+
+    {
+        width: 0;
+    }
+
+    to {
+        width: 60px;
+    }
+
+    }
+
+    .page-header p {
+        color: #666;
+        max-width: 600px;
+        margin: 0 auto;
+        font-size: 1.05rem;
+        animation: fadeIn 1s ease;
+    }
+
+    @@keyframes fadeIn {
+        from
+
+    {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+
+    }
+
+    /* Form container styling */
+    .form-container {
+        background-color: #fff;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+        transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        transform: translateY(0);
+        border-top: 5px solid #00BCD4;
+        animation: slideIn 0.8s ease-out;
+    }
+
+    @@keyframes slideIn {
+        from
+
+    {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    }
+
+    .form-container:hover {
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+        transform: translateY(-5px);
+    }
+
+    .form-header {
+        background: linear-gradient(135deg, #00BCD4 0%, #00ACC1 100%);
+        padding: 25px 0;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        color: #fff;    
+    }
+
+        .form-header::before {
+            content: '';
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            top: -100px;
+            right: -50px;
+            z-index: 1;
+        }
+
+        .form-header::after {
+            content: '';
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            bottom: -70px;
+            left: -50px;
+            z-index: 1;
+        }
+
+        .form-header h3 {
+            font-weight: 700;
+            margin: 0;
+            font-size: 1.75rem;
+            position: relative;
+            z-index: 2;
+            color:antiquewhite;
+        }
+
+    .form-body {
+        padding: 35px 40px;
+    }
+
+    /* Form field styling */
+    .form-group {
+        margin-bottom: 22px;
+        position: relative;
+        transition: all 0.3s ease;
+    }
+
+        .form-group:hover label {
+            color: #00BCD4;
+        }
+
     label {
         color: #00BCD4;
-        font-weight: 500;
+        font-weight: 600;
+        margin-bottom: 8px;
+        font-size: 0.95rem;
+        transition: all 0.3s ease;
+        display: block;
     }
 
-    .custom-select, .custom-select option {
-        color: #666666;
+    .form-control {
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        /* padding: 12px 15px; */
+        transition: all 0.3s ease;
+        font-size: 0.95rem;
+        color: #495057;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02);
     }
 
+        .form-control:focus {
+            border-color: #00BCD4;
+            box-shadow: 0 0 0 3px rgba(0, 188, 212, 0.15);
+            outline: none;
+        }
+
+    textarea.form-control {
+        min-height: 120px;
+        resize: vertical;
+    }
+
+    /* Fixed Select styling */
+    .select-wrapper {
+        position: relative;
+    }
+
+        .select-wrapper::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            right: 15px;
+            transform: translateY(-50%);
+            width: 12px;
+            height: 12px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%2300BCD4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-size: contain;
+            pointer-events: none;
+            transition: transform 0.2s ease;
+        }
+
+    select.form-control {
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        padding-right: 35px;
+        background-color: #fff;
+        cursor: pointer;
+        width: 100%;
+        text-overflow: ellipsis;
+    }
+
+        select.form-control option {
+            padding: 10px;
+            font-size: 0.95rem;
+        }
+
+        select.form-control:focus {
+            border-color: #00BCD4;
+            box-shadow: 0 0 0 3px rgba(0, 188, 212, 0.15);
+        }
+
+    /* Button styling */
+    .form-actions {
+        margin-top: 35px;
+        text-align: center;
+    }
+
+    .btn-submit {
+        background: linear-gradient(135deg, #00BCD4 0%, #00ACC1 100%);
+        color: white;
+        border: none;
+        padding: 12px 35px;
+        border-radius: 50px;
+        font-size: 1rem;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        box-shadow: 0 4px 15px rgba(0, 188, 212, 0.3);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        z-index: 1;
+    }
+
+        .btn-submit::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #00ACC1 0%, #0097A7 100%);
+            transition: all 0.4s ease;
+            z-index: -1;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 188, 212, 0.4);
+        }
+
+            .btn-submit:hover::before {
+                left: 0;
+            }
+
+        .btn-submit:active {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 188, 212, 0.4);
+        }
+
+    .btn-cancel {
+        background-color: transparent;
+        color: #6c757d;
+        border: 1px solid #6c757d;
+        padding: 12px 25px;
+        border-radius: 50px;
+        font-size: 1rem;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        margin-left: 15px;
+        transition: all 0.3s ease;
+    }
+
+        .btn-cancel:hover {
+            background-color: #6c757d;
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(108, 117, 125, 0.25);
+        }
+
+        .btn-cancel:active {
+            transform: translateY(-1px);
+        }
+
+    /* Validation styling */
+    .text-danger {
+        color: #ff5252;
+        font-size: 0.85rem;
+        margin-top: 5px;
+        display: block;
+        animation: fadeIn 0.3s ease;
+    }
+
+    /* Field animation - improved stagger effect */
+    .form-group {
+        opacity: 0;
+        transform: translateY(15px);
+        animation: fadeInField 0.5s ease forwards;
+    }
+
+    @@keyframes fadeInField {
+        to
+
+    {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    }
+
+    /* Staggered animation for form fields */
+    .form-group:nth-child(1) {
+        animation-delay: 0.1s;
+    }
+
+    .form-group:nth-child(2) {
+        animation-delay: 0.2s;
+    }
+
+    .form-group:nth-child(3) {
+        animation-delay: 0.3s;
+    }
+
+    .form-group:nth-child(4) {
+        animation-delay: 0.4s;
+    }
+
+    .form-group:nth-child(5) {
+        animation-delay: 0.5s;
+    }
+
+    .form-group:nth-child(6) {
+        animation-delay: 0.6s;
+    }
+
+    .form-group:nth-child(7) {
+        animation-delay: 0.7s;
+    }
+
+    .form-group:nth-child(8) {
+        animation-delay: 0.8s;
+    }
+
+    .form-group:nth-child(9) {
+        animation-delay: 0.9s;
+    }
+
+    .form-group:nth-child(10) {
+        animation-delay: 1s;
+    }
+
+    .form-group:nth-child(11) {
+        animation-delay: 1.1s;
+    }
+
+    /* Responsive styles */
+    @@media (max-width: 768px) {
+        .form-body
+
+    {
+        padding: 25px 20px;
+    }
+
+    .page-header h2 {
+        font-size: 1.8rem;
+    }
+
+    .form-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .btn-cancel {
+        margin-left: 0;
+    }
+
+    }
 </style>
 
+<div class="page-wrapper">
+    <div class="container">
+        <div class="page-header">
+            <h2>Edit Job Listing</h2>
+            <p>Update the details of this job posting to attract the best candidates</p>
+        </div>
 
+        <div class="row justify-content-center">
+            <div class="col-md-10 col-lg-8">
+                <div class="form-container">
+                    <div class="form-header">
+                        <h3>Job Details</h3>
+                    </div>
 
-<div class="container mt-5 mb-4">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
+                    <div class="form-body">
+                        <form asp-action="Edit" method="post">
+                            <input type="hidden" asp-for="Id" />
 
-            <form asp-action="Edit" method="post" class="bg-white p-4  mt-3 rounded shadow-sm">
-                <h3 class="text-center mb-3">Edit Job</h3>
-                <input type="hidden" asp-for="Id" />
+                            <div class="form-group">
+                                <label asp-for="Title">Job Title</label>
+                                <input asp-for="Title" class="form-control" placeholder="Enter job title" />
+                                <span asp-validation-for="Title" class="text-danger"></span>
+                            </div>
 
-                <div class="form-group">
-                    <label asp-for="Title"></label>
-                    <input asp-for="Title" class="form-control" />
-                    <span asp-validation-for="Title" class="text-danger"></span>
+                            <div class="form-group">
+                                <label asp-for="Description">Job Description</label>
+                                <textarea asp-for="Description" class="form-control" placeholder="Provide a detailed description of the job role and responsibilities"></textarea>
+                                <span asp-validation-for="Description" class="text-danger"></span>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="EmploymentType">Employment Type</label>
+                                        <div class="select-wrapper">
+                                            <select asp-for="EmploymentType" class="form-control">
+                                                <option value="">-- Select Type --</option>
+                                                <option value="Full-time">Full-time</option>
+                                                <option value="Part-time">Part-time</option>
+                                                <option value="Internship">Internship</option>
+                                            </select>
+                                        </div>
+                                        <span asp-validation-for="EmploymentType" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="WorkMode">Work Mode</label>
+                                        <div class="select-wrapper">
+                                            <select asp-for="WorkMode" class="form-control">
+                                                <option value="">-- Select Work Mode --</option>
+                                                <option value="On-site">On-site</option>
+                                                <option value="Remote">Remote</option>
+                                                <option value="Hybrid">Hybrid</option>
+                                            </select>
+                                        </div>
+                                        <span asp-validation-for="WorkMode" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="City">City</label>
+                                        <input asp-for="City" class="form-control" placeholder="Enter city" />
+                                        <span asp-validation-for="City" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="Country">Country</label>
+                                        <input asp-for="Country" class="form-control" placeholder="Enter country" />
+                                        <span asp-validation-for="Country" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="ExperienceLevel">Experience Level</label>
+                                        <input asp-for="ExperienceLevel" class="form-control" placeholder="E.g. 2-3 years" />
+                                        <span asp-validation-for="ExperienceLevel" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="VacancyCount">Number of Vacancies</label>
+                                        <input asp-for="VacancyCount" class="form-control" placeholder="Enter number of positions" />
+                                        <span asp-validation-for="VacancyCount" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="JobCategoryId">Job Category</label>
+                                        <div class="select-wrapper">
+                                            <select asp-for="JobCategoryId" class="form-control" asp-items="@CatOptions"></select>
+                                        </div>
+                                        <span asp-validation-for="JobCategoryId" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="CompanyId">Company</label>
+                                        <div class="select-wrapper">
+                                            <select asp-for="CompanyId" class="form-control" asp-items="@ComOptions"></select>
+                                        </div>
+                                        <span asp-validation-for="CompanyId" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-submit">
+                                    <i class="fas fa-save mr-2"></i> Save Changes
+                                </button>
+                                <a asp-action="Index" class="btn btn-cancel">
+                                    <i class="fas fa-times mr-2"></i> Cancel
+                                </a>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-
-                <div class="form-group">
-                    <label asp-for="Description"></label>
-                    <textarea asp-for="Description" class="form-control"></textarea>
-                    <span asp-validation-for="Description" class="text-danger"></span>
-                </div>
-
-                <div class="form-group">
-                    <label asp-for="EmploymentType"></label>
-                    <select asp-for="EmploymentType" class="form-control custom-select-gray">
-                        <option value="">-- Select Type --</option>
-                        <option selected="@((Model.EmploymentType == "Full-time") ? "selected" : null)">Full-time</option>
-                        <option selected="@((Model.EmploymentType == "Part-time") ? "selected" : null)">Part-time</option>
-                        <option selected="@((Model.EmploymentType == "Internship") ? "selected" : null)">Internship</option>
-                    </select>
-                    <span asp-validation-for="EmploymentType" class="text-danger"></span>
-                </div>
-
-                <div class="form-group">
-                    <label asp-for="WorkMode"></label>
-                    <select asp-for="WorkMode" class="form-control custom-select-gray">
-                        <option value="">-- Select Work Mode --</option>
-                        <option selected="@((Model.WorkMode == "On-site") ? "selected" : null)">On-site</option>
-                        <option selected="@((Model.WorkMode == "Remote") ? "selected" : null)">Remote</option>
-                        <option selected="@((Model.WorkMode == "Hybrid") ? "selected" : null)">Hybrid</option>
-                    </select>
-                    <span asp-validation-for="WorkMode" class="text-danger"></span>
-                </div>
-
-                <div class="form-group">
-                    <label asp-for="City"></label>
-                    <input asp-for="City" class="form-control" />
-                    <span asp-validation-for="City" class="text-danger"></span>
-                </div>
-
-                <div class="form-group">
-                    <label asp-for="Country"></label>
-                    <input asp-for="Country" class="form-control" />
-                    <span asp-validation-for="Country" class="text-danger"></span>
-                </div>
-
-                <div class="form-group">
-                    <label asp-for="ExperienceLevel"></label>
-                    <input asp-for="ExperienceLevel" class="form-control" />
-                    <span asp-validation-for="ExperienceLevel" class="text-danger"></span>
-                </div>
-
-                <div class="form-group">
-                    <label asp-for="VacancyCount"></label>
-                    <input asp-for="VacancyCount" class="form-control" />
-                    <span asp-validation-for="VacancyCount" class="text-danger"></span>
-                </div>
-
-                <div class="form-group">
-                    <label asp-for="JobCategoryId">Job Category</label>
-                    <select asp-for="JobCategoryId" class="form-control custom-select-gray" asp-items="@CatOptions"></select>
-                    <span asp-validation-for="JobCategoryId" class="text-danger"></span>
-                </div>
-
-                <div class="form-group">
-                    <label asp-for="CompanyId">Company</label>
-                    <select asp-for="CompanyId" class="form-control custom-select-gray" asp-items="@ComOptions"></select>
-                    <span asp-validation-for="CompanyId" class="text-danger"></span>
-                </div>
-
-                <div class="form-group mt-4 text-center justify-content-center">
-                    <button type="submit" class="btn px-5" style="background-color: #00BCD4; color: white; border: none;">Save Changes</button>
-                    @* <a asp-action="Index" class="btn btn-outline-secondary ml-2">Cancel</a> *@
-                </div>
-            </form>
+            </div>
         </div>
     </div>
 </div>
+
+<script>
+    // Fixed script for form interactions
+    document.addEventListener('DOMContentLoaded', function() {
+        const formControls = document.querySelectorAll('.form-control');
+
+        // Add focused class on inputs with values
+        formControls.forEach(input => {
+            // Add focused class on focus
+            input.addEventListener('focus', function() {
+                this.closest('.form-group').classList.add('focused');
+            });
+
+            // Remove focused class on blur
+            input.addEventListener('blur', function() {
+                if (this.value === '') {
+                    this.closest('.form-group').classList.remove('focused');
+                }
+            });
+
+            // Check initial state
+            if (input.value !== '') {
+                input.closest('.form-group').classList.add('focused');
+            }
+        });
+    });
+</script>

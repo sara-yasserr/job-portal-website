@@ -1,6 +1,7 @@
-﻿@model Job
+﻿@model Job_Portal_Project.Models.Job
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Job Details";
+    Layout = "_MyLayout";
 }
 
 
@@ -148,3 +149,31 @@
 </div>
 
 
+        <div class="row mt-3">
+            <div class="col-md-6">
+                <strong>Date Posted:</strong>
+                <p class="text-muted">@Model.DatePosted.ToString("MMMM dd, yyyy")</p>
+            </div>
+            <div class="col-md-6">
+                <strong>Vacancies:</strong>
+                <p class="text-muted">@Model.VacancyCount</p>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center mt-4">
+            <a asp-action="Index" class="btn btn-outline-secondary px-4">← Back</a>
+
+            @if (Model.IsActive)
+            {
+                <span class="badge bg-success px-3 py-2">Active</span>
+            }
+            else
+            {
+                <span class="badge bg-danger px-3 py-2">Closed</span>
+            }
+            <a asp-controller="JobApplication" asp-action="ShowAllApplicants" asp-route-jobId="@Model.Id" class="btn btn-info">
+                <i class="fas fa-users"></i> View Applicants
+            </a>
+        </div>
+    </div>
+</div>

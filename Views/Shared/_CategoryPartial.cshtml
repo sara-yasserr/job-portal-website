@@ -1,90 +1,132 @@
-﻿ <!-- Category Section Start -->
-<section class="category section bg-gray">
-    <div class="container">
-        <div class="section-header">
-            <h2 class="section-title">Browse Categories</h2>
-            <p>Most popular categories of portal, sorted by popularity</p>
+﻿@model List<CategoryWithJobCount>
+
+@{
+    
+    string GetIconClass(string categoryName)
+    {
+        switch (categoryName?.ToLower())
+        {
+            case "information technology": return "lni-code";
+            case "finance": return "lni-dollar";
+            case "science": return "lni-microscope";
+            case "healthcare": return "lni-sthethoscope";
+            case "education": return "lni-graduation";
+            case "engineering": return "lni-cogs";
+            case "marketing": return "lni-bullhorn";
+            case "sales": return "lni-stats-up";
+            case "customer service": return "lni-headphone-alt";
+            case "administration": return "lni-apartment";
+            case "human resources": return "lni-users";
+            case "legal": return "lni-briefcase";
+            case "food services": return "lni-restaurant";
+            case "logistics": return "lni-delivery";
+            case "research & development": return "lni-search";
+            case "art & design": return "lni-brush";
+            default: return "lni-briefcase";
+        }
+    }
+}
+
+<style>
+    .category-item {
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        text-align: center;
+        padding: 15px 8px;
+        margin-bottom: 25px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .category-item:hover {
+            background: linear-gradient(135deg, rgba(0, 188, 212, 0.15) 0%, rgba(0, 151, 167, 0.15) 100%);
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        }
+
+    .category-icon {
+        font-size: 28px;
+        padding: 12px;
+        border-radius: 50%;
+        margin-bottom: 10px;
+        transition: background-color 0.3s ease;
+        display: inline-block;
+        color: #fff;
+        background-color: #00BCD4;
+    }
+
+    .category-item:hover .category-icon {
+        background-color: #0097A7;
+    }
+
+    .category-title {
+        font-size: 16px;
+        font-weight: 600;
+        color: #333;
+        transition: color 0.3s ease;
+        margin-bottom: 3px;
+    }
+
+    .category-item:hover .category-title {
+        color: #00BCD4;
+    }
+
+    .job-count {
+        margin: 3px 0 0;
+        color: #666;
+        font-size: 13px;
+    }
+
+    @@media (max-width: 768px) {
+        .category-item
+
+    {
+        padding: 12px 6px;
+    }
+
+    .category-icon {
+        font-size: 24px;
+        padding: 10px;
+    }
+
+    .category-title {
+        font-size: 14px;
+    }
+
+    }
+</style>
+
+
+<section class="category-section" style="padding: 0px 0;">
+    <div class="container section">
+        <div class="section-header text-center" style="margin-bottom: 50px;">
+            <div class="section-icon" style="margin-bottom: 15px;">
+                <i class="lni lni-briefcase" style="font-size: 32px; color: #00BCD4; display: inline-block; padding: 15px; border-radius: 50%; background: rgba(0, 188, 212, 0.1);"></i>
+            </div>
+            <h2 class="section-title" style="font-size: 32px; font-weight: 700; color: #333; margin-bottom: 15px; position: relative; display: inline-block;">
+                Browse <span style="color: #00BCD4;">Categories</span>
+                <div class="title-underline" style="position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); width: 70px; height: 3px; background-color: #00BCD4;"></div>
+            </h2>
+            <p style="color: #666; font-size: 16px; max-width: 600px; margin: 15px auto 0; line-height: 1.6;">Most popular categories of portal, sorted by popularity and demand in the current job market</p>
         </div>
+
         <div class="row">
-            <div class="col-lg-3 col-md-6 col-xs-12 f-category">
-                <a href="browse-jobs.html">
-                    <div class="icon bg-color-1">
-                        <i class="lni-home"></i>
+            @foreach (var category in Model)
+            {
+                var iconClass = GetIconClass(category.Category.Name);
+
+                <div class="col-lg-3 col-md-4 col-sm-6 col-12">
+                    <div class="category-item">
+                        <a href="@Url.Action("CategoryJobs", "Jobs", new { id = category.Category.Id })" style="text-decoration: none; color: inherit;">
+                            <div class="category-icon">
+                                <i class="@iconClass"></i>
+                            </div>
+                            <h3 class="category-title">@category.Category.Name</h3>
+                            <p style="color:#a8a8a8; font-weight: bold; class="job-count">(@category.JobCount jobs)</p>
+                        </a>
                     </div>
-                    <h3>Finance</h3>
-                    <p>(4286 jobs)</p>
-                </a>
-            </div>
-            <div class="col-lg-3 col-md-6 col-xs-12 f-category">
-                <a href="browse-jobs.html">
-                    <div class="icon bg-color-2">
-                        <i class="lni-world"></i>
-                    </div>
-                    <h3>Sale/Markting</h3>
-                    <p>(2000 jobs)</p>
-                </a>
-            </div>
-            <div class="col-lg-3 col-md-6 col-xs-12 f-category">
-                <a href="browse-jobs.html">
-                    <div class="icon bg-color-3">
-                        <i class="lni-book"></i>
-                    </div>
-                    <h3>Education/Training</h3>
-                    <p>(1450 jobs)</p>
-                </a>
-            </div>
-            <div class="col-lg-3 col-md-6 col-xs-12 f-category border-right-0">
-                <a href="browse-jobs.html">
-                    <div class="icon bg-color-4">
-                        <i class="lni-display"></i>
-                    </div>
-                    <h3>Technologies</h3>
-                    <p>(5100 jobs)</p>
-                </a>
-            </div>
-            <div class="col-lg-3 col-md-6 col-xs-12 f-category border-bottom-0">
-                <a href="browse-jobs.html">
-                    <div class="icon bg-color-5">
-                        <i class="lni-brush"></i>
-                    </div>
-                    <h3>Art/Design</h3>
-                    <p>(5079 jobs)</p>
-                </a>
-            </div>
-            <div class="col-lg-3 col-md-6 col-xs-12 f-category border-bottom-0">
-                <a href="browse-jobs.html">
-                    <div class="icon bg-color-6">
-                        <i class="lni-heart"></i>
-                    </div>
-                    <h3>Healthcare</h3>
-                    <p>(3235 jobs)</p>
-                </a>
-            </div>
-            <div class="col-lg-3 col-md-6 col-xs-12 f-category border-bottom-0">
-                <a href="browse-jobs.html">
-                    <div class="icon bg-color-7">
-                        <i class="lni-funnel"></i>
-                    </div>
-                    <h3>Science</h3>
-                    <p>(1800 jobs)</p>
-                </a>
-            </div>
-            <div class="col-lg-3 col-md-6 col-xs-12 f-category border-right-0 border-bottom-0">
-                <a href="browse-jobs.html">
-                    <div class="icon bg-color-8">
-                        <i class="lni-cup"></i>
-                    </div>
-                    <h3>Food Services</h3>
-                    <p>(4286 jobs)</p>
-                </a>
-            </div>
+                </div>
+            }
         </div>
     </div>
 </section>
-<!-- Category Section End -->  
-
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-}

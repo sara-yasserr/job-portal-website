@@ -11,6 +11,5 @@ namespace Job_Portal_Project.Services
         void CreateJob(Job job);
         void UpdateJob(Job job);
         void DeleteJob(int id);
-       
     }
 }

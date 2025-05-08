@@ -5,6 +5,7 @@ using Job_Portal_Project.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Job_Portal_Project.ViewModels;
 
 namespace Job_Portal_Project.Controllers
 {

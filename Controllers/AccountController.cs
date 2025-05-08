@@ -3,12 +3,11 @@ using Job_Portal_Project.Models;
 using Job_Portal_Project.Repositories.ApplicationUserRepository;
 using Job_Portal_Project.Services;
 using Job_Portal_Project.ViewModels;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Job_Portal_Project.Controllers
 {
@@ -18,13 +17,15 @@ namespace Job_Portal_Project.Controllers
         private SignInManager<ApplicationUser> signInManager;
         IApplicationUserRepository _applicationUserRepository;
         IUserMappingService _userMappingService;
+        private readonly IUserService _userService;
         public AccountController(UserManager<ApplicationUser> _userManager, SignInManager<ApplicationUser> _signInManager ,
-            IApplicationUserRepository applicationUserRepository , IUserMappingService userMappingService)
+            IApplicationUserRepository applicationUserRepository, IUserService userService, IUserMappingService userMappingService)
         {
             userManager = _userManager;
             signInManager = _signInManager;
             _applicationUserRepository = applicationUserRepository;
             _userMappingService = userMappingService;
+            _userService = userService;
         }
 
         #region Register
@@ -37,9 +38,9 @@ namespace Job_Portal_Project.Controllers
         [AutoValidateAntiforgeryToken]
         public IActionResult PreRegister(RegisterViewModel userVM)
         {
-            if (userVM.Role!=null)
+            if (userVM.Role != null)
             {
-                return RedirectToAction("Register",userVM);
+                return RedirectToAction("Register", userVM);
             }
             return View("PreRegister", userVM);
         }
@@ -49,7 +50,7 @@ namespace Job_Portal_Project.Controllers
             RegisterViewModel userVM = new RegisterViewModel();
             userVM.Role = Role;
             if (!string.IsNullOrEmpty(Email)) { userVM.Email = Email; }
-            return View("Register",userVM);  
+            return View("Register", userVM);
         }
 
         [HttpPost]
@@ -69,7 +70,8 @@ namespace Job_Portal_Project.Controllers
 
                 userVM.ProfilePicturePath = uniqueFileName;
             }
-
+            //to assign admins ==>>
+            // userVM.Role = Role.Admin;
             if (ModelState.IsValid)
             {
                 var existingUser = await _applicationUserRepository.GetByUserNameAsync(userVM.UserName);
@@ -84,11 +86,9 @@ namespace Job_Portal_Project.Controllers
                 //create cookie
                 if (result.Succeeded)
                 {
-                    //to assign admins ==>>
-                    //await userManager.AddToRoleAsync(userFromDB, "Admin");
                     string selectRole = userVM.Role.ToString();
                     await userManager.AddToRoleAsync(userFromDB, selectRole);
-                    await signInManager.SignInAsync(userFromDB,false);
+                    await signInManager.SignInAsync(userFromDB, false);
                     return RedirectToAction("Login", "Account");
                 }
                 else
@@ -97,15 +97,15 @@ namespace Job_Portal_Project.Controllers
                     {
                         ModelState.AddModelError("", item.Description);
                     }
+                    return View("Register", userVM);
                 }
             }
             return View("Register", userVM);
         }
-
         #endregion
 
         #region Login
-  
+
         public IActionResult Login()
         {
             return View();
@@ -137,10 +137,10 @@ namespace Job_Portal_Project.Controllers
                         claims.Add(new Claim(ClaimTypes.Role, userFromDB.Role));
 
                         //await signInManager.SignInAsync(userFromDB, loginVM.RememberMe);
-                        await signInManager.SignInWithClaimsAsync(userFromDB, loginVM.RememberMe,claims);
+                        await signInManager.SignInWithClaimsAsync(userFromDB, loginVM.RememberMe, claims);
 
                         return RedirectToAction("Index", "Home");
-                    }   
+                    }
                 }
 
                 ModelState.AddModelError("", "Username or Password is invalid");
@@ -150,47 +150,100 @@ namespace Job_Portal_Project.Controllers
         }
         #endregion
         #region External login 
-        public IActionResult RedirectToLocal(string returnUrl)
+        private IActionResult RedirectToLocal(string returnUrl)
         {
-            if (Url.IsLocalUrl(returnUrl))
-            {
-                return Redirect(returnUrl);
-            }
-            else
+            if (string.IsNullOrEmpty(returnUrl) ||
+                returnUrl.Equals("/Account/Login", StringComparison.OrdinalIgnoreCase) ||
+                returnUrl.StartsWith("/Identity/Account/Login", StringComparison.OrdinalIgnoreCase))
             {
                 return RedirectToAction("Index", "Home");
             }
+
+            if (Url.IsLocalUrl(returnUrl))
+            {
+                return LocalRedirect(returnUrl);
+            }
+
+            return RedirectToAction("Index", "Home");
         }
 
         public IActionResult GoogleLogin(string returnUrl = null)
         {
-            var redirectUrl = Url.Action("GoogleCallBack", "Account", new { returnUrl });
-            var properties = new AuthenticationProperties { RedirectUri = redirectUrl };
+            returnUrl ??= Url.Content("~/");
+
+            var properties = new AuthenticationProperties
+            {
+                RedirectUri = Url.Action("GoogleCallback"),
+                Items =
+        {
+            { "returnUrl", returnUrl },
+            { "scheme", GoogleDefaults.AuthenticationScheme }
+        }
+            };
+
             return Challenge(properties, GoogleDefaults.AuthenticationScheme);
         }
 
-        public async Task<IActionResult> GoogleCallBack(string returnUrl = null)
+        public async Task<IActionResult> GoogleCallback()
         {
-            var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            var email = result.Principal.FindFirst(ClaimTypes.Email)?.Value;
+            var result = await HttpContext.AuthenticateAsync(GoogleDefaults.AuthenticationScheme);
 
-            if (!result.Succeeded || result.Principal == null)
+            if (result?.Succeeded != true)
             {
-                TempData["Email"] = email;
-                TempData.Keep("Email");
-                return RedirectToAction("PreRegister", "Account");
+                return RedirectToAction("Login");
             }
 
+            var returnUrl = result.Properties?.GetString("returnUrl") ?? Url.Content("~/");
+
+            // معالجة المستخدم وتسجيل الدخول
+            var email = result.Principal.FindFirst(ClaimTypes.Email)?.Value;
             var user = await userManager.FindByEmailAsync(email);
+
             if (user == null)
             {
                 TempData["Email"] = email;
-                TempData.Keep("Email");
                 return RedirectToAction("PreRegister", "Account");
             }
 
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(result.Principal.Identity));
+            await signInManager.SignInAsync(user, isPersistent: false);
+
             return RedirectToLocal(returnUrl);
+        }
+        #endregion
+
+        #region Change Password
+        //Change Password
+        [HttpGet("ChangePassword")]
+        public IActionResult ChangePassword()
+        {
+            return View(new ChangePasswordViewModel());
+        }
+
+        [HttpPost("ChangePassword")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var user = await userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var result = await _userService.ChangePasswordAsync(user.Id, model.CurrentPassword, model.NewPassword);
+            if (!result)
+            {
+                ModelState.AddModelError(string.Empty, "Error changing password. Please check your current password.");
+                return View(model);
+            }
+
+            await signInManager.RefreshSignInAsync(user);
+            TempData["SuccessMessage"] = "Your password has been changed successfully.";
+            return RedirectToAction(nameof(ChangePassword));
         }
         #endregion
 
@@ -201,5 +254,29 @@ namespace Job_Portal_Project.Controllers
             return RedirectToAction("Login", "Account");
         }
         #endregion
+
+        #region Validations
+
+        public async Task<ActionResult> IsUniqueEmail(string Email)
+        {
+
+                var user = await userManager.FindByEmailAsync(Email);
+                if (user == null)
+                    return Json(true);
+                else
+                    return Json(false);
+
+        }
+
+        public async Task<IActionResult> IsUniqueUserName(string Username)
+        {
+                var user = await userManager.FindByNameAsync(Username);
+                if (user == null)
+                    return Json(true);
+                else
+                    return Json(false);
+        }
+
+        #endregion 
     }
 }

@@ -72,7 +72,153 @@
         </form>
     </div>
 </div>
+<style>
+    /* Main container styling */
+    .container {
+        max-width: 900px;
+        animation: fadeIn 0.5s ease-out;
+    }
 
+    @@keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Card styling */
+    .card {
+        border: none;
+        border-radius: 12px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+        background: white;
+    }
+
+    /* Header styling */
+    h3 {
+        color: #2c3e50;
+        font-weight: 700;
+        position: relative;
+        padding-bottom: 1rem;
+        margin-bottom: 2rem;
+    }
+
+        h3:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, #3498db, #9b59b6);
+            border-radius: 2px;
+        }
+
+    /* Form elements styling */
+    .form-label {
+        font-weight: 600;
+        color: #34495e;
+        margin-bottom: 0.5rem;
+    }
+
+    .form-control {
+        border: 1px solid #dfe6e9;
+        border-radius: 8px;
+        padding: 0.75rem 1rem;
+        transition: all 0.3s;
+    }
+
+        .form-control:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+        }
+
+    /* Validation messages */
+    .text-danger {
+        font-size: 0.875rem;
+        margin-top: 0.25rem;
+    }
+
+    /* Button styling */
+    .btn {
+        border-radius: 8px;
+        padding: 0.75rem 1.5rem;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        transition: all 0.3s;
+        border: none;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #3498db, #2980b9);
+        box-shadow: 0 4px 6px rgba(52, 152, 219, 0.3);
+    }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #2980b9, #3498db);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(52, 152, 219, 0.4);
+        }
+
+    .btn-secondary {
+        background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+        box-shadow: 0 4px 6px rgba(149, 165, 166, 0.3);
+    }
+
+        .btn-secondary:hover {
+            background: linear-gradient(135deg, #7f8c8d, #95a5a6);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(149, 165, 166, 0.4);
+        }
+
+    /* File input styling */
+    input[type="file"] {
+        padding: 0.5rem;
+    }
+
+        input[type="file"]::file-selector-button {
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            background-color: #f8f9fa;
+            border: 1px solid #dfe6e9;
+            transition: all 0.2s;
+            margin-right: 1rem;
+        }
+
+            input[type="file"]::file-selector-button:hover {
+                background-color: #e9ecef;
+                cursor: pointer;
+            }
+
+    /* Responsive adjustments */
+    @@media (max-width: 768px) {
+        .card {
+            border-radius: 0;
+            box-shadow: none;
+            border: 1px solid #eee;
+        }
+
+        .container {
+            padding: 0;
+        }
+
+        .btn {
+            width: 100%;
+            margin-bottom: 0.5rem;
+        }
+
+        .d-flex.gap-2 {
+            gap: 0.5rem !important;
+            flex-direction: column;
+        }
+    }
+</style>
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }

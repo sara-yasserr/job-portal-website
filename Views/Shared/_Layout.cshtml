@@ -10,7 +10,12 @@
     <title>Job Portal </title>
 
     <!-- Bootstrap CSS -->
-    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://cdn.lineicons.com/5.0/lineicons.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.lineicons.com/3.0/lineicons.css">
+    <link rel="stylesheet" href="~/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/assets/css/line-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet"  href="@Url.Content("~/assets/css/bootstrap.min.css")">
     <link rel="stylesheet" href="@Url.Content("~/assets/css/line-icons.css")">
     <link rel="stylesheet" href="~/assets/css/owl.carousel.min.css">
@@ -19,9 +24,9 @@
     <link rel="stylesheet" href="~/assets/css/animate.css">
     <link rel="stylesheet" href="~/assets/css/main.css">
     <link rel="stylesheet" href="~/assets/css/responsive.css">
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
+   
+    @RenderSection("Styles", required: false)
+   
 
 </head>
 
@@ -29,104 +34,105 @@
     <!-- Header Section Start -->
     <header id="home" class="hero-area">
         <!-- Navbar Start -->
-        <nav class="navbar navbar-expand-lg fixed-top scrolling-navbar">
-            <div class="container">
-                <div class="theme-header clearfix">
-                    <!-- Brand and toggle get grouped for better mobile display -->
-                    <div class="navbar-header">
-                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false" aria-label="Toggle navigation">
-                            <span class="navbar-toggler-icon"></span>
-                            <span class="lni-menu"></span>
-                            <span class="lni-menu"></span>
-                            <span class="lni-menu"></span>
-                        </button>
-                        <a href="index.html" class="navbar-brand"><img src="~/assets/img/logo.png" alt=""></a>
-                    </div>
-                    <div class="collapse navbar-collapse" id="main-navbar">
-                        <ul class="navbar-nav mr-auto w-100 justify-content-end">
-                            <li class="nav-item active">
-                                <a class="nav-link" href="/Home/Index">
-                                    Home
-                                </a>
-                            </li>
-                            <li class="nav-item active">
-                                <a class="nav-link" href="/JobSearch/Index">
-                                    Find a Job
-                                </a>
-                            </li>
-                            <li class="nav-item active">
-                                <a class="nav-link" href="/Resume/Index">
-                                    Resume Page
-                                </a>
-                            </li>
+        @* <nav class="navbar navbar-expand-lg fixed-top scrolling-navbar"> *@
+        @*     <div class="container"> *@
+        @*         <div class="theme-header clearfix"> *@
+        @*             <!-- Brand and toggle get grouped for better mobile display --> *@
+        @*             <div class="navbar-header"> *@
+        @*                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false" aria-label="Toggle navigation"> *@
+        @*                     <span class="navbar-toggler-icon"></span> *@
+        @*                     <span class="lni-menu"></span> *@
+        @*                     <span class="lni-menu"></span> *@
+        @*                     <span class="lni-menu"></span> *@
+        @*                 </button> *@
+        @*                 <a href="index.html" class="navbar-brand"><img src="~/assets/img/logo.png" alt=""></a> *@
+        @*             </div> *@
+        @*             <div class="collapse navbar-collapse" id="main-navbar"> *@
+        @*                 <ul class="navbar-nav mr-auto w-100 justify-content-end"> *@
+        @*                     <li class="nav-item active"> *@
+        @*                         <a class="nav-link" href="/Home/Index"> *@
+        @*                             Home *@
+        @*                         </a> *@
+        @*                     </li> *@
+        @*                     <li class="nav-item active"> *@
+        @*                         <a class="nav-link" href="/JobSearch/Index"> *@
+        @*                             Find a Job *@
+        @*                         </a> *@
+        @*                     </li> *@
+        @*                     <li class="nav-item active"> *@
+        @*                         <a class="nav-link" href="/Resume/Index"> *@
+        @*                             Resume Page *@
+        @*                         </a> *@
+        @*                     </li> *@
                           
 
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Pages
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="about.html">About</a></li>
-                                    <li><a class="dropdown-item" href="job-page.html">Job Page</a></li>
-                                    <li><a class="dropdown-item" href="job-details.html">Job Details</a></li>
-                                    <li><a class="dropdown-item" href="resume.html">Resume Page</a></li>
-                                    <li><a class="dropdown-item" href="/Home/Privacy">Privacy Policy</a></li>
-                                    <li><a class="dropdown-item" href="faq.html">FAQ</a></li>
-                                    <li><a class="dropdown-item" href="pricing.html">Pricing Tables</a></li>
-                                    <li><a class="dropdown-item" href="contact.html">Contact</a></li>
-                                </ul>
-                            </li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Candidates
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="browse-jobs.html">Browse Jobs</a></li>
-                                    <li><a class="dropdown-item" href="browse-categories.html">Browse Categories</a></li>
-                                    <li><a class="dropdown-item" href="add-resume.html">Add Resume</a></li>
-                                    <li><a class="dropdown-item" href="manage-resumes.html">Manage Resumes</a></li>
-                                    <li><a class="dropdown-item" href="job-alerts.html">Job Alerts</a></li>
-                                </ul>
-                            </li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Employers
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="post-job.html">Add Job</a></li>
-                                    <li><a class="dropdown-item" href="manage-jobs.html">Manage Jobs</a></li>
-                                    <li><a class="dropdown-item" href="manage-applications.html">Manage Applications</a></li>
-                                    <li><a class="dropdown-item" href="browse-resumes.html">Browse Resumes</a></li>
-                                </ul>
-                            </li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Blog
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="blog.html">Blog - Right Sidebar</a></li>
-                                    <li><a class="dropdown-item" href="blog-left-sidebar.html">Blog - Left Sidebar</a></li>
-                                    <li><a class="dropdown-item" href="blog-full-width.html"> Blog full width</a></li>
-                                    <li><a class="dropdown-item" href="single-post.html">Blog Single Post</a></li>
-                                </ul>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="contact.html">
-                                    Contact
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="login.html">Sign In</a>
-                            </li>
-                            <li class="button-group">
-                                <a href="post-job.html" class="button btn btn-common">Post a Job</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="mobile-menu" data-logo="assets/img/logo-mobile.png"></div>
-        </nav>
+        @*                     <li class="nav-item dropdown"> *@
+        @*                         <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> *@
+        @*                             Pages *@
+        @*                         </a> *@
+        @*                         <ul class="dropdown-menu"> *@
+        @*                             <li><a class="dropdown-item" href="about.html">About</a></li> *@
+        @*                             <li><a class="dropdown-item" href="job-page.html">Job Page</a></li> *@
+        @*                             <li><a class="dropdown-item" href="job-details.html">Job Categories</a></li> *@
+        @*                             <li><a class="dropdown-item" href="resume.html">Job Details</a></li> *@
+        @*                             <li><a class="dropdown-item" href="/Home/Privacy">Privacy Policy</a></li> *@
+        @*                             <li><a class="dropdown-item" href="faq.html">FAQ</a></li> *@
+        @*                             <li><a class="dropdown-item" href="pricing.html">Pricing Tables</a></li> *@
+        @*                             <li><a class="dropdown-item" href="contact.html">Contact</a></li> *@
+        @*                         </ul> *@
+        @*                     </li> *@
+        @*                     <li class="nav-item dropdown"> *@
+        @*                         <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> *@
+        @*                             Candidates *@
+        @*                         </a> *@
+        @*                         <ul class="dropdown-menu"> *@
+        @*                             <li><a class="dropdown-item" href="browse-jobs.html">Browse Jobs</a></li> *@
+        @*                             <li><a class="dropdown-item" href="/JobSearch/Categories">Browse Categories</a></li> *@
+        @*                             <li><a class="dropdown-item" href="add-resume.html">Add Resume</a></li> *@
+        @*                             <li><a class="dropdown-item" href="manage-resumes.html">Manage Resumes</a></li> *@
+        @*                             <li><a class="dropdown-item" href="job-alerts.html">Job Alerts</a></li> *@
+        @*                         </ul> *@
+        @*                     </li> *@
+        @*                     <li class="nav-item dropdown"> *@
+        @*                         <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> *@
+        @*                             Employers *@
+        @*                         </a> *@
+        @*                         <ul class="dropdown-menu"> *@
+        @*                             <li><a class="dropdown-item" href="post-job.html">Add Job</a></li> *@
+        @*                             <li><a class="dropdown-item" href="manage-jobs.html">Manage Jobs</a></li> *@
+        @*                             <li><a class="dropdown-item" href="manage-applications.html">Manage Applications</a></li> *@
+        @*                             <li><a class="dropdown-item" href="browse-resumes.html">Browse Resumes</a></li> *@
+        @*                         </ul> *@
+        @*                     </li> *@
+        @*                     <li class="nav-item dropdown"> *@
+        @*                         <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> *@
+        @*                             Blog *@
+        @*                             </a> *@
+        @*                         <ul class="dropdown-menu"> *@
+        @*                             <li><a class="dropdown-item" href="blog.html">Blog - Right Sidebar</a></li> *@
+        @*                             <li><a class="dropdown-item" href="blog-left-sidebar.html">Blog - Left Sidebar</a></li> *@
+        @*                             <li><a class="dropdown-item" href="blog-full-width.html"> Blog full width</a></li> *@
+        @*                             <li><a class="dropdown-item" href="single-post.html">Blog Single Post</a></li> *@
+        @*                         </ul> *@
+        @*                         </li> *@
+        @*                         <li class="nav-item"> *@
+        @*                         <a class="nav-link" href="contact.html"> *@
+        @*                             Contact *@
+        @*                             </a> *@
+        @*                         </li> *@
+        @*                         <li class="nav-item"> *@
+        @*                         <a class="nav-link" href="login.html">Sign In</a> *@
+        @*                         </li> *@
+        @*                         <li class="button-group"> *@
+        @*                             <a href="post-job.html" class="button btn btn-common">Post a Job</a> *@
+        @*                         </li> *@
+        @*                 </ul> *@
+        @*             </div> *@
+        @*         </div> *@
+        @*     </div> *@
+        @*     <div class="mobile-menu" data-logo="assets/img/logo-mobile.png"></div> *@
+        @* </nav> *@
+        <partial name="_NavbarPartial"></partial>
         <!-- Navbar End -->
     </header>
     <!-- Header Section End -->
@@ -233,4 +239,14 @@
 
     @await RenderSectionAsync("Scripts", required: false)
     @* @RenderSection("Scripts", required: false) *@
+    @section Scripts {
+        <link rel="stylesheet" href="~/css/custom-category.css" />
+    }
 </body>
+
+</html>
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+</style>

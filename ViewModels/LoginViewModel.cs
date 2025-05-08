@@ -4,11 +4,11 @@ namespace Job_Portal_Project.ViewModels
 {
     public class LoginViewModel
     {
-        [Required]
-        public string UserName { get; set; }
-        [Required]
+        [Display(Name = "Username")]
+        public string? UserName { get; set; }
+
         [DataType(DataType.Password)]
-        public string Password { get; set; }
+        public string? Password { get; set; }
         public bool RememberMe { get; set; }
     }
 }

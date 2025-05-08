@@ -1,0 +1,383 @@
+﻿@using Job_Portal_Project.ViewModels
+@model IEnumerable<JobApplicantDetailsForApplicantViewModel>
+@{
+    ViewData["Title"] = "Applicants";
+}
+
+<style>
+    :root {
+        --primary: #00BCD4;
+        --primary-light: #4DD0E1;
+        --primary-dark: #0097A7;
+        --white: #ffffff;
+        --light-gray: #f5f5f5;
+        --text-dark: #333333;
+    }
+
+    body {
+        background: linear-gradient(135deg, rgba(0, 188, 212, 0.05) 0%, rgba(240, 240, 240, 0.8) 100%);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .page-title {
+        color: var(--primary-dark);
+        font-weight: 700;
+        margin-bottom: 2rem;
+        position: relative;
+        display: inline-block;
+        padding-bottom: 10px;
+    }
+
+        .page-title::after {
+            content: '';
+            position: absolute;
+            width: 50%;
+            height: 4px;
+            background: var(--primary);
+            bottom: 0;
+            left: 25%;
+            border-radius: 10px;
+            transform: scaleX(0);
+            animation: titleUnderline 1.5s ease-in-out forwards;
+        }
+
+    @@keyframes titleUnderline {
+        to
+
+    {
+        transform: scaleX(1);
+    }
+
+    }
+
+    .search-container {
+        background-color: var(--white);
+        border-radius: 15px;
+        padding: 1.5rem;
+        box-shadow: 0 5px 20px rgba(0, 188, 212, 0.1);
+        margin-bottom: 2rem;
+        transform: translateY(20px);
+        opacity: 0;
+        animation: fadeInUp 0.8s ease-out forwards;
+    }
+
+    .search-input {
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 10px 15px;
+        transition: all 0.3s;
+    }
+
+        .search-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(0, 188, 212, 0.25);
+        }
+
+    .btn-primary {
+        background-color: var(--primary);
+        border-color: var(--primary);
+        border-radius: 8px;
+        font-weight: 600;
+        padding: 10px 20px;
+        transition: all 0.3s;
+    }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            border-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 188, 212, 0.3);
+        }
+
+    .btn-secondary {
+        background-color: #f5f5f5;
+        border-color: #e0e0e0;
+        color: #555;
+        border-radius: 8px;
+        font-weight: 600;
+        padding: 10px 20px;
+        transition: all 0.3s;
+    }
+
+        .btn-secondary:hover {
+            background-color: #e0e0e0;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+    .applicant-card {
+        border: none;
+        border-radius: 15px;
+        overflow: hidden;
+        transition: all 0.4s ease;
+        transform: translateY(30px);
+        opacity: 0;
+        animation: fadeInUp 0.8s ease-out forwards;
+        animation-delay: calc(var(--card-index) * 0.1s);
+    }
+
+        .applicant-card:hover {
+            transform: translateY(-5px) !important;
+            box-shadow: 0 15px 30px rgba(0, 188, 212, 0.15) !important;
+        }
+
+    .profile-img-container {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        overflow: hidden;
+        margin: 0 auto 1.5rem;
+        border: 4px solid var(--primary-light);
+        box-shadow: 0 5px 15px rgba(0, 188, 212, 0.2);
+        transition: all 0.4s;
+    }
+
+    .applicant-card:hover .profile-img-container {
+        transform: scale(1.05);
+        border-color: var(--primary);
+    }
+
+    .profile-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: all 0.4s;
+    }
+
+    .no-image-placeholder {
+        width: 100%;
+        height: 100%;
+        background-color: #e0e0e0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #999;
+        font-size: 14px;
+    }
+
+    .card-title {
+        color: var(--text-dark);
+        font-weight: 600;
+        margin-bottom: 1rem;
+        transition: all 0.3s;
+    }
+
+    .applicant-card:hover .card-title {
+        color: var(--primary-dark);
+    }
+
+    .info-label {
+        font-weight: 600;
+        color: #666;
+        margin-right: 5px;
+    }
+
+    .badge {
+        padding: 8px 12px;
+        font-weight: 500;
+        font-size: 12px;
+        border-radius: 20px;
+        letter-spacing: 0.5px;
+        transition: all 0.3s;
+    }
+
+    .badge-success {
+        background-color: #4CAF50;
+    }
+
+    .badge-danger {
+        background-color: #F44336;
+    }
+
+    .badge-warning {
+        background-color: #FFC107;
+    }
+
+    .badge-secondary {
+        background-color: #9E9E9E;
+    }
+
+    .details-btn {
+        margin-top: 1rem;
+        border-radius: 20px;
+        padding: 8px 20px;
+        transition: all 0.3s;
+        background-color: transparent;
+        border: 2px solid var(--primary);
+        color: var(--primary);
+    }
+
+    .applicant-card:hover .details-btn {
+        background-color: var(--primary);
+        color: white;
+    }
+
+    .card-body {
+        padding: 2rem;
+    }
+
+    .status-divider {
+        width: 40%;
+        height: 3px;
+        background: linear-gradient(to right, transparent, var(--primary-light), transparent);
+        margin: 1rem auto;
+    }
+
+    /* Animation keyframes */
+    @@keyframes fadeInUp {
+        from
+
+    {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    }
+
+    @@keyframes pulse {
+        0%
+
+    {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+
+    }
+
+    /* Empty state */
+    .empty-state {
+        text-align: center;
+        padding: 3rem;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+    }
+</style>
+
+<div class="container py-5">
+    <h1 class="text-center page-title">Applicants Dashboard</h1>
+
+    <div class="search-container">
+        <form method="get" asp-action="ShowAllApplicants" asp-controller="JobApplication">
+            <div class="row align-items-center">
+                <input type="hidden" name="jobId" value="@ViewData["JobId"]" />
+                <div class="col-md-8">
+                    <input type="text" class="form-control search-input" placeholder="Search by Full Name" name="FullName" value="@ViewData["FullName"]" />
+                </div>
+                <div class="col-md-4 d-flex justify-content-end mt-3 mt-md-0">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-search me-2"></i>Apply Filter
+                    </button>
+
+                    <a href="@Url.Action("ShowAllApplicants", "JobApplication", new { jobId = ViewData["JobId"], FullName = "" })" class="btn btn-secondary ms-2">
+                        <i class="fas fa-undo me-2"></i>Reset
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="empty-state">
+            <i class="fas fa-user-slash fa-4x text-muted mb-4"></i>
+            <h3>No Applicants Found</h3>
+            <p class="text-muted">Try adjusting your search criteria or check back later.</p>
+        </div>
+    }
+    else
+    {
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            @{
+                int index = 0;
+            }
+            @foreach (var item in Model)
+            {
+                <div class="col" style="--card-index: @index">
+                    <div class="card h-100 shadow applicant-card">
+                        <div class="card-body text-center">
+                            <div class="profile-img-container">
+                                @if (!string.IsNullOrEmpty(item.ProfilePicturePath))
+                                {
+                                    <img src="~/Images/@item.ProfilePicturePath" alt="Profile Picture" class="profile-img" />
+                                }
+                                else
+                                {
+                                    <div class="no-image-placeholder">
+                                        <i class="fas fa-user fa-2x"></i>
+                                    </div>
+                                }
+                            </div>
+
+                            <h5 class="card-title">@item.FirstName @item.LastName</h5>
+
+                            <p class="card-text mb-2">
+                                <span class="info-label">Applied:</span>
+                                @item.ApplicationDate.ToString("MMM dd, yyyy")
+                            </p>
+
+                            <div class="status-divider"></div>
+
+                            <p class="card-text mt-3">
+                                <span class="info-label">Status:</span>
+                                @switch (item.status?.ToLower())
+                                {
+                                    case "accept":
+                                        <span class="badge badge-success">Accepted</span>
+                                        break;
+                                    case "rejected":
+                                        <span class="badge badge-danger">Rejected</span>
+                                        break;
+                                    case "interview process":
+                                        <span class="badge badge-warning text-dark">Interview Process</span>
+                                        break;
+                                    default:
+                                        <span class="badge badge-secondary">@item.status</span>
+                                        break;
+                                }
+                            </p>
+
+                            <a asp-action="ShowDetialsOfApplicant" asp-controller="JobApplication" asp-route-ApplicantId="@item.ApplicantId" class="btn details-btn">
+                                View Profile <i class="fas fa-chevron-right ms-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                index++;
+            }
+        </div>
+    }
+</div>
+
+<script>
+    // Add animation to cards on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add pulse animation to title
+        setTimeout(() => {
+            document.querySelector('.page-title').style.animation = 'pulse 2s infinite';
+        }, 2000);
+
+        // Add hover animation to status badges
+        const badges = document.querySelectorAll('.badge');
+        badges.forEach(badge => {
+            badge.addEventListener('mouseenter', function() {
+                this.style.transform = 'scale(1.1)';
+            });
+            badge.addEventListener('mouseleave', function() {
+                this.style.transform = 'scale(1)';
+            });
+        });
+    });
+</script>

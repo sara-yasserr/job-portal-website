@@ -1,6 +1,7 @@
 ﻿using Job_Portal_Project.Models;
 using Job_Portal_Project.Repositories;
 using Job_Portal_Project.Services;
+using Job_Portal_Project.Services.Contracts;
 using Job_Portal_Project.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -12,15 +13,14 @@ namespace Job_Portal_Project.Controllers
 {
     public class JobsController : Controller
     {
-
         private readonly IJobService _jobService;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ICompanyRepository _companyRepository;
-        private readonly IJobCategoryRepository  _jobCategoryRepository;
-        
+        private readonly IJobCategoryRepository _jobCategoryRepository;
+
 
         public JobsController(IJobService jobService, UserManager<ApplicationUser>? userManager, ICompanyRepository companyRepository, IJobCategoryRepository jobCategoryRepository)
-        { 
+        {
             _jobService = jobService;
             _userManager = userManager;
             _companyRepository = companyRepository;
@@ -53,6 +53,7 @@ namespace Job_Portal_Project.Controllers
                 companyName = companyName.Trim();
                 jobsQuery = jobsQuery.Where(j => j.Company != null && j.Company.Name.Contains(companyName, StringComparison.OrdinalIgnoreCase));
             }
+
 
             if (categoryId.HasValue)
             {
@@ -155,11 +156,11 @@ namespace Job_Portal_Project.Controllers
 
         public ActionResult Details(int id)
         {
-           Job job  =  _jobService.GetJobById(id);
+            Job job = _jobService.GetJobById(id);
 
             if (job == null)
             {
-                return NotFound();  
+                return NotFound();
             }
             return View(job);
         }
@@ -289,9 +290,5 @@ namespace Job_Portal_Project.Controllers
             _jobService.DeleteJob(id);
             return RedirectToAction("Index");
         }
-
-
-
-
     }
 }

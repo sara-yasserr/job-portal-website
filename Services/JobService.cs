@@ -35,7 +35,7 @@ namespace Job_Portal_Project.Services
 
         public Job GetJobById(int id)
         {
-           return _jobRepository.GetById(id);
+            return _jobRepository.GetById(id);
         }
 
         public void UpdateJob(Job job)

@@ -38,7 +38,6 @@ namespace Job_Portal_Project.Repositories
                    .FirstOrDefault(j => j.Id.Equals(id));
         }
 
-      
         public void Insert(Job entity)
         {
             _context.Jobs.Add(entity);
@@ -61,6 +60,14 @@ namespace Job_Portal_Project.Repositories
         public int Count()
         {
             return _context.Jobs.Count();
+        }
+
+        public int GetVacancyCount(int jobId)
+        {
+            return _context.Jobs
+                .Where(job => job.Id == jobId)
+                .Select(job => job.VacancyCount)
+                .FirstOrDefault();
         }
     }
 }

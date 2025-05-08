@@ -20,7 +20,7 @@ namespace Job_Portal_Project.Repositories.ApplicationUserRepository
         {
             return await _userManager.Users.ToListAsync();
         }
-        
+
         public async Task<ApplicationUser?> GetByIdAsync(string id)
         {
             return await _userManager.FindByIdAsync(id);
@@ -28,10 +28,6 @@ namespace Job_Portal_Project.Repositories.ApplicationUserRepository
         public async Task<ApplicationUser> GetByUserNameAsync(string userName)
         {
             var user = await _userManager.FindByNameAsync(userName);
-            if (user == null)
-            {
-                throw new InvalidOperationException($"User with username '{userName}' not found.");
-            }
             return user;
         }
         public async Task<ApplicationUser> GetByEmailAsync(string email)
@@ -65,6 +61,9 @@ namespace Job_Portal_Project.Repositories.ApplicationUserRepository
         {
             await context.SaveChangesAsync();
         }
+
+        
+
         public Task<int> GetNumberOfUsersAsync()
         {
             return _userManager.Users.CountAsync();

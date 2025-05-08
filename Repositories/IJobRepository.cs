@@ -7,5 +7,6 @@ namespace Job_Portal_Project.Repositories
     {
 
         IQueryable<Job> GetAllIQ();
+        public int GetVacancyCount(int jobId);
     }
 }
