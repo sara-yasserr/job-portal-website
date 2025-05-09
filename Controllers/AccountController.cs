@@ -6,6 +6,7 @@ using Job_Portal_Project.ViewModels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,13 +18,16 @@ namespace Job_Portal_Project.Controllers
         private SignInManager<ApplicationUser> signInManager;
         IApplicationUserRepository _applicationUserRepository;
         IUserMappingService _userMappingService;
+        private readonly IEmailService emailSerice;
+
         public AccountController(UserManager<ApplicationUser> _userManager, SignInManager<ApplicationUser> _signInManager,
-            IApplicationUserRepository applicationUserRepository, IUserMappingService userMappingService)
+            IApplicationUserRepository applicationUserRepository, IUserMappingService userMappingService, IEmailService _emailSerice)
         {
             userManager = _userManager;
             signInManager = _signInManager;
             _applicationUserRepository = applicationUserRepository;
             _userMappingService = userMappingService;
+            emailSerice = _emailSerice;
         }
 
         #region Register
@@ -136,7 +140,7 @@ namespace Job_Portal_Project.Controllers
                         claims.Add(new Claim("Country", userFromDB.Country));
                         claims.Add(new Claim(ClaimTypes.Role, userFromDB.Role));
 
-                        //await signInManager.SignInAsync(userFromDB, loginVM.RememberMe);
+                        await signInManager.SignInAsync(userFromDB, loginVM.RememberMe);
                         await signInManager.SignInWithClaimsAsync(userFromDB, loginVM.RememberMe, claims);
 
                         return RedirectToAction("Index", "Home");
@@ -199,6 +203,92 @@ namespace Job_Portal_Project.Controllers
         {
             await signInManager.SignOutAsync();
             return RedirectToAction("Login", "Account");
+        }
+        #endregion
+
+        #region ForgetPassword
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult ForgetPassword()
+        {
+            return View();
+        }
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ForgetPassword(ForgetPasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await userManager.FindByEmailAsync(model.Email);
+                if ((user == null))
+                {
+                    return View("ForgotPasswordConfirmation");
+                }
+
+                string code = await userManager.GeneratePasswordResetTokenAsync(user);
+
+                var callbackURL = Url.Action(
+                    "ResetPassword",
+                    "Account",
+                      new { email = user.Email, code = code },
+                     protocol: Request.Scheme
+                    );
+                await emailSerice.SendEmailAsync(model.Email, "Reset Password", $"Please reset your password by clicking <a href='{callbackURL}'>here</a>");
+                return RedirectToAction("ForgotPasswordConfirmation", "Account");
+            }
+            return View(model);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult ForgotPasswordConfirmation()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult ResetPassword(string code = null)
+        {
+            return code == null ? View("Error") : View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ResetPassword(ResetPasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var user = await userManager.FindByEmailAsync(model.Email);
+            if (user == null)
+            {
+
+                return RedirectToAction("ResetPasswordConfirmation", "Account");
+            }
+
+            var result = await userManager.ResetPasswordAsync(user, model.Code, model.Password);
+            if (result.Succeeded)
+            {
+                return RedirectToAction("ResetPasswordConfirmation", "Account");
+            }
+
+            foreach (var item in result.Errors)
+            {
+                ModelState.AddModelError("", item.Description);
+            }
+            return View();
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult ResetPasswordConfirmation()
+        {
+            return View();
         }
         #endregion
     }
