@@ -86,20 +86,6 @@ namespace Job_Portal_Project.Controllers
         }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         //[Authorize(Roles = "Employer")]
         //public async Task<IActionResult> IndexAsync(string? title, string? companyName, int? categoryId)
         //{
