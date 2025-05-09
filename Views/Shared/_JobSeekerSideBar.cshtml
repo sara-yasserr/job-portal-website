@@ -9,6 +9,7 @@
                     <i class="fas fa-user"></i> Profile
                 </a>
             </li>
+            @if(User.IsInRole("JobSeeker")){
             <li>
                 <a href="/Resume/Index" class="@(Context.Request.Path.Value.Contains("/Resume") ? "active" : "")">
                     <i class="fas fa-file-alt"></i> My Resume
@@ -24,6 +25,7 @@
                     <i class="fas fa-briefcase"></i> Applied Jobs
                 </a>
             </li>
+            }
             <li>
                 <a href="/ChangePassword" class="@(Context.Request.Path.Value.Contains("/ChangePassword") ? "active" : "")">
                     <i class="fas fa-key"></i> Change Password

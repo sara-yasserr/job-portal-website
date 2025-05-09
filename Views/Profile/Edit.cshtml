@@ -27,18 +27,18 @@
                         <div class="row mb-4">
                             <div class="col-12 text-center">
                                 <div class="position-relative d-inline-block">
-                                    @if (!string.IsNullOrEmpty(Model.ProfilePicturePath))
-                                    {
+                                    @* @if (string.IsNullOrEmpty(Model.ProfilePicturePath)) *@
+                                    @* { *@
                                         <img src="/images/@Model.ProfilePicturePath" alt="Profile Picture"
                                              class="rounded-circle img-thumbnail mb-3"
                                              style="width: 160px; height: 160px; object-fit: cover;">
-                                    }
-                                    else
-                                    {
-                                        <img src="/images/default-profile.png" alt="Default Profile"
-                                             class="rounded-circle img-thumbnail mb-3"
-                                             style="width: 160px; height: 160px; object-fit: cover;">
-                                    }
+                                    @* } *@
+                                    @* else *@
+                                    @* { *@
+                                    @*     <img src="/assets/img/profile.jpg" alt="Default Profile" *@
+                                    @*          class="rounded-circle img-thumbnail mb-3" *@
+                                    @*          style="width: 160px; height: 160px; object-fit: cover;"> *@
+                                    @* } *@
                                 </div>
                                 <div class="mt-3">
                                     <label asp-for="ProfilePicture" class="form-label" style="color: #00BCD4;">Update Profile Picture (Optional)</label>

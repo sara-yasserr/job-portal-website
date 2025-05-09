@@ -65,45 +65,111 @@
 </div>
 </div>
 
+<!-- Counter Section Start -->
+<section id="counter" class="section" style="background-color:white;">
+    <div class="container">
+        <div class="row">
+            <!-- Start counter -->
+            <div class="col-lg-3 col-md-6 col-xs-12">
+                <div class="counter-box">
+                    <div class="icon"><i class="lni-home"></i></div>
+                    <div class="fact-count">
+                        <h3><span class="counter">800</span></h3>
+                        <p>Jobs Posted</p>
+                    </div>
+                </div>
+            </div>
+            <!-- End counter -->
+            <!-- Start counter -->
+            <div class="col-lg-3 col-md-6 col-xs-12">
+                <div class="counter-box">
+                    <div class="icon"><i class="lni-briefcase"></i></div>
+                    <div class="fact-count">
+                        <h3><span class="counter">80</span></h3>
+                        <p>All Companies</p>
+                    </div>
+                </div>
+            </div>
+            <!-- End counter -->
+            <!-- Start counter -->
+            <div class="col-lg-3 col-md-6 col-xs-12">
+                <div class="counter-box">
+                    <div class="icon"><i class="lni-pencil-alt"></i></div>
+                    <div class="fact-count">
+                        <h3><span class="counter">900</span></h3>
+                        <p>Resumes</p>
+                    </div>
+                </div>
+            </div>
+            <!-- End counter -->
+            <!-- Start counter -->
+            <div class="col-lg-3 col-md-6 col-xs-12">
+                <div class="counter-box">
+                    <div class="icon"><i class="lni-save"></i></div>
+                    <div class="fact-count">
+                        <h3><span class="counter">1200</span></h3>
+                        <p>Applications</p>
+                    </div>
+                </div>
+            </div>
+            <!-- End counter -->
+        </div>
+    </div>
+</section>
+<!-- Counter Section End -->
+
 <!-- How It Work Section Start -->
 <section class="how-it-works section">
     <div class="container">
         <div class="section-header">
-            <h2 class="section-title">How It Works?</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit ellentesque dignissim quam et <br> metus effici turac fringilla lorem facilisis.</p>
+            <h2 class="section-title">How Our Platform Works</h2>
+            <p>Choose your path and unlock the right tools for your career needs</p>
         </div>
         <div class="row">
+            <!-- For Job Seekers -->
             <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-                <div class="work-process">
-                    <span class="process-icon">
-                        <i class="lni-user"></i>
-                    </span>
-                    <h4>Create an Account</h4>
-                    <p>Post a job to tell us about your project. We'll quickly match you with the right freelancers find place best.</p>
+                <a href="/Account/Register?role=jobseeker" class="work-process-card">
+                    <div class="work-process">
+                        <span class="process-icon">
+                            <i class="lni-user"></i>
+                        </span>
+                        <h4>Job Seeker Account</h4>
+                        <p>Register as a candidate to access thousands of job opportunities</p>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Dual-Purpose Middle Card -->
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                <div class="role-selection">
+                    <div class="work-process">
+                        <span class="process-icon">
+                            <i class="lni-search"></i>
+                        </span>
+                        <h4>Browse Opportunities</h4>
+                        <div class="role-buttons">
+                            <a href="/Jobsearch/index" class="btn btn-employer">Browse Jobs</a>
+                        </div>
+                    </div>
                 </div>
             </div>
+
+            <!-- For Employers -->
             <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-                <div class="work-process step-2">
-                    <span class="process-icon">
-                        <i class="lni-search"></i>
-                    </span>
-                    <h4>Search Jobs</h4>
-                    <p>Post a job to tell us about your project. We'll quickly match you with the right freelancers find place best.</p>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-                <div class="work-process step-3">
-                    <span class="process-icon">
-                        <i class="lni-cup"></i>
-                    </span>
-                    <h4>Apply</h4>
-                    <p>Post a job to tell us about your project. We'll quickly match you with the right freelancers find place best.</p>
-                </div>
+                <a href="/Account/Register?role=employer" class="work-process-card">
+                    <div class="work-process step-3">
+                        <span class="process-icon">
+                            <i class="lni-briefcase"></i>
+                        </span>
+                        <h4>Employer Account</h4>
+                        <p>Register as an employer to post jobs and find qualified candidates</p>
+                    </div>
+                </a>
             </div>
         </div>
     </div>
 </section>
-<!-- How It Work Section End -->
+
 
 
             <style>
@@ -116,5 +182,63 @@
         background-image: repeating-radial-gradient(center center, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2) 1px, transparent 1px, transparent 100%);
         background-size: 5px 5px;
     }
+
+    .work-process-card {
+        display: block;
+        color: inherit;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        height: 100%;
+    }
+
+    .work-process {
+        height: 100%;
+        padding: 30px;
+        background: #fff;
+        border-radius: 8px;
+        transition: all 0.3s;
+        position: relative;
+        border: 1px solid #eee;
+        text-align: center;
+    }
+
+    .role-selection .work-process {
+        padding-bottom: 20px;
+    }
+
+    .role-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 15px;
+    }
+
+    .btn {
+        padding: 8px 15px;
+        border-radius: 4px;
+        text-align: center;
+        font-weight: 500;
+        transition: all 0.3s;
+    }
+
+    .btn-jobseeker {
+        background: #4e6ef1;
+        color: white;
+    }
+
+    .btn-employer {
+        background: #f8f9fa;
+        color: #333;
+        border: 1px solid #ddd;
+    }
+
+    .btn-jobseeker:hover {
+        background: #3a56c8;
+    }
+
+    .btn-employer:hover {
+        background: #e9ecef;
+    }
+    
             </style>
 

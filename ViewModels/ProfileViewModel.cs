@@ -35,7 +35,7 @@ namespace Job_Portal_Project.ViewModels
 
 
         [Display(Name = "Profile Picture")]
-        public IFormFile ProfilePicture { get; set; }
+        public IFormFile? ProfilePicture { get; set; }
 
         public string? ProfilePicturePath { get; set; }
 
