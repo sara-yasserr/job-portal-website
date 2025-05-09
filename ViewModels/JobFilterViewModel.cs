@@ -9,6 +9,9 @@ namespace Job_Portal_Project.ViewModels
         public int? CategoryId { get; set; }
 
         public List<Job> Jobs { get; set; } = new();
+
+        public int CurrentPage { get; set; }
+        public int TotalPages { get; set; }
         public IEnumerable<JobCategory> Categories { get; set; } = new List<JobCategory>();
 
     }
