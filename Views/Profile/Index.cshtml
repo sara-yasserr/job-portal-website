@@ -446,14 +446,14 @@
                 <div class="row">
                     <!-- Profile Sidebar -->
                     <div class="col-lg-4 profile-sidebar">
-                        @* @if (string.IsNullOrEmpty(Model.ProfilePicturePath)) *@
-                        @* { *@
+                        @if (string.IsNullOrEmpty(Model.ProfilePicturePath))
+                        {
                             <img src="/Images/@Model.ProfilePicturePath" alt="Profile Picture" class="profile-picture" id="profile-preview">
-                        @* } *@
-                        @* else *@
-                        @* { *@
-                        @*         <img src="/assets/img/profile.jpg" alt="Default Picture" class="profile-picture" id="profile-preview"> *@
-                        @* } *@
+                        }
+                        else
+                        {
+                                <img src="/assets/img/profile.jpg" alt="Default Picture" class="profile-picture" id="profile-preview">
+                        }
 
                         <div class="profile-info">
                             <h4 class="subheading">
@@ -555,7 +555,7 @@
 
                            
                         </div>
-
+                        @if(User.IsInRole("JobSeeker")){
                             @if (!string.IsNullOrEmpty(Model?.ResumePath))
                             {
                                 <div class="resume-section">
@@ -603,7 +603,7 @@
                                 </div>
                             </div>
                         }
-
+                            }
                 @* <form asp-action="Upload" asp-controller="Resume" method="post" enctype="multipart/form-data" class="mt-4"> *@
                 @*     @Html.AntiForgeryToken() *@
                 @*     <div class="mb-3"> *@
