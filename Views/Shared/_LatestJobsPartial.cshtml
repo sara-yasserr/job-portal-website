@@ -1,0 +1,41 @@
+﻿@model IEnumerable<Job_Portal_Project.Models.Job>
+
+<section id="latest-jobs" class="section bg-gray">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Latest Jobs</h2>
+            <p>Browse through our most recent job listings and find your next opportunity.</p>
+        </div>
+        <div class="row">
+            @foreach (var job in Model)
+            {
+                <div class="col-lg-6 col-md-12 col-xs-12">
+                    <div class="jobs-latest">
+                        <div class="img-thumb">
+                            <img src="@(string.IsNullOrEmpty(job.Company?.LogoPath) ? "assets/img/features/default.jpg" : job.Company.LogoPath)" alt="@job.Company?.Name">
+                        </div>
+                        <div class="content">
+                            <h3>
+                                <a href="@Url.Action("Details", "JobSearch", new { id = job.Id })">@job.Title</a>
+                            </h3>
+                            <p class="brand">@job.Company?.Name</p>
+                            <div class="tags">
+                                <span><i class="lni-map-marker"></i> @job.City, @job.Country</span>
+                                <span><i class="lni-user"></i> @job.Company?.Name</span>
+                            </div>
+                            <div class="tag mb-3">
+                                <i class="lni-tag"></i> @job.JobCategory?.Name
+                            </div>
+                            <span class="@(job.EmploymentType.ToLower() == "full-time" ? "full-time" : "part-time")">
+                                @job.EmploymentType
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            }
+            <div class="col-12 text-center mt-4">
+                <a href="@Url.Action("Index", "JobSearch")" class="btn btn-common">Browse All Jobs</a>
+            </div>
+        </div>
+    </div>
+</section>
