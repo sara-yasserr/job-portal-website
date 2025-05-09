@@ -26,7 +26,7 @@ namespace Job_Portal_Project.Services
             _context = context;
             _userRepository = userRepository;
             _jobCategoryRepository = jobCategoryRepository;
-            _jobRepository = jobRepository;   
+            _jobRepository = jobRepository;
         }
 
         public async Task<JobSearchViewModel> SearchJobs(JobSearchViewModel model)
@@ -169,7 +169,7 @@ namespace Job_Portal_Project.Services
             return await _context.JobApplications
                 .AnyAsync(ja => ja.ApplicantId == userId && ja.JobId == jobId);
         }
-       
+
 
         public async Task<List<Job>> GetRelatedJobs(int categoryId, int excludeJobId)
         {
@@ -191,8 +191,8 @@ namespace Job_Portal_Project.Services
         public async Task<List<CategoryWithJobCount>> GetAllCategories()
         {
             // Get all categories and active jobs asynchronously
-            var categories =  _jobCategoryRepository.GetAll();
-            var activeJobs = ( _jobRepository.GetAll()).Where(j => j.IsActive).ToList();
+            var categories = _jobCategoryRepository.GetAll();
+            var activeJobs = (_jobRepository.GetAll()).Where(j => j.IsActive).ToList();
 
             // Create the view model
             var result = categories.Select(category => new CategoryWithJobCount

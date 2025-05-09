@@ -152,7 +152,6 @@
                 </div>
             </div>
             <!-- Job List Details End -->
-            
             <!-- Job Sidebar Wrap Start -->
             <div class="col-lg-4 col-12">
                 <!-- Action Buttons -->
@@ -176,7 +175,7 @@
                             }
                             <a href='@Url.Action("Add", "JobApplication", new { jobId = Model.Job.Id})' class="btn apply-btn" style="background-color: #00BCD4; color: white; padding: 12px 20px; border-radius: 30px; text-decoration: none; display: flex; align-items: center; justify-content: center; font-weight: 500; transition: all 0.3s ease; border: none; width: 80%; box-shadow: 0 4px 10px rgba(0, 188, 212, 0.3); margin: 0 auto;">
                                 <i class="lni lni-check-mark-circle" style="margin-right: 8px;"></i> Apply Now
-                            </a>  
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -270,9 +269,9 @@
             </div>
             <!-- Job Sidebar Wrap End -->
         </div>
-    
+
         <!-- Similar Jobs Section -->
-       
+
     </div>
 </div>
 <!-- Job Detail Section End -->
@@ -381,7 +380,7 @@
                         __RequestVerificationToken: token
                     },
                     success: function (response) {
-                           
+
                       if (action === 'add') {
                         button.html('<i class="lni lni-heart-filled" style="margin-right: 8px;"></i> <span class="btn-text">Saved</span>');
                         button.data("action", "remove");
@@ -389,11 +388,11 @@
                             "background-color": "#00BCD4",   //////
                             "color": "white",
                             "border": "none",
-                            "box-shadow": "0 4px 10px rgba(0, 188, 212, 0.3)"  
+                            "box-shadow": "0 4px 10px rgba(0, 188, 212, 0.3)"
                         });
 
-                      
-        
+
+
                         } else {
                             button.html('<i class="lni lni-heart" style="margin-right: 8px; color: #00BCD4;"></i> <span class="btn-text">Save Job</span>');
                             button.data("action", "add");

@@ -11,7 +11,7 @@ namespace Job_Portal_Project.ViewModels
         public bool IsBookmarked { get; set; }
         public List<Job> RelatedJobs { get; set; } = new List<Job>();
 
-      
-     
+
+
     }
 }

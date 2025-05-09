@@ -1,7 +1,5 @@
-﻿// ViewModels/ProfileViewModel.cs
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
-
 namespace Job_Portal_Project.ViewModels
 {
     public class ProfileViewModel
@@ -35,9 +33,9 @@ namespace Job_Portal_Project.ViewModels
 
         public string Role { get; set; }
 
+
         [Display(Name = "Profile Picture")]
         public IFormFile ProfilePicture { get; set; }
-       
 
         public string ProfilePicturePath { get; set; }
 

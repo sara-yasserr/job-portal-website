@@ -1,5 +1,4 @@
-﻿
-using Job_Portal_Project.Models;
+﻿using Job_Portal_Project.Models;
 using Job_Portal_Project.Services.Contracts;
 using Job_Portal_Project.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -13,10 +12,14 @@ namespace Job_Portal_Project.Controllers
     public class JobSearchController : Controller
     {
         private readonly IJobSearchService _jobSearchService;
+        private readonly IBookmarkService _bookmarkService;
 
-        public JobSearchController(IJobSearchService jobSearchService)
+        public JobSearchController(
+            IJobSearchService jobSearchService,
+            IBookmarkService bookmarkService)
         {
             _jobSearchService = jobSearchService;
+            _bookmarkService = bookmarkService;
         }
 
         // Display main search page >>>>finnnnnshhhhed ==>:)
@@ -32,7 +35,7 @@ namespace Job_Portal_Project.Controllers
                 ViewBag.NoResultsMessage = "No matching jobs found. Here are some recent listings:";
             }
 
-            return View("Index",results);
+            return View("Index", results);
         }
 
         // AJAX search
@@ -44,8 +47,6 @@ namespace Job_Portal_Project.Controllers
             var results = await _jobSearchService.SearchJobs(model);
             return PartialView("_JobListPartial", results.Jobs);
         }
-
-       
 
         // this in Authenticated ...>>>>Finisheddddd
         public async Task<IActionResult> Details(int id)
@@ -68,7 +69,7 @@ namespace Job_Portal_Project.Controllers
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 viewModel.CurrentUser = await _jobSearchService.GetCurrentUser(userId);
                 viewModel.HasApplied = await _jobSearchService.HasUserApplied(userId, id);
-       
+                viewModel.IsBookmarked = await _bookmarkService.IsJobBookmarkedAsync(userId, id);
             }
 
             return View("Details", viewModel);
@@ -81,8 +82,6 @@ namespace Job_Portal_Project.Controllers
             var categoriesWithCounts = await _jobSearchService.GetAllCategories();
             return View("Categories", categoriesWithCounts);
         }
-       
-     
 
         // Browse jobs by category
         [HttpGet]
@@ -115,8 +114,5 @@ namespace Job_Portal_Project.Controllers
             var recentJobs = await _jobSearchService.GetRecentJobs();
             return View("Index", new JobSearchViewModel { Jobs = recentJobs });
         }
-
-
-
     }
 }

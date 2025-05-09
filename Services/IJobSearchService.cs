@@ -15,6 +15,6 @@ namespace Job_Portal_Project.Services.Contracts
         Task<bool> HasUserApplied(string userId, int jobId);
         Task<List<Job>> GetRelatedJobs(int categoryId, int excludeJobId);
         Task<List<CategoryWithJobCount>> GetAllCategories();
-     
+
     }
 }

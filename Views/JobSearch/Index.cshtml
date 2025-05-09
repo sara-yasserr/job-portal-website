@@ -247,7 +247,7 @@
                                 <li class="page-item">
                                     <a class="page-link" href="#" data-page="1"
                                        style="border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
-                                                  border: 1px solid #e8e8e8; color: #555;">1</a>
+                                                      border: 1px solid #e8e8e8; color: #555;">1</a>
                                 </li>
                                 if (startPage > 2)
                                 {
@@ -262,7 +262,7 @@
                                 <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
                                     <a class="page-link" href="#" data-page="@i"
                                        style="@(i == Model.CurrentPage ? "background-color: #00BCD4; color: #fff; border-color: #00BCD4;" : "color: #555; border: 1px solid #e8e8e8;")
-                                                  border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
+                                                      border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
                                         @i
                                     </a>
                                 </li>
@@ -279,7 +279,7 @@
                                 <li class="page-item">
                                     <a class="page-link" href="#" data-page="@Model.TotalPages"
                                        style="border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
-                                                  border: 1px solid #e8e8e8; color: #555;">@Model.TotalPages</a>
+                                                      border: 1px solid #e8e8e8; color: #555;">@Model.TotalPages</a>
                                 </li>
                             }
                         }
@@ -506,27 +506,22 @@
             $(this).css('transform', 'translateY(0)');
         });
     </script>
-    }
+}
 
-    <style>
-        /* Loading spinner animation */
-        @@keyframes spin {
-            0%
-
-        {
+<style>
+    /* Loading spinner animation */
+    @@keyframes spin {
+        0% {
             transform: rotate(0deg);
         }
 
         100% {
             transform: rotate(360deg);
         }
+    }
 
-        }
-
-        @@keyframes pulse {
-            0%
-
-        {
+    @@keyframes pulse {
+        0% {
             transform: scale(1);
         }
 
@@ -537,124 +532,120 @@
         100% {
             transform: scale(1);
         }
+    }
 
-        }
 
-       
-        /* Checkbox Styles */
-        .form-check-input,
-        .custom-control-input {
-            appearance: none;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            width: 18px;
-            height: 18px;
-            border: 2px solid #ddd;
-            border-radius: 4px;
-            outline: none;
-            transition: all 0.2s;
-            position: relative;
-            cursor: pointer;
-        }
+    /* Checkbox Styles */
+    .form-check-input,
+    .custom-control-input {
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        width: 18px;
+        height: 18px;
+        border: 2px solid #ddd;
+        border-radius: 4px;
+        outline: none;
+        transition: all 0.2s;
+        position: relative;
+        cursor: pointer;
+    }
 
-            .form-check-input:checked,
-            .custom-control-input:checked ~ .custom-control-label::before {
-                background-color: #00BCD4;
-                border-color: #00BCD4;
-                color: #fff;
-            }
-
-                .form-check-input:checked::after {
-                    content: "";
-                    position: absolute;
-                    left: 5px;
-                    top: 1px;
-                    width: 5px;
-                    height: 10px;
-                    border: solid white;
-                    border-width: 0 2px 2px 0;
-                    transform: rotate(45deg);
-                }
-
-        /* Pagination Styles */
-        .page-link {
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 3px;
-            transition: all 0.3s ease;
-        }
-
-        .page-item.active .page-link {
+        .form-check-input:checked,
+        .custom-control-input:checked ~ .custom-control-label::before {
             background-color: #00BCD4;
             border-color: #00BCD4;
-            color: white;
-            z-index: 1;
+            color: #fff;
         }
 
-        .page-link:hover {
-            background-color: #f5f5f5;
+            .form-check-input:checked::after {
+                content: "";
+                position: absolute;
+                left: 5px;
+                top: 1px;
+                width: 5px;
+                height: 10px;
+                border: solid white;
+                border-width: 0 2px 2px 0;
+                transform: rotate(45deg);
+            }
+
+    /* Pagination Styles */
+    .page-link {
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 3px;
+        transition: all 0.3s ease;
+    }
+
+    .page-item.active .page-link {
+        background-color: #00BCD4;
+        border-color: #00BCD4;
+        color: white;
+        z-index: 1;
+    }
+
+    .page-link:hover {
+        background-color: #f5f5f5;
+        color: #00BCD4;
+    }
+
+    .page-item.active .page-link:hover {
+        background-color: #00BCD4;
+        color: white;
+    }
+
+    /* Form Controls */
+    .form-control,
+    .input-group-text {
+        height: 46px;
+    }
+
+        .form-control:focus {
+            border-color: #00BCD4;
+            box-shadow: 0 0 0 0.2rem rgba(0, 188, 212, 0.25);
+        }
+
+    /* Layout Components */
+    .custom-control {
+        padding-left: 1.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .filter-wrapper,
+    .tip-card {
+        transition: all 0.3s ease;
+    }
+
+        .filter-wrapper:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 188, 212, 0.15);
+        }
+
+        .tip-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 25px rgba(0, 188, 212, 0.2);
+        }
+
+        .filter-wrapper:hover .filter-header i.lni-filter {
+            animation: pulse 1s infinite;
             color: #00BCD4;
         }
 
-        .page-item.active .page-link:hover {
-            background-color: #00BCD4;
-            color: white;
-        }
+    .lni-spinner-arrow.spin {
+        animation: spin 1s linear infinite;
+    }
 
-        /* Form Controls */
-        .form-control,
-        .input-group-text {
-            height: 46px;
-        }
-
-            .form-control:focus {
-                border-color: #00BCD4;
-                box-shadow: 0 0 0 0.2rem rgba(0, 188, 212, 0.25);
-            }
-
-        /* Layout Components */
-        .custom-control {
-            padding-left: 1.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .filter-wrapper,
-        .tip-card {
-            transition: all 0.3s ease;
-        }
-
-            .filter-wrapper:hover {
-                transform: translateY(-5px);
-                box-shadow: 0 8px 25px rgba(0, 188, 212, 0.15);
-            }
-
-            .tip-card:hover {
-                transform: translateY(-8px);
-                box-shadow: 0 10px 25px rgba(0, 188, 212, 0.2);
-            }
-
-            .filter-wrapper:hover .filter-header i.lni-filter {
-                animation: pulse 1s infinite;
-                color: #00BCD4;
-            }
-
-        .lni-spinner-arrow.spin {
-            animation: spin 1s linear infinite;
-        }
-
-        /* Responsive Adjustments */
-        @@media (max-width: 767px) {
-            .filter-wrapper
-
-        {
+    /* Responsive Adjustments */
+    @@media (max-width: 767px) {
+        .filter-wrapper {
             margin-bottom: 20px;
         }
-
-        }
+    }
     /* Clear All Button Styles */
     #clearAllFilters {
         transition: all 0.3s ease;
@@ -677,5 +668,5 @@
             background-color: #d32f2f !important;
             transform: translateY(1px);
         }
-    </style>
+</style>
 }
