@@ -4,89 +4,159 @@
     ViewData["Title"] = "Bookmarked Jobs";
 }
 
-<div class="container my-5">
-    <!-- Page Title -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <h1 class="fw-bold">Bookmarked Jobs</h1>
-            <p class="text-muted">Jobs you've saved for later</p>
+<!-- Page Header Start -->
+<div class="category-hero-section">
+    <div class="overlay-bg"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="breadcrumbs-content">
+                    <h1 class="page-title">
+                        Bookmarked <span>Jobs</span>
+                        <div class="title-accent"></div>
+                    </h1>
+                </div>
+                <ul class="breadcrumb-nav">
+                    <li><a href="/Home/Index">Home</a></li>
+                    <li>
+                        <span>Bookmarked Jobs</span>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
+</div>
 
-    @if (TempData["SuccessMessage"] != null)
-    {
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            @TempData["SuccessMessage"]
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    }
+<div class="justify-content-center d-flex flex-lg-row flex-column">
+    <!-- Sidebar -->
+    <div class="col-lg-3 col-md-3 col-12">
+        @await Html.PartialAsync("_JobSeekerSideBar")
+    </div>
 
-    <!-- Bookmarked Jobs List -->
-    <div class="row">
-        <div class="col-12">
+    <!-- Main Content -->
+    <div class="col-lg-8 col-md-9 col-12">
+        <div class="mainContent">
+            <div class="bookmarked-jobs-header">
+                <div class="row align-items-center">
+                    <div class="col-lg-8 col-md-7">
+                        <h1 class="mb-2">
+                            <span>
+                                Bookmarked Jobs
+                                <span></span>
+                            </span>
+                        </h1>
+                        <p class="text-muted mb-0">
+                            <i class="lni lni-arrow-right"></i>
+                            Review and manage your saved job opportunities
+                        </p>
+                    </div>
+                    <div class="col-lg-4 col-md-5">
+                        <div class="filter-row d-flex justify-content-end align-items-center">
+                            <div class="saved-counter">
+                                <i class="lni lni-bookmark-alt"></i>
+                                <span>
+                                    <span>@(Model.BookmarkedJobs?.Count() ?? 0)</span> jobs saved
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             @if (Model.BookmarkedJobs != null && Model.BookmarkedJobs.Any())
             {
-                @foreach (var favourite in Model.BookmarkedJobs)
+                foreach (var bookmark in Model.BookmarkedJobs)
                 {
-                    <div class="card mb-3 job-card shadow-sm">
-                        <div class="card-body p-4">
-                            <div class="row align-items-center">
-                                <!-- Company Logo -->
-                                <div class="col-lg-1 col-md-2 col-3 text-center">
-                                    @if (favourite.Job.Company != null && !string.IsNullOrEmpty(favourite.Job.Company.LogoPath))
+                    <div class="bookmark-card mb-4">
+                        <div class="bookmark-actions">
+                            <form asp-action="Remove" asp-controller="Bookmarks" method="post" class="d-inline">
+                                <input type="hidden" name="jobId" value="@bookmark.JobId" />
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn bookmark-btn bookmarked">
+                                    <i class="lni lni-heart-filled icon-heart"></i>
+                                    <span class="btn-text">Saved</span>
+                                </button>
+                            </form>
+                        </div>
+                        <div class="bookmark-content">
+                            <div class="job-header">
+                                <div class="company-logo-container">
+                                    @if (bookmark.Job.Company != null && !string.IsNullOrEmpty(bookmark.Job.Company.LogoPath))
                                     {
-                                        <img src="@favourite.Job.Company.LogoPath" alt="@favourite.Job.Company.Name Logo" class="company-logo img-fluid rounded" style="max-height: 60px;">
+                                        <div class="company-logo">
+                                            <img src="@bookmark.Job.Company.LogoPath" alt="@bookmark.Job.Company.Name">
+                                        </div>
                                     }
                                     else
                                     {
-                                        <div class="company-logo-placeholder rounded d-flex align-items-center justify-content-center bg-light" style="height: 60px; width: 60px;">
-                                            <span class="fs-4">@(favourite.Job.Company?.Name?.Substring(0, 1) ?? "J")</span>
+                                        <div class="company-logo default-logo">
+                                            <span>@(bookmark.Job.Company?.Name?.Substring(0, 1) ?? "J")</span>
                                         </div>
                                     }
                                 </div>
-
-                                <!-- Job Details -->
-                                <div class="col-lg-7 col-md-6 col-9">
-                                    <h5 class="card-title mb-1">
-                                        <a asp-controller="Jobs" asp-action="Details" asp-route-id="@favourite.JobId" class="text-decoration-none text-dark">@favourite.Job.Title</a>
-                                    </h5>
-                                    <p class="text-muted mb-0">@favourite.Job.Company?.Name</p>
-                                    <div class="d-flex flex-wrap gap-2 mt-2">
-                                        <span class="badge bg-light text-dark"><i class="bi bi-geo-alt"></i> @favourite.Job.Country</span>
-                                        <span class="badge bg-light text-dark"><i class="bi bi-briefcase"></i> @favourite.Job.EmploymentType</span>
-                                       
+                                <div class="job-header-info">
+                                    <h3 class="job-title">
+                                        <a href="/Jobs/Details?id=@bookmark.JobId">
+                                            @bookmark.Job.Title
+                                        </a>
+                                    </h3>
+                                    <div class="company-name">
+                                        <i class="lni lni-buildings"></i>
+                                        <span>@bookmark.Job.Company?.Name</span>
                                     </div>
                                 </div>
-
-                                <!-- Posted Date and Action Buttons -->
-                                <div class="col-lg-4 col-md-4 mt-3 mt-md-0 d-flex justify-content-end">
-                                    <div class="text-end">
-                                        <p class="text-muted small mb-2">
-                                            <i class="bi bi-clock"></i> Posted @favourite.Job.DatePosted.ToShortDateString()
-                                        </p>
-                                        <div class="btn-group">
-                                            <a asp-controller="Jobs" asp-action="Details" asp-route-id="@favourite.JobId" class="btn btn-outline-primary btn-sm">View Details</a>
-                                            <form asp-action="Remove" asp-route-jobId="@favourite.JobId" method="post" class="d-inline">
-                                                @Html.AntiForgeryToken()
-                                                <button type="submit" class="btn btn-outline-danger btn-sm">Remove</button>
-                                            </form>
-                                        </div>
-                                    </div>
+                            </div>
+                            <div class="job-meta-tags">
+                                <div class="job-tag location-tag">
+                                    <i class="lni lni-map-marker"></i>
+                                    <span>@(bookmark.Job.Country ?? "Global")</span>
                                 </div>
+                                <div class="job-tag type-tag">
+                                    <i class="lni lni-briefcase"></i>
+                                    <span>@bookmark.Job.EmploymentType</span>
+                                </div>
+                            </div>
+                            <div class="job-actions">
+                                <a href="JobSearch/Details/@bookmark.JobId" class="view-details-btn">
+                                    <i class="lni lni-eye"></i>
+                                    <span>View Details</span>
+                                </a>
+                                <a href="/JobSearch/Details/@bookmark.JobId" class="apply-btn">
+                                    <i class="lni lni-paperclip"></i>
+                                    <span>APPLY NOW</span>
+                                </a>
                             </div>
                         </div>
                     </div>
                 }
+
+                <!-- Pagination -->
+                <div class="pagination mt-4">
+                    <a href="#" class="pagination-item prev">
+                        <i class="lni lni-chevron-left"></i>
+                        <span>PREV</span>
+                    </a>
+                    <a href="#" class="pagination-item active">1</a>
+                    <a href="#" class="pagination-item">2</a>
+                    <a href="#" class="pagination-item">3</a>
+                    <a href="#" class="pagination-item next">
+                        <span>NEXT</span>
+                        <i class="lni lni-chevron-right"></i>
+                    </a>
+                </div>
             }
             else
             {
-                <div class="text-center py-5">
-                    <div class="mb-4">
-                        <i class="bi bi-bookmark-x fs-1 text-muted"></i>
+                <div class="text-center no-bookmarks py-5">
+                    <div class="empty-state-icon">
+                        <i class="lni lni-bookmark"></i>
                     </div>
-                    <h3>No bookmarked jobs yet</h3>
-                    <p class="text-muted">Start browsing jobs and bookmark the ones you're interested in.</p>
-                    <a asp-controller="JobSearch" asp-action="Index" class="btn btn-primary mt-2">Browse Jobs</a>
+                    <h4>No bookmarked jobs</h4>
+                    <p class="text-muted">Start browsing jobs and bookmark the ones you're interested in!</p>
+                    <a href="/JobSearch" class="browse-jobs-btn">
+                        <i class="lni lni-search"></i>
+                        <span>Browse Jobs</span>
+                    </a>
                 </div>
             }
         </div>
@@ -95,29 +165,620 @@
 
 @section Styles {
     <style>
-        .job-card {
-            transition: transform 0.2s ease;
-            border-left: 4px solid transparent;
+        /* Page Header */
+        .category-hero-section {
+            background-image: url('/assets/images/Dcover.jpg');
+            background-size: cover;
+            padding: 70px 0;
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            color: #fff;
+            overflow: hidden;
         }
 
-            .job-card:hover {
-                transform: translateY(-3px);
-                border-left: 4px solid #0d6efd;
+        .overlay-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(22, 28, 45, 0.8);
+            z-index: -1;
+        }
+
+        .page-title {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #fff;
+            text-shadow: 0px 2px 8px rgba(0,0,0,0.2);
+            position: relative;
+            display: inline-block;
+        }
+
+            .page-title span {
+                color: #00BCD4;
             }
 
+        .title-accent {
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background-color: #00BCD4;
+            border-radius: 2px;
+        }
+
+        .breadcrumb-nav {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            margin-top: 30px;
+            padding: 0;
+            flex-wrap: wrap;
+        }
+
+            .breadcrumb-nav li {
+                margin: 5px;
+            }
+
+                .breadcrumb-nav li a {
+                    color: #fff;
+                    text-decoration: none;
+                    font-weight: 500;
+                    transition: all 0.3s ease;
+                }
+
+                .breadcrumb-nav li span {
+                    color: #00BCD4;
+                    font-weight: 600;
+                }
+
+        /* Main Content */
+        .mainContent {
+            padding: 30px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Bookmarked Jobs Header */
+        .bookmarked-jobs-header {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 188, 212, 0.15);
+            padding: 30px;
+            margin-bottom: 35px;
+            border: 1px solid rgba(0, 188, 212, 0.1);
+            transition: all 0.3s ease;
+        }
+
+            .bookmarked-jobs-header:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 8px 25px rgba(0, 188, 212, 0.2);
+                border-color: rgba(0, 188, 212, 0.2);
+            }
+
+            .bookmarked-jobs-header h1 {
+                font-size: 32px;
+                font-weight: 500;
+                color: #00BCD4;
+                position: relative;
+                display: inline-block;
+            }
+
+                .bookmarked-jobs-header h1 span span {
+                    position: absolute;
+                    bottom: -8px;
+                    left: 0;
+                    width: 60%;
+                    height: 3px;
+                    background: linear-gradient(90deg, #00BCD4 0%, rgba(0, 188, 212, 0.3) 100%);
+                    border-radius: 3px;
+                }
+
+            .bookmarked-jobs-header p {
+                color: #6c757d;
+                font-size: 16px;
+                font-weight: 400;
+                letter-spacing: 0.3px;
+            }
+
+                .bookmarked-jobs-header p i {
+                    margin-right: 8px;
+                    color: #00BCD4;
+                }
+
+        .saved-counter {
+            background-color: rgba(0, 188, 212, 0.08);
+            border-radius: 24px;
+            padding: 10px 20px;
+            display: inline-flex;
+            align-items: center;
+            border: 1px dashed rgba(0, 188, 212, 0.3);
+            transition: all 0.3s ease;
+        }
+
+            .saved-counter:hover {
+                background-color: rgba(0, 188, 212, 0.15);
+                border-style: solid;
+            }
+
+            .saved-counter i {
+                color: #00BCD4;
+                margin-right: 10px;
+                font-size: 18px;
+            }
+
+            .saved-counter span span {
+                color: #00BCD4;
+                font-weight: 700;
+            }
+
+        /* Bookmark Cards */
+        .bookmark-card {
+            position: relative;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.07);
+            padding: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid #f0f0f0;
+            margin-bottom: 20px;
+        }
+
+            .bookmark-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 25px rgba(0, 188, 212, 0.15);
+                border-color: rgba(0, 188, 212, 0.2);
+            }
+
+        .bookmark-actions {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            z-index: 10;
+        }
+
+        .bookmark-btn {
+            background-color: #f8f9fa;
+            color: #333;
+            padding: 12px 20px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: 1px solid #ddd;
+            width: 80%;
+            margin: 0 auto;
+            box-shadow: none;
+        }
+
+            .bookmark-btn .icon-heart {
+                margin-right: 8px;
+                color: #00BCD4;
+            }
+
+            .bookmark-btn.bookmarked {
+                background-color: #00BCD4;
+                color: white;
+                border: none;
+                box-shadow: 0 4px 10px rgba(0, 188, 212, 0.3);
+            }
+
+                .bookmark-btn.bookmarked .icon-heart {
+                    color: white;
+                }
+
+            .bookmark-icon:hover {
+                transform: scale(1.1);
+                box-shadow: 0 4px 12px rgba(255, 107, 107, 0.2);
+            }
+
+        .bookmark-content {
+            padding: 25px;
+        }
+
+        .job-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .company-logo-container {
+            margin-right: 18px;
+            flex-shrink: 0;
+        }
+
         .company-logo {
-            object-fit: contain;
+            width: 70px;
+            height: 70px;
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f6f9fc;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            border: 1px solid #ebeef5;
+        }
+
+            .company-logo img {
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+                padding: 10px;
+            }
+
+        .default-logo {
+            background: linear-gradient(135deg, #00BCD4 0%, #00ACC1 100%);
+            color: white;
+            font-weight: bold;
+            font-size: 28px;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .job-header-info {
+            flex-grow: 1;
+        }
+
+        .job-title {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            line-height: 1.3;
+        }
+
+            .job-title a {
+                color: #333;
+                text-decoration: none;
+                transition: color 0.3s ease;
+            }
+
+                .job-title a:hover {
+                    color: #00BCD4;
+                }
+
+        .company-name {
+            display: flex;
+            align-items: center;
+            color: #6c757d;
+            font-size: 16px;
+        }
+
+            .company-name i {
+                color: #00BCD4;
+                margin-right: 8px;
+                font-size: 18px;
+            }
+
+        .job-meta-tags {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+            gap: 10px;
+        }
+
+        .job-tag {
+            display: flex;
+            align-items: center;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            margin-right: 10px;
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            transition: all 0.3s ease;
+        }
+
+            .job-tag:hover {
+                transform: translateY(-2px);
+            }
+
+            .job-tag i {
+                margin-right: 6px;
+                font-size: 16px;
+            }
+
+        .location-tag {
+            color: #6c757d;
+        }
+
+            .location-tag i {
+                color: #fd7e14;
+            }
+
+        .type-tag {
+            color: #00BCD4;
+            background-color: rgba(0, 188, 212, 0.08);
+            border-color: rgba(0, 188, 212, 0.2);
+        }
+
+            .type-tag i {
+                color: #00BCD4;
+            }
+
+        .job-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .view-details-btn, .apply-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 15px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .view-details-btn {
+            background-color: transparent;
+            color: #495057;
+            border: 1px solid #dee2e6;
+        }
+
+            .view-details-btn:hover {
+                background-color: #f8f9fa;
+                border-color: #ced4da;
+                color: #00BCD4;
+            }
+
+        .apply-btn {
+            background: linear-gradient(135deg, #00BCD4 0%, #00ACC1 100%);
+            color: white;
+            border: none;
+            box-shadow: 0 4px 12px rgba(0, 188, 212, 0.3);
+            flex-grow: 1;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+            .apply-btn:hover {
+                background: linear-gradient(135deg, #00ACC1 0%, #0097A7 100%);
+                transform: translateY(-2px);
+                box-shadow: 0 6px 15px rgba(0, 188, 212, 0.4);
+                color: white;
+            }
+
+            .view-details-btn i, .apply-btn i {
+                margin-right: 8px;
+                font-size: 16px;
+            }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 30px;
+            margin-bottom: 20px;
+        }
+
+        .pagination-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 40px;
+            height: 40px;
+            margin: 0 5px;
+            padding: 0 15px;
+            background-color: #fff;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            color: #495057;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+            .pagination-item.active {
+                background-color: #00BCD4;
+                border-color: #00BCD4;
+                color: white;
+                box-shadow: 0 3px 10px rgba(0, 188, 212, 0.3);
+            }
+
+            .pagination-item:hover:not(.active) {
+                background-color: #f8f9fa;
+                border-color: #ced4da;
+                color: #00BCD4;
+            }
+
+            .pagination-item.prev, .pagination-item.next {
+                padding: 0 15px;
+            }
+
+            .pagination-item i {
+                font-size: 12px;
+            }
+
+            .pagination-item.prev i {
+                margin-right: 5px;
+            }
+
+            .pagination-item.next i {
+                margin-left: 5px;
+            }
+
+        /* Empty State */
+        .no-bookmarks {
+            padding: 60px 30px;
+            text-align: center;
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .empty-state-icon {
+            width: 100px;
+            height: 100px;
+            background-color: rgba(0, 188, 212, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+        }
+
+            .empty-state-icon i {
+                font-size: 45px;
+                color: #00BCD4;
+            }
+
+        .no-bookmarks h4 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #343a40;
+            margin-bottom: 15px;
+        }
+
+        .no-bookmarks p {
+            color: #6c757d;
+            font-size: 16px;
+            max-width: 500px;
+            margin: 0 auto 25px;
+        }
+
+        .browse-jobs-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #00BCD4 0%, #00ACC1 100%);
+            color: white;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 188, 212, 0.3);
+        }
+
+            .browse-jobs-btn:hover {
+                background: linear-gradient(135deg, #00ACC1 0%, #0097A7 100%);
+                transform: translateY(-3px);
+                box-shadow: 0 6px 15px rgba(0, 188, 212, 0.4);
+                color: white;
+            }
+
+            .browse-jobs-btn i {
+                margin-right: 8px;
+                font-size: 18px;
+            }
+
+        /* Responsive Styles */
+        @@media (max-width: 767px) {
+            .job-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .company-logo-container {
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+
+            .job-meta-tags {
+                justify-content: center;
+            }
+
+            .job-actions {
+                flex-direction: column;
+            }
+
+            .view-details-btn, .apply-btn {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+
+            .pagination-item {
+                min-width: 35px;
+                height: 35px;
+                margin: 0 3px;
+                padding: 0 10px;
+                font-size: 14px;
+            }
+
+                .pagination-item.prev span, .pagination-item.next span {
+                    display: none;
+                }
         }
     </style>
 }
 
 @section Scripts {
     <script>
-        // Enable Bootstrap tooltips
         document.addEventListener('DOMContentLoaded', function() {
+            // Enable tooltips if using Bootstrap
             var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
                 return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+        });
+
+        $(document).on('submit', 'form', function(e) {
+            e.preventDefault();
+            var form = $(this);
+            var button = form.find('button');
+            var jobId = form.find('input[name="jobId"]').val();
+
+            // Show loading
+            button.html('<i class="lni lni-spinner lni-spin icon-heart"></i> <span class="btn-text">Processing...</span>');
+            button.prop('disabled', true);
+
+            $.ajax({
+                url: form.attr('action'),
+                type: 'POST',
+                data: form.serialize(),
+                success: function(response) {
+                    // Remove the entire bookmark card
+                    form.closest('.bookmark-card').fadeOut(300, function() {
+                        $(this).remove();
+                        // Update the saved jobs counter
+                        var counter = $('.saved-counter span span');
+                        var currentCount = parseInt(counter.text());
+                        counter.text(currentCount - 1);
+                        
+                        // If no more bookmarks, show empty state
+                        if (currentCount - 1 === 0) {
+                            $('.mainContent').html(`
+                                <div class="text-center no-bookmarks py-5">
+                                    <div class="empty-state-icon">
+                                        <i class="lni lni-bookmark"></i>
+                                    </div>
+                                    <h4>No bookmarked jobs</h4>
+                                    <p class="text-muted">Start browsing jobs and bookmark the ones you're interested in!</p>
+                                    <a href="/JobSearch" class="browse-jobs-btn">
+                                        <i class="lni lni-search"></i>
+                                        <span>Browse Jobs</span>
+                                    </a>
+                                </div>
+                            `);
+                        }
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                    alert('Something went wrong. Please try again.');
+                    button.html('<i class="lni lni-heart-filled icon-heart"></i> <span class="btn-text">Saved</span>');
+                },
+                complete: function() {
+                    button.prop('disabled', false);
+                }
             });
         });
     </script>

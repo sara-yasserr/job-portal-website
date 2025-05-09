@@ -13,7 +13,7 @@ namespace Job_Portal_Project.Controllers.Profile
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IProfileService _profileService;
         private readonly IUserMappingService userMapping;
-     
+
 
         public ProfileController(
             UserManager<ApplicationUser> userManager,
@@ -86,7 +86,7 @@ namespace Job_Portal_Project.Controllers.Profile
             if (ModelState.IsValid == true)
             {
                 var existingUser = await _userManager.GetUserAsync(User);
-                
+
 
                 if (existingUser == null)
                 {
@@ -98,41 +98,36 @@ namespace Job_Portal_Project.Controllers.Profile
                 if (ProfilePicture != null && ProfilePicture.Length > 0)
                 {
 
-                    try
+
+
+                    var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
+                    var extension = Path.GetExtension(ProfilePicture.FileName).ToLowerInvariant();
+
+                    if (!allowedExtensions.Contains(extension))
                     {
-
-                        var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
-                        var extension = Path.GetExtension(ProfilePicture.FileName).ToLowerInvariant();
-
-                        if (!allowedExtensions.Contains(extension))
-                        {
-                            ModelState.AddModelError("ProfilePicture", "Only image files (.jpg, .jpeg, .png, .gif) are allowed.");
-                            return View("Update", user);
-                        }
-
-
-                        var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images");
-                        if (!Directory.Exists(uploadsFolder))
-                        {
-                            Directory.CreateDirectory(uploadsFolder);
-                        }
-
-
-                        var fileName = Guid.NewGuid().ToString() + extension;
-                        var filePath = Path.Combine(uploadsFolder, fileName);
-
-                        using (var stream = new FileStream(filePath, FileMode.Create))
-                        {
-                            await ProfilePicture.CopyToAsync(stream);
-                        }
-
-                        existingUser.ProfilePicturePath = fileName;
-                    }
-                    catch (Exception ex)
-                    {
-                        ModelState.AddModelError("ProfilePicture", $"Error uploading file: {ex.Message}");
+                        ModelState.AddModelError("ProfilePicture", "Only image files (.jpg, .jpeg, .png, .gif) are allowed.");
                         return View("Update", user);
                     }
+
+
+                    var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images");
+                    if (!Directory.Exists(uploadsFolder))
+                    {
+                        Directory.CreateDirectory(uploadsFolder);
+                    }
+
+
+                    var fileName = Guid.NewGuid().ToString() + extension;
+                    var filePath = Path.Combine(uploadsFolder, fileName);
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await ProfilePicture.CopyToAsync(stream);
+                    }
+
+                    existingUser.ProfilePicturePath = fileName;
+
+
                 }
                 userMapping.MapToUpdateUser(existingUser, user);
 

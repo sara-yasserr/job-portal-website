@@ -16,5 +16,6 @@ namespace Job_Portal_Project.Services.Contracts
         Task<List<Job>> GetRelatedJobs(int categoryId, int excludeJobId);
         Task<List<CategoryWithJobCount>> GetAllCategories();
         Task<bool> ToggleFavoriteJob(string userId, int jobId);
+
     }
 }
