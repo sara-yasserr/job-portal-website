@@ -64,39 +64,62 @@ namespace Job_Portal_Project.Services
 
         public async Task<string> UploadResumeAsync(string userId, IFormFile resume)
         {
+            // Validate inputs
+            if (string.IsNullOrWhiteSpace(userId))
+                throw new ArgumentNullException(nameof(userId));
+
+            if (resume == null || resume.Length == 0)
+                throw new ArgumentException("Resume file is empty", nameof(resume));
+
+            // Get user
             var user = await _userRepository.GetByIdAsync(userId);
-            if (user == null || resume == null || resume.Length == 0) return user?.ResumePath;
+            if (user == null)
+                throw new KeyNotFoundException($"User with ID {userId} not found");
+
+            // Define paths
+            string uploadsRoot = Path.Combine(_webHostEnvironment.WebRootPath, "Uploads");
+            string resumesFolder = Path.Combine(uploadsRoot, "resumes");
+
+            // Ensure directories exist
+            if (!Directory.Exists(uploadsRoot))
+                Directory.CreateDirectory(uploadsRoot);
+
+            if (!Directory.Exists(resumesFolder))
+                Directory.CreateDirectory(resumesFolder);
 
             // Delete old resume if exists
             if (!string.IsNullOrEmpty(user.ResumePath))
             {
-                var oldPath = Path.Combine(_webHostEnvironment.WebRootPath, user.ResumePath.TrimStart('/'));
-                if (File.Exists(oldPath))
+                var oldAbsolutePath = Path.Combine(_webHostEnvironment.WebRootPath,
+                                                 user.ResumePath.TrimStart('/').Replace('/', Path.DirectorySeparatorChar));
+
+                if (File.Exists(oldAbsolutePath))
                 {
-                    File.Delete(oldPath);
+                        File.Delete(oldAbsolutePath);
                 }
             }
 
-            // Save resume
-            string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "files", "resumes");
-            if (!Directory.Exists(uploadsFolder))
-            {
-                Directory.CreateDirectory(uploadsFolder);
-            }
+            // Generate safe filename
+            string safeFileName = Path.GetFileNameWithoutExtension(resume.FileName)
+                                .Replace(" ", "_")
+                                .Replace("'", "")
+                                + Path.GetExtension(resume.FileName);
 
-            string uniqueFileName = $"{userId}_{Guid.NewGuid().ToString()}_{resume.FileName}";
-            string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+            string uniqueFileName = $"{userId}_{DateTime.Now:yyyyMMddHHmmss}_{safeFileName}";
+            string filePath = Path.Combine(resumesFolder, uniqueFileName);
 
-            using (var fileStream = new FileStream(filePath, FileMode.Create))
-            {
-                await resume.CopyToAsync(fileStream);
-            }
+            // Save file
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    await resume.CopyToAsync(fileStream);
+                }
 
-            string relativePath = $"/files/resumes/{uniqueFileName}";
-            user.ResumePath = relativePath;
-            await _userRepository.UpdateAsync(user);
+                // Set relative path (web-accessible)
+                string relativePath = $"/Uploads/resumes/{uniqueFileName}";
+                user.ResumePath = relativePath;
+                await _userRepository.UpdateAsync(user);
 
-            return relativePath;
+                return relativePath;
         }
 
         public Task<List<string>> GetUserResumesAsync(string userId)

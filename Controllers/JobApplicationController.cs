@@ -17,6 +17,7 @@ namespace Job_Portal_Project.Controllers
     [Authorize(Roles = "JobSeeker")]
     public class JobApplicationController : Controller
     {
+        #region cstr
         private readonly IJobApplicationService jobApplicationService;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IJobRepository jobRepo;
@@ -30,6 +31,8 @@ namespace Job_Portal_Project.Controllers
             jobAppRepo = _jobAppRepo;
             this._smtpSettings = _smtpSettings.Value;
         }
+        #endregion
+
         #region Index
         public IActionResult Index(int page = 1)
         {

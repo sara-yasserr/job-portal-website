@@ -139,11 +139,17 @@ namespace Job_Portal_Project
             if (app.Environment.IsDevelopment())
             {
                 app.UseMigrationsEndPoint();
+                app.UseExceptionHandler("/Error/GlobalError");
+                app.UseStatusCodePagesWithReExecute("/Error/GlobalError", "?statusCode={0}");
+                app.UseHsts();
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler("/Error/GlobalError");
+                app.UseStatusCodePagesWithReExecute("/Error/GlobalError", "?statusCode={0}");
+                app.UseHsts();
             }
+            app.UseStaticFiles();
             app.UseRouting();
 
             app.UseSession();

@@ -2,13 +2,12 @@
 @{
     ViewData["Title"] = "My Profile";
 }
-
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
 
 <style>
     .profile-section {
-        background-color: #f8f9fa;
-        padding: 80px 0;
+        background-color: #F9F9F9;
+        padding: 53px 5px;
     }
 
     .profile-card {
@@ -33,7 +32,7 @@
     }
 
     .profile-header {
-        background: linear-gradient(135deg, #00BCD4 0%, #008fa1 100%);
+        background: linear-gradient(135deg, #00BCD4 0%, #00838F 100%);
         padding: 2rem;
         color: white;
         border-radius: 10px 10px 0 0;
@@ -425,20 +424,14 @@
     }
 </style>
 
-@if (TempData["SuccessMessage"] != null)
-{
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        <i class="fas fa-check-circle me-2"></i> @TempData["SuccessMessage"]
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-}
-
-<section class="profile-section">
-    <div class="col-12" style="display:flex; flex-direction:row;gap:30px;">
+<section class="profile-section col-12">
+    <div class="row" style="display:flex; flex-direction:row;gap:30px;justify-content:center;">
         <partial name="_JobSeekerSideBar"></partial>
 
+        <!--Profile-->
+      <div class="col-9">
         <div class="profile-card">
-            <div class="profile-header">
+            <div class="profile-header ">
                 <div class="container">
                     <h3 class="mb-1" style="color:white; display:flex; align-items:center; gap:0.75rem;">
                         <i class="fas fa-user-circle"></i> My Profile
@@ -563,32 +556,32 @@
                            
                         </div>
 
-                        @if (!string.IsNullOrEmpty(Model.ResumePath))
-                        {
-                            <div class="resume-section">
-                                <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <h5 class="mb-0 subheading"><i class="fas fa-file-alt me-2"></i> Resume</h5>
-                                    <a asp-action="Edit" class="btn btn-sm btn-outline-primary">
-                                        <i class="fas fa-sync-alt me-1"></i> Update
-                                    </a>
-                                </div>
-
-                                <div class="resume-file">
-                                    <div class="resume-icon">
-                                        <i class="fas fa-file-pdf"></i>
-                                    </div>
-                                    <div class="resume-details">
-                                        <h6>My Professional Resume</h6>
-                                        <p>Uploaded on @System.IO.File.GetCreationTime(Model.ResumePath).ToString("MMMM dd, yyyy") • @((new System.IO.FileInfo(Model.ResumePath).Length / 1024)) KB</p>
-                                    </div>
-                                    <div>
-                                        <a href="/Resumes/@System.IO.Path.GetFileName(Model.ResumePath)" class="btn btn-sm btn-outline-primary" target="_blank">
-                                            <i class="fas fa-download me-1"></i> Download
+                            @if (!string.IsNullOrEmpty(Model?.ResumePath))
+                            {
+                                <div class="resume-section">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <h5 class="mb-0 subheading"><i class="fas fa-file-alt me-2"></i> Resume</h5>
+                                        <a href="/Resume/Index" class="btn btn-sm btn-outline-primary">
+                                            <i class="fas fa-sync-alt me-1"></i> Update
                                         </a>
                                     </div>
+
+                                    <div class="resume-file">
+                                        <div class="resume-icon">
+                                            <i class="fas fa-file-pdf"></i>
+                                        </div>
+                                        <div class="resume-details">
+                                            <h6>My Professional Resume</h6>
+                                            @* Date and size removed since we can't access file system here *@
+                                        </div>
+                                        <div>
+                                            <a href="@Model.ResumePath" download class="btn btn-sm btn-outline-primary">
+                                                <i class="fas fa-download me-1"></i> Download
+                                            </a>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        }
+                            }
                         else
                         {
                             <div class="resume-section">
@@ -603,18 +596,34 @@
                                     <div class="empty-state-text">
                                         <h5>No Resume Uploaded</h5>
                                         <p>Upload your resume to apply for jobs quickly and showcase your qualifications</p>
-                                        <a asp-action="Edit" class="btn btn-common">
+                                        <a href="/Resume/Index" class="btn btn-common">
                                             <i class="fas fa-upload me-1"></i> Upload Resume
                                         </a>
                                     </div>
                                 </div>
                             </div>
                         }
-                    </div>
-                </div>
+
+                @* <form asp-action="Upload" asp-controller="Resume" method="post" enctype="multipart/form-data" class="mt-4"> *@
+                @*     @Html.AntiForgeryToken() *@
+                @*     <div class="mb-3"> *@
+                @*         <label class="form-label fw-bold" style="color: #00838f;">Upload Resume</label> *@
+                @*         <input type="file" class="form-control" name="resume" accept=".pdf,.doc,.docx" required> *@
+                @*         <div class="form-text" style="color: #00838f;"> *@
+                @*             <small>Accepted formats: PDF, DOC, DOCX (Max 3MB)</small> *@
+                @*         </div> *@
+                @*     </div> *@
+                @*     <button type="submit" class="btn px-4" style="background-color: #00BCD4; color: white;"> *@
+                @*         <i class="fas fa-cloud-upload-alt me-2"></i> Upload Resume *@
+                @*     </button> *@
+                @* </form> *@
             </div>
+      
         </div>
+                </div>
     </div>
+</div>
+                    </div>
 </section>
 
 @section Scripts {

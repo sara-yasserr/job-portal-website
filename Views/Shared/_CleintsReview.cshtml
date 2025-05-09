@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
 <!-- Testimonial Start -->
-<div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
+<div class="container-xxl wow fadeInUp" data-wow-delay="0.1s">
     <div class="container">
         <h1 class="text-center mb-5">Our Clients Say!</h1>
         <div class="owl-carousel testimonial-carousel">
@@ -159,7 +159,11 @@
       });
 </script>
 
-
+<style>
+    .container-xxl{
+        background-color: white;
+    }
+</style>
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");

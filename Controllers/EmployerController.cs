@@ -177,7 +177,7 @@ namespace Job_Portal_Project.Controllers
                             return View(company);
                         }
 
-                        var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images");
+                        var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Uploads/Logos");
                         if (!Directory.Exists(uploadsFolder))
                         {
                             Directory.CreateDirectory(uploadsFolder);
