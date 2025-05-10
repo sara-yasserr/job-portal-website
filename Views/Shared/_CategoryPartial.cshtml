@@ -45,13 +45,13 @@
 
                 <div class="col-lg-3 col-md-4 col-sm-6 col-12 d-flex">
                     <div class="category-item flex-fill">
-                        <a href="@Url.Action("CategoryJobs", "Jobs", new { id = category.Category.Id })" style="text-decoration: none; color: inherit;">
+                        @* <a href="@Url.Action("CategoryJobs", "Jobs", new { id = category.Category.Id })" style="text-decoration: none; color: inherit;"> *@
                             <div class="category-icon">
                                 <i class="lni @iconClass"></i>
                             </div>
                             <h3 class="category-title">@category.Category.Name</h3>
                             <p class="job-count">@category.JobCount jobs</p>
-                        </a>
+                        @* </a> *@
                     </div>
                 </div>
             }

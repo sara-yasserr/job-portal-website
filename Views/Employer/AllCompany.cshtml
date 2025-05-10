@@ -450,14 +450,14 @@
             {
                 <div class="col-lg-6 col-xl-4 mb-4">
                     <div class="company-card">
-                        <div class="company-card-image-wrapper">
+                        <div class="company-card-image-wrapper mb-3 " style="display:flex; justify-content:center; align-items:center;">
                             @if (!string.IsNullOrEmpty(item.LogoPath))
                             {
-                                <img src="/Uploads/Logos/@item.LogoPath" alt="@item.Name Logo" class="company-card-image" />
+                                <img src="/Uploads/Logos/@item.LogoPath" alt="@item.Name Logo" class="company-card-image rounded-circle" style="width:120px; height:120px" />
                             }
                             else
                             {
-                                <div class="company-card-image d-flex justify-content-center align-items-center bg-light">
+                                <div class="company-card-image d-flex justify-content-center align-items-center bg-light ">
                                     <i class="bi bi-building text-muted" style="font-size: 3rem;"></i>
                                 </div>
                             }
