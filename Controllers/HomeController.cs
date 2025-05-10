@@ -5,6 +5,7 @@ using Job_Portal_Project.ViewModels;
 using Job_Portal_Project.ViewModels.Admin;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Job_Portal_Project.Controllers
 {
@@ -19,15 +20,19 @@ namespace Job_Portal_Project.Controllers
             _jobSearchService = jobSearchService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var categories = _jobSearchService.GetAllCategories().Result;
+            var categories = await _jobSearchService.GetAllCategories();
+            var latestJobs = await _jobSearchService.GetRecentJobs(6);
+
             var model = new HomeViewModel
             {
-                Categories = categories
+                Categories = categories,
+                LatestJobs = latestJobs
             };
             return View(model);
         }
+
         public IActionResult Privacy()
         {
             return View();

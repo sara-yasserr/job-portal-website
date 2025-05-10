@@ -1,7 +1,6 @@
 ﻿@model List<CategoryWithJobCount>
 
 @{
-    
     string GetIconClass(string categoryName)
     {
         switch (categoryName?.ToLower())
@@ -27,102 +26,31 @@
     }
 }
 
-<style>
-    .category-item {
-        background-color: #f8f9fa;
-        border-radius: 10px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        text-align: center;
-        padding: 15px 8px;
-        margin-bottom: 25px;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-        .category-item:hover {
-            background: linear-gradient(135deg, rgba(0, 188, 212, 0.15) 0%, rgba(0, 151, 167, 0.15) 100%);
-            transform: translateY(-5px);
-            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-        }
-
-    .category-icon {
-        font-size: 28px;
-        padding: 12px;
-        border-radius: 50%;
-        margin-bottom: 10px;
-        transition: background-color 0.3s ease;
-        display: inline-block;
-        color: #fff;
-        background-color: #00BCD4;
-    }
-
-    .category-item:hover .category-icon {
-        background-color: #0097A7;
-    }
-
-    .category-title {
-        font-size: 16px;
-        font-weight: 600;
-        color: #333;
-        transition: color 0.3s ease;
-        margin-bottom: 3px;
-    }
-
-    .category-item:hover .category-title {
-        color: #00BCD4;
-    }
-
-    .job-count {
-        margin: 3px 0 0;
-        color: #666;
-        font-size: 13px;
-    }
-
-    @@media (max-width: 768px) {
-        .category-item
-
-    {
-        padding: 12px 6px;
-    }
-
-    .category-icon {
-        font-size: 24px;
-        padding: 10px;
-    }
-
-    .category-title {
-        font-size: 14px;
-    }
-
-    }
-</style>
-
-
-<section class="category-section" style="padding: 0px 0;">
-    <div class="container section">
+<section class="category-section" style="background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%); padding: 60px 0;">
+    <div class="container">
         <div class="section-header text-center" style="margin-bottom: 50px;">
-            <div class="section-icon" style="margin-bottom: 15px;">
-                <i class="lni lni-briefcase" style="font-size: 32px; color: #00BCD4; display: inline-block; padding: 15px; border-radius: 50%; background: rgba(0, 188, 212, 0.1);"></i>
-            </div>
             <h2 class="section-title" style="font-size: 32px; font-weight: 700; color: #333; margin-bottom: 15px; position: relative; display: inline-block;">
                 Browse <span style="color: #00BCD4;">Categories</span>
-                <div class="title-underline" style="position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); width: 70px; height: 3px; background-color: #00BCD4;"></div>
+                <div style="position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); width: 70px; height: 3px; background: linear-gradient(to right, #00BCD4, #2196F3);"></div>
             </h2>
-            <p style="color: #666; font-size: 16px; max-width: 600px; margin: 15px auto 0; line-height: 1.6;">Most popular categories of portal, sorted by popularity and demand in the current job market</p>
+            <p style="color: #666; font-size: 16px; max-width: 600px; margin: 15px auto 0; line-height: 1.6;">
+                Most popular categories of portal, sorted by popularity and demand in the current job market
+            </p>
         </div>
 
-        <div class="row">
+        <div class="row category-row">
             @foreach (var category in Model)
             {
                 var iconClass = GetIconClass(category.Category.Name);
 
-                <div class="col-lg-3 col-md-4 col-sm-6 col-12">
-                    <div class="category-item">
+                <div class="col-lg-3 col-md-4 col-sm-6 col-12 d-flex">
+                    <div class="category-item flex-fill">
                         <a href="@Url.Action("CategoryJobs", "Jobs", new { id = category.Category.Id })" style="text-decoration: none; color: inherit;">
                             <div class="category-icon">
-                                <i class="@iconClass"></i>
+                                <i class="lni @iconClass"></i>
                             </div>
                             <h3 class="category-title">@category.Category.Name</h3>
-                            <p style="color:#a8a8a8; font-weight: bold; class="job-count">(@category.JobCount jobs)</p>
+                            <p class="job-count">@category.JobCount jobs</p>
                         </a>
                     </div>
                 </div>
@@ -130,3 +58,92 @@
         </div>
     </div>
 </section>
+
+<style>
+    .category-row {
+        row-gap: 32px;
+        column-gap: 0;
+    }
+
+    .category-item {
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        text-align: center;
+        padding: 28px 12px 20px 12px;
+        margin: 0 auto;
+        transition: all 0.3s ease;
+        border: 1px solid rgba(0,0,0,0.03);
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .category-icon {
+        font-size: 32px;
+        margin-bottom: 15px;
+        color: #00BCD4;
+        transition: all 0.5s ease;
+        display: inline-block;
+    }
+
+    .category-item:hover .category-icon {
+        transform: rotateY(360deg);
+    }
+
+    .category-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 8px;
+        transition: color 0.3s ease;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        width: 100%;
+        max-width: 180px;
+    }
+
+    .category-item:hover .category-title {
+        color: #00BCD4;
+    }
+
+    .job-count {
+        color: #00BCD4;
+        font-size: 14px;
+        font-weight: 500;
+        margin: 0;
+        background: #e6fafd;
+        padding: 5px 15px;
+        border-radius: 20px;
+        display: inline-block;
+    }
+
+    .category-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 188, 212, 0.15);
+    }
+    @@media (max-width: 991px) {
+        .category-title
+
+    {
+        max-width: 120px;
+    }
+
+    }
+    @@media (max-width: 768px) {
+        .category-item
+
+    {
+        padding: 20px 5px;
+    }
+
+    .category-title {
+        font-size: 16px;
+        max-width: 90px;
+    }
+
+    }
+</style>
