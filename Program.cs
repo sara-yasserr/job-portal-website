@@ -25,8 +25,6 @@ namespace Job_Portal_Project
 
             //Add services to the container.
 
-            //Add services to the container.
-
             builder.Services.AddAuthentication(options =>
             {
                 options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -75,76 +73,6 @@ namespace Job_Portal_Project
         }
     };
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            //            builder.Services.AddAuthentication(options =>
-            //            {
-            //                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            //                options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
-            //            })
-            //.AddCookie(options =>
-            //{
-            //    options.LoginPath = "/Account/Login";
-            //    options.AccessDeniedPath = "/Account/AccessDenied";
-            //    options.SlidingExpiration = true;
-            //    options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
-            //    options.Cookie.SameSite = SameSiteMode.Lax;
-            //    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-            //})
-            //.AddGoogle(options =>
-            //{
-            //    options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
-            //    options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
-            //    options.Scope.Add("email");
-            //    options.Scope.Add("profile");
-            //    options.SaveTokens = true;
-
-            //    options.Events = new OAuthEvents
-            //    {
-            //        OnRedirectToAuthorizationEndpoint = context =>
-            //        {
-
-            //            context.Properties.SetString("returnUrl", context.Request.Query["returnUrl"]);
-            //            context.Response.Redirect(context.RedirectUri);
-            //            return Task.CompletedTask;
-            //        },
-            //        OnCreatingTicket = async ctx =>
-            //        {
-            //            var email = ctx.Identity.FindFirst(ClaimTypes.Email)?.Value;
-            //            if (!string.IsNullOrEmpty(email))
-            //            {
-            //                var claims = new List<Claim>
-            //                {
-            //                    new Claim(ClaimTypes.Email, email),
-            //                    new Claim(ClaimTypes.NameIdentifier, ctx.Identity.FindFirst(ClaimTypes.NameIdentifier)?.Value)
-            //                };
-
-            //                var identity = new ClaimsIdentity(claims, "Google");
-            //                ctx.Principal.AddIdentity(identity);
-            //            }
-            //        }
-            //    };
-            //});
-
-
 
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
             // service used insted of  method of on configuration to allow injecting the dbcontext in the repositories without using the service provider
