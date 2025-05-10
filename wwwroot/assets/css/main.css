@@ -982,7 +982,7 @@ button:focus {
 
 /* كل شريحة من السلايدر */
 .carousel-item {
-    height: 700px;
+    height:700px;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
