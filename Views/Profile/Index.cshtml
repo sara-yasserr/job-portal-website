@@ -426,10 +426,10 @@
 
 <section class="profile-section col-12">
     <div class="row" style="display:flex; flex-direction:row;gap:30px;justify-content:center;">
-        <partial name="_JobSeekerSideBar"></partial>
+        @* <partial name="_JobSeekerSideBar"></partial> *@
 
         <!--Profile-->
-      <div class="col-9">
+      <div class="col-11">
         <div class="profile-card">
             <div class="profile-header ">
                 <div class="container">
@@ -446,7 +446,7 @@
                 <div class="row">
                     <!-- Profile Sidebar -->
                     <div class="col-lg-4 profile-sidebar">
-                        @if (string.IsNullOrEmpty(Model.ProfilePicturePath))
+                        @if (!string.IsNullOrEmpty(Model.ProfilePicturePath))
                         {
                             <img src="/Images/@Model.ProfilePicturePath" alt="Profile Picture" class="profile-picture" id="profile-preview">
                         }

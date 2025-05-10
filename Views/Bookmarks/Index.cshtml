@@ -5,36 +5,36 @@
 }
 
 <!-- Page Header Start -->
-@* <div class="category-hero-section"> *@
-@*     <div class="overlay-bg"></div> *@
-@*     <div class="container"> *@
-@*         <div class="row"> *@
-@*             <div class="col-12"> *@
-@*                 <div class="breadcrumbs-content"> *@
-@*                     <h1 class="page-title"> *@
-@*                         Bookmarked <span>Jobs</span> *@
-@*                         <div class="title-accent"></div> *@
-@*                     </h1> *@
-@*                 </div> *@
-@*                 <ul class="breadcrumb-nav"> *@
-@*                     <li><a href="/Home/Index">Home</a></li> *@
-@*                     <li> *@
-@*                         <span>Bookmarked Jobs</span> *@
-@*                     </li> *@
-@*                 </ul> *@
-@*             </div> *@
-@*         </div> *@
-@*     </div> *@
-@* </div> *@
+<div class="category-hero-section">
+    <div class="overlay-bg"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="breadcrumbs-content">
+                    <h1 class="page-title">
+                        Bookmarked <span>Jobs</span>
+                        <div class="title-accent"></div>
+                    </h1>
+                </div>
+                <ul class="breadcrumb-nav">
+                    <li><a href="/Home/Index">Home</a></li>
+                    <li>
+                        <span>Bookmarked Jobs</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
 
-<div class="justify-content-center d-flex flex-lg-row flex-column col-12" style="gap:30px;background-color:#F9F9F9 !important; padding-top:50px;">
+<div class="justify-content-center d-flex flex-lg-row flex-column">
     <!-- Sidebar -->
-
+    @* <div class="col-lg-3 col-md-3 col-12"> *@
         @await Html.PartialAsync("_JobSeekerSideBar")
-
+    @* </div> *@
 
     <!-- Main Content -->
-    <div class="col-lg-9 col-md-9 col-12">
+    <div class="col-lg-8 col-md-9 col-12">
         <div class="mainContent">
             <div class="bookmarked-jobs-header">
                 <div class="row align-items-center">
@@ -376,10 +376,10 @@
                     color: white;
                 }
 
-            .bookmark-icon:hover {
-                transform: scale(1.1);
-                box-shadow: 0 4px 12px rgba(255, 107, 107, 0.2);
-            }
+        .bookmark-icon:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(255, 107, 107, 0.2);
+        }
 
         .bookmark-content {
             padding: 25px;
@@ -752,7 +752,7 @@
                         var counter = $('.saved-counter span span');
                         var currentCount = parseInt(counter.text());
                         counter.text(currentCount - 1);
-                        
+
                         // If no more bookmarks, show empty state
                         if (currentCount - 1 === 0) {
                             $('.mainContent').html(`

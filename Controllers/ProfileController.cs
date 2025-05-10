@@ -81,7 +81,7 @@ namespace Job_Portal_Project.Controllers.Profile
         [HttpPost]
         [ValidateAntiForgeryToken]
 
-        public async Task<IActionResult> Edit(ApplicationUser user, string id, IFormFile ProfilePicture)
+        public async Task<IActionResult> Edit(ProfileViewModel user, string id, IFormFile? ProfilePicture)
         {
             if (ModelState.IsValid == true)
             {

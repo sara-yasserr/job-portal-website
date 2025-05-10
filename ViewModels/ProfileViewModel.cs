@@ -31,8 +31,6 @@ namespace Job_Portal_Project.ViewModels
         [Phone(ErrorMessage = "Invalid phone number")]
         public string PhoneNumber { get; set; }
 
-        public string Role { get; set; }
-
 
         [Display(Name = "Profile Picture")]
         public IFormFile? ProfilePicture { get; set; }
@@ -40,8 +38,8 @@ namespace Job_Portal_Project.ViewModels
         public string? ProfilePicturePath { get; set; }
 
         [Display(Name = "Resume")]
-        public IFormFile Resume { get; set; }
+        public IFormFile? Resume { get; set; }
 
-        public string ResumePath { get; set; }
+        public string? ResumePath { get; set; }
     }
 }

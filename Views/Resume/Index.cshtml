@@ -3,14 +3,35 @@
     ViewData["Title"] = "Resume Management";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<div class="container mt-5 col-12">
-    <div class="row g-4" style="display:flex; flex-direction:row;gap:30px; justify-content:center;background-color:#F9F9F9 !important;;">
+<div class="category-hero-section" style="background-image: url('/assets/images/Dcover.jpg'); background-size: cover; padding: 80px 0; position: relative; z-index: 1; text-align: center; color: #fff; overflow: hidden;">
+    <div class="overlay-bg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(22, 28, 45, 0.7); z-index: -1;"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="breadcrumbs-content">
+                    <h1 class="page-title" style="font-size: 2.5rem; font-weight: 700; margin-bottom: 15px; color: #fff; text-shadow: 0px 2px 8px rgba(0,0,0,0.2); position: relative; display: inline-block;">
+                        Resume 
+                        <div class="title-accent" style="position: absolute; bottom: -5px; left: 50%; transform: translateX(-50%); width: 80px; height: 4px; background-color: #00BCD4; border-radius: 2px;"></div>
+                    </h1>
+                </div>
+                <ul class="breadcrumb-nav" style="display: flex; justify-content: center; list-style: none; margin-top: 25px; padding: 0; flex-wrap: wrap;">
+                    <li style="margin: 5px;"><a href="/" style="color: #fff; text-decoration: none; font-weight: 500; transition: all 0.3s ease;">Home</a></li>
+                    <li style="margin: 5px;"><a href="/JobSearch/Index" style="color: #fff; text-decoration: none; font-weight: 500; transition: all 0.3s ease;">Jobs</a></li>
+                    <li style="margin: 5px; position: relative; padding-left: 15px;">
+                        <span style="color: #00BCD4; font-weight: 600;">Resume</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container mt-5 col-12" style="">
+    <div class="row g-4" style="display:flex; flex-direction:row;justify-content:center;background-color:#F9F9F9 !important;">
         <!-- Sidebar -->
             <partial name="_JobSeekerSideBar" />
 
         <!-- Main Content -->
-        <div class="col-md-9 col-9">
+        <div class="col-md-8 col-9">
             <div class="card shadow-sm border-0">
                 <div class="card-header text-white py-3" style="background: linear-gradient(135deg, #00BCD4 0%, #00838F 100%);">
                     <div class="d-flex justify-content-between align-items-center">

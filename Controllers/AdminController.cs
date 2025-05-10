@@ -6,6 +6,7 @@ using Job_Portal_Project.Services;
 using Job_Portal_Project.ViewModels.Admin;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -26,13 +27,13 @@ namespace Job_Portal_Project.Controllers
         private IAdminDashboardService _dashboardService;
         private readonly RoleManager<IdentityRole> roleManager;
         private UserManager<ApplicationUser> _userManager;
-
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
         public AdminController(IFavouritesRepository favouritesRepository , ICompanyRepository companyRepository
                     , IJobApplicationRepository jobApplicationRepository, IJobRepository jobRepository
                     , IApplicationUserRepository applicationUserRepository, IJobCategoryRepository jobCategoryRepository
                     , IAdminDashboardService adminDashboardService, UserManager<ApplicationUser> userManager
-                    , JobPortalContext context, RoleManager<IdentityRole> roleManager)
+                    , JobPortalContext context, RoleManager<IdentityRole> roleManager, IWebHostEnvironment webHostEnvironment)
         {
             _favouritesRepository = favouritesRepository;
             _companyRepository = companyRepository;
@@ -44,6 +45,7 @@ namespace Job_Portal_Project.Controllers
             _context = context;
             this.roleManager = roleManager;
             _userManager = userManager;
+            _webHostEnvironment = webHostEnvironment;
         }
         public async Task<IActionResult> Dashboard()
         {
@@ -456,7 +458,7 @@ namespace Job_Portal_Project.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteCompany(int id)
         {
-            var company =  _companyRepository.GetById(id);
+            var company = _companyRepository.GetById(id);
 
             if (company == null)
             {
@@ -474,8 +476,56 @@ namespace Job_Portal_Project.Controllers
             }
 
             // safe to delete
-             _companyRepository.Delete(company);
+            _companyRepository.Delete(id);
+            _companyRepository.Save();
             TempData["CompanySuccess"] = "Company deleted successfully.";
+            return RedirectToAction("Companies");
+        }
+        public async Task<IActionResult> EditCompany(int id)
+        {
+            var company = _companyRepository.GetById(id);
+            if (company == null)
+            {
+                return NotFound();
+            }
+            return View("EditCompany", company);
+        }
+
+        //Edit Company
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditCompany(Company model, IFormFile? logoFile)
+        {
+            if (!ModelState.IsValid)
+                return View("EditCompany", model);
+
+            var company = _companyRepository.GetById(model.Id);
+            if (company == null)
+                return NotFound();
+
+            company.Name = model.Name;
+            company.Country = model.Country;
+            company.City = model.City;
+            company.Description = model.Description;
+
+            if (logoFile != null && logoFile.Length > 0)
+            {
+                // Save file and update company.LogoPath
+                var uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "uploads/logos");
+                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(logoFile.FileName);
+                var filePath = Path.Combine(uploadsFolder, fileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await logoFile.CopyToAsync(stream);
+                }
+
+                company.LogoPath = fileName;
+            }
+
+            _companyRepository.Update(company);
+            _companyRepository.Save();
+            TempData["CompanySuccess"] = "Company updated successfully!";
             return RedirectToAction("Companies");
         }
 

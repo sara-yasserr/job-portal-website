@@ -6,6 +6,8 @@ namespace Job_Portal_Project.Services
     public interface IUserMappingService
     {
         ApplicationUser MapToApplicationUser(RegisterViewModel registerViewModel);
+        public void MapToUpdateUser(ApplicationUser existingUser, ProfileViewModel updatedData);
         public void MapToUpdateUser(ApplicationUser existingUser, ApplicationUser updatedData);
+
     }
 }

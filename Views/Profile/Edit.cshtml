@@ -5,7 +5,7 @@
 
 <div class="container py-4" style="margin-top: 80px;">
     <div class="row justify-content-center">
-        <div class="col-lg-10">
+        <div class="col-lg-12">
             <div class="card shadow-sm mb-4">
                 <div class="card-header py-3" style="background-color: #00BCD4;">
                     <h4 class="mb-0 text-white">Edit Profile</h4>
@@ -20,14 +20,14 @@
                     }
 
                     <form asp-action="Edit" asp-controller="Profile" method="post" enctype="multipart/form-data">
-                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div asp-validation-summary="All" class="text-danger"></div>
                         <input type="hidden" asp-for="Id" />
-                        <input type="hidden" asp-for="ProfilePicturePath" />
+                        <input type="hidden" asp-for="ProfilePicturePath" value="@Model.ProfilePicturePath"/>
 
                         <div class="row mb-4">
                             <div class="col-12 text-center">
                                 <div class="position-relative d-inline-block">
-                                    @if (string.IsNullOrEmpty(Model.ProfilePicturePath))
+                                    @if (!string.IsNullOrEmpty(Model?.ProfilePicturePath))
                                     {
                                         <img src="/images/@Model.ProfilePicturePath" alt="Profile Picture"
                                              class="rounded-circle img-thumbnail mb-3"
@@ -42,7 +42,7 @@
                                 </div>
                                 <div class="mt-3">
                                     <label asp-for="ProfilePicture" class="form-label" style="color: #00BCD4;">Update Profile Picture (Optional)</label>
-                                    <input asp-for="ProfilePicture" type="file" class="form-control" accept="image/*" />
+                                    <input asp-for="ProfilePicture" type="file" class="form-control" />
                                     <span asp-validation-for="ProfilePicture" class="text-danger"></span>
                                 </div>
                             </div>
