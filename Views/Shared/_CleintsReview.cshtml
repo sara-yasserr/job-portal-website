@@ -1,0 +1,171 @@
+﻿<!-- jQuery أولاً (مطلوب لـ Owl Carousel) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- ثم مكتبة WOW.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+
+<!-- ثم مكتبات Owl Carousel -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+<!-- Testimonial Start -->
+<div class="container-xxl wow fadeInUp" data-wow-delay="0.1s" style="padding:20px 0px;">
+    <div class="container">
+        <h1 class="text-center mb-5">Our Clients Say!</h1>
+        <div class="owl-carousel testimonial-carousel">
+            <div class="testimonial-item bg-light rounded p-4">
+                <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>
+                <p>Found 5 qualified candidates in 3 days. The simple job posting process saved us time and effort in our hiring.</p>
+                <div class="d-flex align-items-center">
+                    <img class="img-fluid flex-shrink-0 rounded" src="/Images/profile.jpg" style="width: 50px; height: 50px;">
+                    <div class="ps-3">
+                        <h5 class="mb-1 subheading">Gehad Mostafa</h5>
+                        <small>CEO</small>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-item bg-light rounded p-4">
+                <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>
+                <p>Got my first job offer within a week of signing up. Easy application process with direct employer contact.</p>
+                <div class="d-flex align-items-center">
+                    <img class="img-fluid flex-shrink-0 rounded" src="/Images/profile.jpg" style="width: 50px; height: 50px;">
+                    <div class="ps-3">
+                        <h5 class="mb-1 subheading">Ahmed Ali</h5>
+                        <small>Senior Software Developer</small>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-item bg-light rounded p-4">
+                <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>
+                <p>As a fresh graduate, I found 3 suitable entry-level positions and got hired within 2 weeks of searching.</p>
+                <div class="d-flex align-items-center">
+                    <img class="img-fluid flex-shrink-0 rounded" src="/Images/profile.jpg" style="width: 50px; height: 50px;">
+                    <div class="ps-3">
+                        <h5 class="mb-1 subheading">Salem Gamal</h5>
+                        <small>Junior Frontend Developer</small>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-item bg-light rounded p-4">
+                <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>
+                <p>Posted 2 job openings and received 30+ applications in 48 hours. Simple but effective platform.</p>
+                <div class="d-flex align-items-center">
+                    <img class="img-fluid flex-shrink-0 rounded" src="/Images/profile.jpg" style="width: 50px; height: 50px;">
+                    <div class="ps-3">
+                        <h5 class="mb-1 subheading">Fatma Ali</h5>
+                        <small>HR Manager</small>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-item bg-light rounded p-4">
+                <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>
+                <p>Found 3 perfect matches for our team in one week. Straightforward candidate search made hiring easy.</p>
+                <div class="d-flex align-items-center">
+                    <img class="img-fluid flex-shrink-0 rounded" src="/Images/profile.jpg" style="width: 50px; height: 50px;">
+                    <div class="ps-3">
+                        <h5 class="mb-1 subheading">Sara Yasser</h5>
+                        <small>HR Director</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Testimonial End -->
+<style>
+    :root {
+        --primary: #00BCD4;
+        --light-blue: #ebffff;
+    }
+
+    .subheading {
+        font-size: 1.3rem;
+        font-weight: 500;
+        color: #4a5568;
+    }
+
+    /*** Testimonial ***/
+    .testimonial-carousel .testimonial-item {
+        background: var(--light-blue) !important; /* Default background for inactive cards */
+        padding: 20px;
+        border-radius: 8px;
+        transition: all 0.5s ease;
+        text-align:left;
+    }
+
+    .testimonial-carousel .owl-item.center .testimonial-item {
+        background: var(--primary) !important;
+        transform: scale(1.05);
+        box-shadow: 0 5px 15px rgba(0, 188, 212, 0.3);
+    }
+
+        .testimonial-carousel .owl-item.center .testimonial-item * {
+            color: #FFFFFF !important;
+        }
+
+    .testimonial-carousel .owl-dots {
+        margin-top: 24px;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+    }
+
+    .testimonial-carousel .owl-dot {
+        position: relative;
+        display: inline-block;
+        margin: 0 5px;
+        width: 15px;
+        height: 15px;
+        border: 5px solid var(--primary);
+        border-radius: 2px;
+        transition: .5s;
+    }
+
+        .testimonial-carousel .owl-dot.active {
+            border-color: var(--primary);
+        }
+
+    .ps-3 {
+        text-align: left;
+        padding-top: 15px;
+        padding-left: 15px;
+    }
+
+    p {
+        text-align: left;
+    }
+</style>
+
+    <script>
+      // Initialize Wow.js
+      new WOW().init();
+
+      // Initialize Owl Carousel
+      $(document).ready(function(){
+          $(".testimonial-carousel").owlCarousel({
+              autoplay: true,
+              smartSpeed: 1000,
+              center: true,
+              margin: 24,
+              dots: true,
+              loop: true,
+              nav: false,
+              responsive: {
+                  0: { items: 1 },
+                  768: { items: 2 },
+                  992: { items: 3 }
+              }
+          });
+      });
+</script>
+
+<style>
+    .container-xxl{
+        background-color: white;
+    }
+</style>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

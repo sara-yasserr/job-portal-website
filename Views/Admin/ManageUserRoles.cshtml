@@ -1,0 +1,343 @@
+﻿@using Job_Portal_Project.ViewModels.Admin
+@model List<UserWithRolesViewModel>
+@{
+    ViewData["Title"] = "Manage User Roles";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var allRoles = ViewData["AllRoles"] as List<string>;
+}
+
+<h2 class="mb-4">Manage Users Roles</h2>
+
+<!-- Filter Form -->
+<form method="get" asp-action="ManageUserRoles" class="row g-2 mb-4">
+    <div class="col-md-4">
+        <input type="text" name="searchTerm" class="form-control" placeholder="Search by name or email..."
+               value="@ViewData["SearchTerm"]" />
+    </div>
+    <div class="col-md-3">
+        <select name="roleFilter" class="form-select">
+            @foreach (var role in allRoles!)
+            {
+                <option value="@role" selected="@(role == (ViewData["RoleFilter"] as string) ? "selected" : null)">
+                    @role
+                </option>
+            }
+        </select>
+    </div>
+    <div class="col-md-2">
+        <button type="submit" class="btn btn-primary w-100">Filter</button>
+    </div>
+    <div class="col-md-3">
+        <a asp-action="ManageUserRoles" class="btn btn-secondary w-100">Reset</a>
+    </div>
+</form>
+
+<!-- Users Table -->
+<table class="table table-bordered table-striped align-middle">
+    <thead class="table-dark">
+        <tr>
+            <th>Full Name</th>
+            <th>Email</th>
+            <th>Title</th>
+            <th>Current Role</th>
+            <th>Assign New Role</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.FullName</td>
+                <td>@user.Email</td>
+                <td>@user.Title</td>
+                <td>@user.CurrentRole</td>
+                <td>
+                    <form asp-action="AssignRole" method="post" class="d-flex">
+                        <input type="hidden" name="userId" value="@user.UserId" />
+                        <select name="role" class="form-select me-2">
+                            @foreach (var role in user.AllRoles)
+                            {
+                                <option value="@role" selected="@(role == user.CurrentRole)">
+                                    @role
+                                </option>
+                            }
+                        </select>
+                        <button type="submit" class="btn btn-sm btn-primary">Assign</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Pagination -->
+@if (true)
+{
+    <nav aria-label="User Role Pagination">
+        <ul class="pagination justify-content-center mt-4">
+            <li class="page-item @( (int)ViewData["CurrentPage"] == 1 ? "disabled" : "")">
+                <a class="page-link" href="?searchTerm=@ViewData["SearchTerm"]&roleFilter=@ViewData["RoleFilter"]&page=@((int)ViewData["CurrentPage"] - 1)">«</a>
+            </li>
+            @for (int i = 1; i <= (int)ViewData["TotalPages"]; i++)
+            {
+                <li class="page-item @(i == (int)ViewData["CurrentPage"] ? "active" : "")">
+                    <a class="page-link" href="?searchTerm=@ViewData["SearchTerm"]&roleFilter=@ViewData["RoleFilter"]&page=@i">@i</a>
+                </li>
+            }
+            <li class="page-item @( (int)ViewData["CurrentPage"] == (int)ViewData["TotalPages"] ? "disabled" : "")">
+                <a class="page-link" href="?searchTerm=@ViewData["SearchTerm"]&roleFilter=@ViewData["RoleFilter"]&page=@((int)ViewData["CurrentPage"] + 1)">»</a>
+            </li>
+        </ul>
+    </nav>
+}
+
+<style>
+    /* Main content styling */
+    .content {
+        background-color: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        padding: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    /* Page header */
+    h2 {
+        color: #2c3e50;
+        font-weight: 700;
+        position: relative;
+        padding-bottom: 1rem;
+        margin-bottom: 2rem;
+    }
+
+        h2:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, #3498db, #9b59b6);
+            border-radius: 2px;
+        }
+
+    /* Filter form styling */
+    .form-control, .form-select {
+        border-radius: 8px;
+        padding: 0.75rem 1rem;
+        border: 1px solid #dfe6e9;
+        transition: all 0.3s;
+    }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+        }
+
+    /* Button styling */
+    .btn {
+        border-radius: 8px;
+        padding: 0.75rem 1.5rem;
+        font-weight: 600;
+        transition: all 0.3s;
+        border: none;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #3498db, #2980b9);
+        box-shadow: 0 4px 6px rgba(52, 152, 219, 0.3);
+    }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #2980b9, #3498db);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(52, 152, 219, 0.4);
+        }
+
+    .btn-secondary {
+        background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+        box-shadow: 0 4px 6px rgba(149, 165, 166, 0.3);
+    }
+
+        .btn-secondary:hover {
+            background: linear-gradient(135deg, #7f8c8d, #95a5a6);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(149, 165, 166, 0.4);
+        }
+
+    /* Table styling */
+    .table {
+        border-radius: 10px;
+        overflow: hidden;
+        margin-bottom: 0;
+        border-collapse: separate;
+        border-spacing: 0;
+    }
+
+    .table-dark {
+        background: linear-gradient(135deg, #2c3e50, #34495e);
+    }
+
+    .table th {
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+        letter-spacing: 0.5px;
+        border-bottom: none;
+        padding: 1rem;
+        position: sticky;
+        top: 0;
+    }
+
+    .table td {
+        padding: 1.25rem 1rem;
+        vertical-align: middle;
+        border-top: 1px solid #eceeef;
+    }
+
+    .table-striped tbody tr:nth-of-type(odd) {
+        background-color: rgba(52, 152, 219, 0.05);
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: rgba(52, 152, 219, 0.1);
+    }
+
+    /* Role assignment form */
+    .d-flex {
+        gap: 0.5rem;
+    }
+
+    .btn-sm {
+        padding: 0.5rem 1rem;
+        font-size: 0.85rem;
+        border-radius: 6px;
+        white-space: nowrap;
+    }
+
+    /* Pagination */
+    .pagination {
+        margin-top: 2rem;
+    }
+
+    .page-link {
+        border: none;
+        color: #7f8c8d;
+        font-weight: 600;
+        margin: 0 5px;
+        border-radius: 8px !important;
+        transition: all 0.3s;
+        min-width: 36px;
+        text-align: center;
+    }
+
+        .page-link:hover {
+            color: #3498db;
+            background-color: #f8f9fa;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+    .page-item.active .page-link {
+        background: linear-gradient(135deg, #3498db, #9b59b6);
+        border: none;
+        box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
+    }
+
+    /* Role badges */
+    .role-badge {
+        display: inline-block;
+        padding: 0.35em 0.65em;
+        font-size: 0.85em;
+        font-weight: 600;
+        line-height: 1;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: baseline;
+        border-radius: 8px;
+        text-transform: capitalize;
+    }
+
+    .role-admin {
+        background-color: #d4edff;
+        color: #004085;
+    }
+
+    .role-employer {
+        background-color: #e2f3e8;
+        color: #155724;
+    }
+
+    .role-jobseeker {
+        background-color: #fff3cd;
+        color: #856404;
+    }
+
+    /* Animation for table rows */
+    @@keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    tbody tr {
+        animation: fadeIn 0.3s ease forwards;
+        opacity: 0;
+    }
+
+        /* Delay animations for each row */
+        tbody tr:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        tbody tr:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        tbody tr:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        tbody tr:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+
+        tbody tr:nth-child(5) {
+            animation-delay: 0.5s;
+        }
+
+        tbody tr:nth-child(6) {
+            animation-delay: 0.6s;
+        }
+
+    /* Responsive adjustments */
+    @@media (max-width: 768px) {
+        .content {
+            padding: 1rem;
+        }
+
+        .table-responsive {
+            border-radius: 8px;
+            border: 1px solid #dee2e6;
+        }
+
+        .btn {
+            width: 100%;
+            margin-bottom: 0.5rem;
+        }
+
+        .d-flex {
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-select, .btn-sm {
+            width: 100%;
+        }
+    }
+</style>

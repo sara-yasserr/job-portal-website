@@ -1,0 +1,538 @@
+﻿@using Job_Portal_Project.ViewModels
+
+@model CompanyListViewModel
+
+@{
+    ViewData["Title"] = "All Companies";
+}
+
+<style>
+    :root {
+        --primary-color: #00BCD4;
+        --primary-light: #e0f7fa;
+        --primary-dark: #0097a7;
+        --text-color: #00BCD4;
+        --secondary-color: #34495e;
+        --accent-color: #1abc9c;
+        --light-color: #f8fafc;
+        --dark-color: #2c3e50;
+        --text-secondary: #4A5568;
+        --card-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+        --hover-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        --border-radius: 12px;
+        --card-body-bg: #ffffff;
+        --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    body {
+        background: linear-gradient(120deg, #f5f7fa 0%, #e4f1f9 100%);
+        color: var(--text-color);
+        font-family: 'Inter', 'Segoe UI', 'Roboto', sans-serif;
+        min-height: 100vh;
+        margin: 0;
+    }
+
+    .container {
+        animation: fadeIn 0.8s ease-in-out;
+        /* overflow-x: hidden; /* Prevents horizontal scrollbar during animations */ */
+    }
+
+    .section-title {
+        color: var(--secondary-color);
+        font-weight: 700;
+        position: relative;
+        margin-bottom: 30px;
+        padding-bottom: 15px;
+        letter-spacing: 0.5px;
+    }
+
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(to right, var(--primary-color), var(--accent-color));
+            border-radius: 2px;
+        }
+
+    .common-btn {
+        background: linear-gradient(to right, var(--primary-color), var(--primary-dark));
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: var(--border-radius);
+        transition: var(--transition);
+        font-weight: 500;
+        box-shadow: 0 4px 6px rgba(52, 152, 219, 0.2);
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+        .common-btn:hover {
+            background: linear-gradient(to right, var(--primary-dark), var(--primary-color));
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(52, 152, 219, 0.3);
+            color: white;
+            text-decoration: none;
+        }
+
+        .common-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .common-btn i {
+            font-size: 1rem;
+        }
+
+    /* Filter Card */
+    .filter-card {
+        background-color: white;
+        border-radius: var(--border-radius);
+        box-shadow: var(--card-shadow);
+        padding: 25px;
+        margin-bottom: 35px;
+        transition: var(--transition);
+        border-top: 4px solid var(--primary-color);
+        animation: slideDown 0.5s ease-out;
+    }
+
+        .filter-card:hover {
+            box-shadow: var(--hover-shadow);
+        }
+
+    .filter-input {
+        border: 1px solid #e0e6ed;
+        border-radius: calc(var(--border-radius) - 4px);
+        padding: 12px 15px;
+        margin-bottom: 15px;
+        color: var(--text-secondary);
+        transition: var(--transition);
+        background-color: #f8fafc;
+        font-size: 0.95rem;
+    }
+
+        .filter-input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.15);
+            outline: none;
+            background-color: white;
+        }
+
+        .filter-input::placeholder {
+            color: #a0aec0;
+            font-size: 0.9rem;
+        }
+
+    /* Company Card */
+    .company-card {
+        background-color: white;
+        border-radius: var(--border-radius);
+        box-shadow: var(--card-shadow);
+        margin-bottom: 30px;
+        overflow: hidden;
+        transition: var(--transition);
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        border: 1px solid rgba(0, 0, 0, 0.03);
+        animation: cardEntrance 0.8s cubic-bezier(0.17, 0.67, 0.83, 0.67);
+        animation-fill-mode: both;
+        transform-origin: center bottom;
+    }
+
+    .company-cards-container {
+        position: relative;
+    }
+
+        /* Staggered animation delays for cards */
+        .company-cards-container .col-lg-6:nth-child(1) .company-card {
+            animation-delay: 0.1s;
+        }
+
+        .company-cards-container .col-lg-6:nth-child(2) .company-card {
+            animation-delay: 0.2s;
+        }
+
+        .company-cards-container .col-lg-6:nth-child(3) .company-card {
+            animation-delay: 0.3s;
+        }
+
+        .company-cards-container .col-lg-6:nth-child(4) .company-card {
+            animation-delay: 0.4s;
+        }
+
+        .company-cards-container .col-lg-6:nth-child(5) .company-card {
+            animation-delay: 0.5s;
+        }
+
+        .company-cards-container .col-lg-6:nth-child(6) .company-card {
+            animation-delay: 0.6s;
+        }
+
+        .company-cards-container .col-lg-6:nth-child(n+7) .company-card {
+            animation-delay: 0.7s;
+        }
+
+    .company-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--hover-shadow);
+    }
+
+    .company-card-image-wrapper {
+        overflow: hidden;
+        position: relative;
+        width: 100%;
+        height: 200px;
+    }
+
+    .company-card-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    .company-card:hover .company-card-image {
+        transform: scale(1.08);
+    }
+
+    .company-card-body {
+        padding: 22px;
+        flex-grow: 1;
+        background-color: var(--card-body-bg);
+        display: flex;
+        flex-direction: column;
+        border-top: 1px solid rgba(0, 0, 0, 0.03);
+    }
+
+    .company-card-title {
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: var(--secondary-color);
+        margin-bottom: 12px;
+        letter-spacing: 0.5px;
+        transition: var(--transition);
+    }
+
+    .company-card:hover .company-card-title {
+        color: var(--primary-color);
+    }
+
+    .company-card-description {
+        font-size: 0.95rem;
+        color: var(--text-secondary);
+        margin-bottom: 15px;
+        line-height: 1.6;
+        flex-grow: 1;
+    }
+
+    .company-card-info {
+        font-size: 0.9rem;
+        color: #718096;
+        margin-bottom: 6px;
+        display: flex;
+        align-items: center;
+    }
+
+        .company-card-info i {
+            margin-right: 8px;
+            color: var(--primary-color);
+        }
+
+        .company-card-info strong {
+            color: var(--dark-color);
+            font-weight: 500;
+            margin-right: 5px;
+        }
+
+    /* Pagination styles */
+    .pagination {
+        margin-top: 20px;
+    }
+
+        .pagination .page-item.active .page-link {
+            background: linear-gradient(to right, var(--primary-color), var(--primary-dark));
+            border-color: var(--primary-color);
+            color: white;
+            font-weight: 500;
+        }
+
+        .pagination .page-link {
+            color: var(--secondary-color);
+            transition: var(--transition);
+            border-radius: 6px;
+            margin: 0 3px;
+            padding: 8px 16px;
+        }
+
+            .pagination .page-link:hover {
+                color: var(--primary-color);
+                background-color: #e6f0f9;
+                border-color: #e6f0f9;
+            }
+
+        .pagination .page-item.disabled .page-link {
+            color: #a0aec0;
+            background-color: #f8fafc;
+            border-color: #edf2f7;
+        }
+
+    /* No Results Section */
+    .no-results {
+        text-align: center;
+        padding: 60px 0;
+        color: var(--text-color);
+        animation: fadeIn 1s ease-out;
+    }
+
+        .no-results i {
+            color: var(--primary-color);
+            opacity: 0.7;
+            font-size: 4rem;
+            margin-bottom: 15px;
+        }
+
+        .no-results h3 {
+            color: var(--secondary-color);
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .no-results p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+    /* Animations */
+    @@keyframes fadeIn {
+        from
+
+    {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+
+    }
+
+    @@keyframes slideDown {
+        from
+
+    {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    }
+
+    @@keyframes slideUp {
+        from
+
+    {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    }
+
+    @@keyframes cardEntrance {
+        from
+
+    {
+        opacity: 0;
+        transform: translateY(40px) scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+
+    }
+
+    @@keyframes pulseIn {
+        0%
+
+    {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.03);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    }
+
+    /* Responsive tweaks */
+    @@media (max-width: 768px) {
+        .section-title
+
+    {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .section-title:after {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .d-flex.justify-content-between {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .common-btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    }
+</style>
+
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="section-title mb-0">All Companies</h2>
+        <a asp-action="AddCompany" class="common-btn">
+            <i class="bi bi-plus-lg"></i> Add New Company
+        </a>
+    </div>
+
+    <div class="filter-card">
+        <form method="get" asp-action="AllCompany">
+            <div class="row">
+                <div class="col-md-3">
+                    <input type="text" name="name" class="form-control filter-input" placeholder="Filter by Name" value="@Model.NameFilter" />
+                </div>
+                <div class="col-md-3">
+                    <input type="text" name="city" class="form-control filter-input" placeholder="Filter by City" value="@Model.CityFilter" />
+                </div>
+                <div class="col-md-3">
+                    <input type="text" name="country" class="form-control filter-input" placeholder="Filter by Country" value="@Model.CountryFilter" />
+                </div>
+                <div class="col-md-3">
+                    <button type="submit" class="common-btn w-100">
+                        <i class="bi bi-funnel"></i> Apply Filters
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="row company-cards-container">
+        @if (Model.Companies.Any())
+        {
+            @foreach (var item in Model.Companies)
+            {
+                <div class="col-lg-6 col-xl-4 mb-4">
+                    <div class="company-card">
+                        <div class="company-card-image-wrapper mb-3 " style="display:flex; justify-content:center; align-items:center;">
+                            @if (!string.IsNullOrEmpty(item.LogoPath))
+                            {
+                                <img src="/Uploads/Logos/@item.LogoPath" alt="@item.Name Logo" class="company-card-image rounded-circle" style="width:120px; height:120px" />
+                            }
+                            else
+                            {
+                                <div class="company-card-image d-flex justify-content-center align-items-center bg-light ">
+                                    <i class="bi bi-building text-muted" style="font-size: 3rem;"></i>
+                                </div>
+                            }
+                        </div>
+                        <div class="company-card-body">
+                            <h5 class="company-card-title">@item.Name</h5>
+                            <p class="company-card-description">
+                                @(item.Description?.Length > 100 ? item.Description.Substring(0, 100) + "..." : item.Description)
+                            </p>
+                            <p class="company-card-info">
+                                <i class="bi bi-geo-alt"></i>
+                                <strong>City:</strong> @item.City
+                            </p>
+                            <p class="company-card-info">
+                                <i class="bi bi-globe2"></i>
+                                <strong>Country:</strong> @item.Country
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="col-12">
+                <div class="no-results">
+                    <i class="bi bi-search"></i>
+                    <h3>No companies found</h3>
+                    <p>Try adjusting your filter criteria or add a new company</p>
+                </div>
+            </div>
+        }
+    </div>
+
+    @if (Model.Companies.Any())
+    {
+        <nav aria-label="Page navigation" class="mt-4">
+            <ul class="pagination justify-content-center">
+                @if (Model.CurrentPage > 1)
+                {
+                    <li class="page-item">
+                        <a class="page-link" href="@Url.Action("AllCompany", new { page = Model.CurrentPage - 1, name = Model.NameFilter, city = Model.CityFilter, country = Model.CountryFilter })">
+                            <i class="bi bi-chevron-left"></i> Previous
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item disabled">
+                        <a class="page-link"><i class="bi bi-chevron-left"></i> Previous</a>
+                    </li>
+                }
+
+                @for (int i = 1; i <= Model.TotalPages; i++)
+                {
+                    <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                        <a class="page-link" href="@Url.Action("AllCompany", new { page = i, name = Model.NameFilter, city = Model.CityFilter, country = Model.CountryFilter })">@i</a>
+                    </li>
+                }
+
+                @if (Model.CurrentPage < Model.TotalPages)
+                {
+                    <li class="page-item">
+                        <a class="page-link" href="@Url.Action("AllCompany", new { page = Model.CurrentPage + 1, name = Model.NameFilter, city = Model.CityFilter, country = Model.CountryFilter })">
+                            Next <i class="bi bi-chevron-right"></i>
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item disabled">
+                        <a class="page-link">Next <i class="bi bi-chevron-right"></i></a>
+                    </li>
+                }
+            </ul>
+        </nav>
+    }
+</div>

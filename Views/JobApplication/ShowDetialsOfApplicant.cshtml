@@ -1,0 +1,495 @@
+﻿@using Job_Portal_Project.ViewModels
+@model JobApplicantDetailsForApplicantViewModel
+
+@{
+    ViewData["Title"] = "Applicant Details";
+}
+
+<style>
+    :root {
+        --primary: #00BCD4;
+        --primary-light: #4DD0E1;
+        --primary-dark: #0097A7;
+        --white: #ffffff;
+        --light-gray: #f5f5f5;
+        --text-dark: #333333;
+        --success: #4CAF50;
+        --warning: #FFC107;
+        --danger: #F44336;
+        --secondary: #757575;
+    }
+
+    body {
+        background: linear-gradient(135deg, rgba(0, 188, 212, 0.05) 0%, rgba(240, 240, 240, 0.8) 100%);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .page-container {
+        margin: 0 auto;
+        padding: 2rem 1rem;
+    }
+
+    .page-title {
+        color: var(--primary-dark);
+        font-weight: 700;
+        position: relative;
+        display: inline-block;
+        padding-bottom: 10px;
+        opacity: 0;
+        transform: translateY(-20px);
+        animation: fadeInDown 0.8s ease-out forwards;
+    }
+
+        .page-title::after {
+            content: '';
+            position: absolute;
+            width: 70%;
+            height: 4px;
+            background: var(--primary);
+            bottom: 0;
+            left: 15%;
+            border-radius: 10px;
+            transform: scaleX(0);
+            animation: titleUnderline 1.5s ease-in-out forwards 0.5s;
+        }
+
+    .alert {
+        border-radius: 12px;
+        border: none;
+        padding: 1rem 1.5rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeInUp 0.6s ease-out forwards;
+    }
+
+    .alert-success {
+        background-color: rgba(76, 175, 80, 0.15);
+        border-left: 5px solid var(--success);
+        color: #2E7D32;
+    }
+
+    .alert-danger {
+        background-color: rgba(244, 67, 54, 0.15);
+        border-left: 5px solid var(--danger);
+        color: #C62828;
+    }
+
+    .status-form {
+        background-color: var(--white);
+        border-radius: 15px;
+        padding: 1.5rem 2rem;
+        box-shadow: 0 8px 20px rgba(0, 188, 212, 0.15);
+        margin-bottom: 2rem;
+        opacity: 0;
+        transform: translateY(30px);
+        animation: fadeInUp 0.8s ease-out forwards 0.2s;
+        transition: all 0.4s ease;
+    }
+
+        .status-form:hover {
+            box-shadow: 0 12px 25px rgba(0, 188, 212, 0.25);
+            transform: translateY(-5px);
+        }
+
+    .form-label {
+        color: var(--primary-dark);
+        font-size: 1.1rem;
+    }
+
+    .form-select {
+        border: 2px solid #e0e0e0;
+        padding: 12px;
+        border-radius: 10px;
+        transition: all 0.3s;
+        font-size: 1rem;
+        color: var(--text-dark);
+    }
+
+        .form-select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(0, 188, 212, 0.25);
+        }
+
+    .btn {
+        font-weight: 600;
+        border-radius: 30px;
+        padding: 10px 25px;
+        transition: all 0.3s;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-size: 0.9rem;
+    }
+
+    .btn-success {
+        background-color: var(--success);
+        border-color: var(--success);
+    }
+
+        .btn-success:hover {
+            background-color: #388E3C;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(76, 175, 80, 0.3);
+        }
+
+    .btn-primary {
+        background-color: var(--primary);
+        border-color: var(--primary);
+    }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(0, 188, 212, 0.3);
+        }
+
+    .btn-secondary {
+        background-color: var(--secondary);
+        border-color: var(--secondary);
+    }
+
+        .btn-secondary:hover {
+            background-color: #616161;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(117, 117, 117, 0.3);
+        }
+
+    .btn-warning {
+        background-color: var(--warning);
+        border-color: var(--warning);
+        color: #333;
+    }
+
+        .btn-warning:hover {
+            background-color: #FFB300;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(255, 193, 7, 0.3);
+        }
+
+    .info-card {
+        background-color: var(--white);
+        border-radius: 20px;
+        padding: 2rem;
+        box-shadow: 0 10px 30px rgba(0, 188, 212, 0.1);
+        border-top: 5px solid var(--primary);
+        opacity: 0;
+        transform: translateY(40px);
+        animation: fadeInUp 0.8s ease-out forwards 0.4s;
+        transition: all 0.4s ease;
+    }
+
+        .info-card:hover {
+            box-shadow: 0 15px 40px rgba(0, 188, 212, 0.2);
+        }
+
+    .card-title {
+        color: var(--primary-dark);
+        font-weight: 700;
+        position: relative;
+        padding-bottom: 15px;
+        margin-bottom: 25px;
+    }
+
+        .card-title::after {
+            content: '';
+            position: absolute;
+            width: 50px;
+            height: 3px;
+            background: var(--primary);
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin: 0 auto;
+            border-radius: 10px;
+        }
+
+    .info-field {
+        padding: 1rem;
+        border-radius: 10px;
+        margin-bottom: 0.5rem;
+        transition: all 0.3s;
+    }
+
+        .info-field:hover {
+            background-color: rgba(0, 188, 212, 0.05);
+            transform: translateX(5px);
+        }
+
+    .field-label {
+        color: #757575;
+        font-size: 0.85rem;
+        margin-bottom: 5px;
+        transition: all 0.3s;
+    }
+
+    .info-field:hover .field-label {
+        color: var(--primary-dark);
+    }
+
+    .field-value {
+        font-weight: 600;
+        color: var(--text-dark);
+        font-size: 1.1rem;
+    }
+
+    .actions-container {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 2rem;
+        opacity: 0;
+        transform: translateY(30px);
+        animation: fadeInUp 0.8s ease-out forwards 0.6s;
+    }
+
+    @@keyframes fadeInUp {
+        from
+
+    {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    }
+
+    @@keyframes fadeInDown {
+        from
+
+    {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    }
+
+    @@keyframes titleUnderline {
+        to
+
+    {
+        transform: scaleX(1);
+    }
+
+    }
+
+    @@keyframes pulse {
+        0%
+
+    {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+
+    }
+
+    .btn-pulse {
+        animation: pulse 2s infinite;
+    }
+</style>
+
+<div class="page-container">
+    <h1 class="text-center mb-5 page-title">Applicant Details</h1>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <div class="d-flex align-items-center">
+                <i class="fas fa-check-circle me-3"></i>
+                <strong>@TempData["SuccessMessage"]</strong>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <div class="d-flex align-items-center">
+                <i class="fas fa-exclamation-circle me-3"></i>
+                <strong>@TempData["ErrorMessage"]</strong>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <form asp-action="ChangeApplicantStatus" asp-controller="JobApplication" method="post" class="status-form">
+        <input type="hidden" name="applicantId" value="@Model.ApplicantId" />
+
+        <div class="text-center mb-4">
+            <span class="badge rounded-pill px-4 py-2 mb-3" style="
+                background-color: @(Model.status == "Accept" ? "#4CAF50" :
+                                  Model.status == "Rejected" ? "#F44336" :
+                                  Model.status == "Interview Process" ? "#FFC107" : "#9E9E9E");
+                color: @(Model.status == "Interview Process" ? "#333" : "white");
+                font-size: 0.9rem;
+                ">
+                Current Status: @Model.status
+            </span>
+
+            <h4 class="mb-0 text-primary">Update Application Status</h4>
+        </div>
+
+        <div class="row align-items-end">
+            <div class="col-md-8">
+                <label for="statusSelect" class="form-label">Select New Status</label>
+                <select name="status" id="statusSelect" class="form-select">
+                    @if (Model.status == "Pending")
+                    {
+                        <option value="Pending" selected>Pending</option>
+                        <option value="Interview Process">Interview Process</option>
+                        <option value="Accept">Accept</option>
+                        <option value="Rejected">Rejected</option>
+                    }
+                    else if (Model.status == "Interview Process")
+                    {
+                        <option value="Pending">Pending</option>
+                        <option value="Interview Process" selected>Interview Process</option>
+                        <option value="Accept">Accept</option>
+                        <option value="Rejected">Rejected</option>
+                    }
+                    else if (Model.status == "Accept")
+                    {
+                        <option value="Pending">Pending</option>
+                        <option value="Interview Process">Interview Process</option>
+                        <option value="Accept" selected>Accept</option>
+                        <option value="Rejected">Rejected</option>
+                    }
+                    else
+                    {
+                        <option value="Pending">Pending</option>
+                        <option value="Interview Process">Interview Process</option>
+                        <option value="Accept">Accept</option>
+                        <option value="Rejected" selected>Rejected</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-4 mt-3 mt-md-0 text-md-end">
+                <button type="submit" class="btn btn-success">
+                    <i class="fas fa-check me-2"></i>Update Status
+                </button>
+            </div>
+        </div>
+    </form>
+
+    <div class="info-card">
+        <h2 class="card-title text-center">Applicant Information</h2>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="info-field">
+                    <div class="field-label">First Name</div>
+                    <div class="field-value">@Model.FirstName</div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="info-field">
+                    <div class="field-label">Last Name</div>
+                    <div class="field-value">@Model.LastName</div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="info-field">
+                    <div class="field-label">City</div>
+                    <div class="field-value">@Model.City</div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="info-field">
+                    <div class="field-label">Country</div>
+                    <div class="field-value">@Model.Country</div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="info-field">
+                    <div class="field-label">Email</div>
+                    <div class="field-value">@Model.Email</div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="info-field">
+                    <div class="field-label">Phone Number</div>
+                    <div class="field-value">@Model.PhoneNumber</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="actions-container">
+        <a asp-action="ShowAllApplicants" asp-controller="JobApplication" asp-route-JobId="@Model.JobId" class="btn btn-secondary">
+            <i class="fas fa-arrow-left me-2"></i>Back to List
+        </a>
+
+        @if (!string.IsNullOrEmpty(Model.SpecificResumePath))
+        {
+            var cleanPath = Model.SpecificResumePath.Replace("/wwwroot", "");
+
+            <a asp-action="ViewResume" asp-route-path="@cleanPath" target="_blank" class="btn btn-primary btn-pulse">
+                <i class="fas fa-file-pdf me-2"></i>View Resume
+            </a>
+        }
+        else
+        {
+            <button class="btn btn-warning" disabled>
+                <i class="fas fa-exclamation-triangle me-2"></i>No Resume Uploaded
+            </button>
+        }
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add hover animations to status options
+        const statusSelect = document.getElementById('statusSelect');
+        if (statusSelect) {
+            statusSelect.addEventListener('change', function() {
+                const selectedValue = this.value;
+
+                // Apply animation to show the change is registered
+                this.classList.add('animate__animated', 'animate__pulse');
+
+                // Change border color based on selected status
+                if (selectedValue === 'Accept') {
+                    this.style.borderColor = '#4CAF50';
+                } else if (selectedValue === 'Rejected') {
+                    this.style.borderColor = '#F44336';
+                } else if (selectedValue === 'Interview Process') {
+                    this.style.borderColor = '#FFC107';
+                } else {
+                    this.style.borderColor = '#9E9E9E';
+                }
+
+                // Remove animation class after animation completes
+                setTimeout(() => {
+                    this.classList.remove('animate__animated', 'animate__pulse');
+                }, 1000);
+            });
+        }
+
+        // Add hover effects to info fields
+        const infoFields = document.querySelectorAll('.info-field');
+        infoFields.forEach(field => {
+            field.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateX(5px)';
+            });
+            field.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateX(0)';
+            });
+        });
+    });
+</script>

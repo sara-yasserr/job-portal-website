@@ -1,0 +1,183 @@
+﻿@model Job_Portal_Project.ViewModels.ProfileViewModel
+@{
+    ViewData["Title"] = "Resume Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="category-hero-section" style="background-image: url('/assets/images/Dcover.jpg'); background-size: cover; padding: 80px 0; position: relative; z-index: 1; text-align: center; color: #fff; overflow: hidden;">
+    <div class="overlay-bg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(22, 28, 45, 0.7); z-index: -1;"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="breadcrumbs-content">
+                    <h1 class="page-title" style="font-size: 2.5rem; font-weight: 700; margin-bottom: 15px; color: #fff; text-shadow: 0px 2px 8px rgba(0,0,0,0.2); position: relative; display: inline-block;">
+                        Resume 
+                        <div class="title-accent" style="position: absolute; bottom: -5px; left: 50%; transform: translateX(-50%); width: 80px; height: 4px; background-color: #00BCD4; border-radius: 2px;"></div>
+                    </h1>
+                </div>
+                <ul class="breadcrumb-nav" style="display: flex; justify-content: center; list-style: none; margin-top: 25px; padding: 0; flex-wrap: wrap;">
+                    <li style="margin: 5px;"><a href="/" style="color: #fff; text-decoration: none; font-weight: 500; transition: all 0.3s ease;">Home</a></li>
+                    <li style="margin: 5px;"><a href="/JobSearch/Index" style="color: #fff; text-decoration: none; font-weight: 500; transition: all 0.3s ease;">Jobs</a></li>
+                    <li style="margin: 5px; position: relative; padding-left: 15px;">
+                        <span style="color: #00BCD4; font-weight: 600;">Resume</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container col-12" style="padding:60px 0px;background-color:#F9F9F9 !important;">
+    <div class="row g-4" style="display:flex; flex-direction:row;justify-content:center;">
+        <!-- Sidebar -->
+            <partial name="_JobSeekerSideBar" />
+
+        <!-- Main Content -->
+        <div class="col-md-8 col-9">
+            <div class="card shadow-sm border-0" style="border-radius: 10px; overflow: hidden;">
+                <!-- Card Header -->
+                <div class="card-header py-3" style="background: white; border-bottom: 2px solid #00BCD4;">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="mb-1" style="color: #00838f; font-weight: 600;">
+                            <i class="fas fa-file-alt me-2" style="color: #00BCD4;"></i> Resume
+                        </h5>
+                        @if (!string.IsNullOrEmpty(Model.ResumePath))
+                        {
+                            <span class="badge badge-pill" style="background: rgba(0, 188, 212, 0.1); color: #00838f;">
+                                <i class="fas fa-check-circle me-1" style="color: #00BCD4;"></i> Uploaded
+                            </span>
+                        }
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <!-- Status Alert -->
+                    @if (!string.IsNullOrEmpty(Model.ResumePath))
+                    {
+                        <div class="alert alert-success alert-dismissible fade show" style="background-color: rgba(0,188,212,0.1); border-color: #00BCD4; color: #006064;">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <i class="fas fa-check-circle me-2" style="color: #00BCD4;"></i>
+                                    <strong>Resume uploaded successfully!</strong> Ready for job applications.
+                                </div>
+                                <div class="btn-group">
+                                    <form asp-action="Delete" asp-controller="Resume" method="post" class="d-inline">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" class="btn btn-sm btn-outline-danger ms-2 remove" style="border-color: #e53935; color: #e53935; ">
+                                            <i class="fas fa-trash-alt me-1"></i> Remove
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-warning" style="background-color: rgba(255,183,77,0.1); border-color: #FFB74D; color: #E65100;">
+                            <i class="fas fa-exclamation-triangle me-2" style="color: #FFA000;"></i>
+                            <strong>No resume uploaded.</strong> Please upload your resume to apply for jobs.
+                        </div>
+                    }
+
+                    <!-- Upload Form -->
+                    <form asp-action="Upload" asp-controller="Resume" method="post" enctype="multipart/form-data" class="mb-4">
+                        @Html.AntiForgeryToken()
+                        <div class="mb-3">
+                            <label class="form-label fw-bold" style="color: #00838f;">Upload New Resume</label>
+                            <div class="file-upload-wrapper">
+                                <input type="file" class="form-control" id="resume" name="resume"
+                                       accept=".pdf,.doc,.docx" required>
+                                <div class="form-text" style="color: #00838f;">
+                                    <small>Accepted formats: PDF, DOC, DOCX (Max 3MB)</small>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn px-4" style="background-color: #00BCD4; color: white;">
+                            <i class="fas fa-cloud-upload-alt me-2"></i> Upload Resume
+                        </button>
+                    </form>
+
+                    <!-- PDF Preview Section -->
+                    @if (!string.IsNullOrEmpty(Model.ResumePath) && Model.ResumePath.EndsWith(".pdf"))
+                    {
+                        <div class="preview-section mt-4">
+                            <h6 class="fw-bold mb-3" style="color: #00838f;">
+                                <i class="fas fa-file-pdf text-danger me-2"></i> Resume Preview
+                            </h6>
+                            <div class="pdf-preview-container border rounded p-2" style="background-color: rgba(0,188,212,0.05); border-color: #B2EBF2 !important;">
+                                <iframe src="@Model.ResumePath"
+                                        style="width: 100%; height: 500px; border: none;"
+                                        title="Resume Preview"></iframe>
+                            </div>
+                            <div class="text-end mt-2">
+                                <small class="text-muted" style="color: #00838f;">Scroll to view full document</small>
+                            </div>
+                        </div>
+                    }
+                    else if (!string.IsNullOrEmpty(Model.ResumePath))
+                    {
+                        <div class="preview-section mt-4">
+                            <h6 class="fw-bold mb-3" style="color: #00838f;">
+                                <i class="fas fa-file-word text-primary me-2"></i> Document Preview Not Available
+                            </h6>
+                            <div class="alert alert-info" style="background-color: rgba(0,188,212,0.1); border-color: #00BCD4; color: #006064;">
+                                <i class="fas fa-info-circle me-2" style="color: #00BCD4;"></i>
+                                For security reasons, we can only show previews for PDF files.
+                                Please download the file to view its contents.
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+        <style>
+            .file-upload-wrapper {
+                position: relative;
+                margin-bottom: 1rem;
+            }
+
+            .pdf-preview-container {
+                min-height: 500px;
+                position: relative;
+            }
+
+            .preview-section {
+                border-top: 1px solid #B2EBF2;
+                padding-top: 1.5rem;
+            }
+
+            .card {
+                border-radius: 10px;
+                overflow: hidden;
+                border: 1px solid #E0F7FA;
+            }
+
+            .card-header {
+                border-radius: 0 !important;
+            }
+
+            .form-control {
+                padding: 0.5rem 1rem;
+                border-color: #B2EBF2;
+            }
+
+                .form-control:focus {
+                    border-color: #00BCD4;
+                    box-shadow: 0 0 0 0.25rem rgba(0,188,212,0.25);
+                }
+
+            .btn-outline-primary:hover {
+                background-color: #00BCD4;
+                color: white;
+            }
+
+            @@media (max-width: 768px) {
+                .pdf-preview-container {
+                    min-height: 300px;
+                }
+            }
+
+    .remove:hover {
+        color: white !important;
+    }
+        </style>

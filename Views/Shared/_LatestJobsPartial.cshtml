@@ -1,0 +1,199 @@
+﻿@model IEnumerable<Job_Portal_Project.Models.Job>
+
+<section id="latest-jobs" style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%); padding: 60px 0;">
+    <div class="container">
+        <div class="text-center mb-5">
+            <div style="margin-bottom: 20px;">
+                <i class="lni lni-briefcase" style="font-size: 36px; color: #00BCD4; background: rgba(0, 188, 212, 0.12); padding: 18px; border-radius: 50%;"></i>
+            </div>
+            <h2 style="font-size: 32px; font-weight: 800; color: #333; margin-bottom: 10px; position: relative; display: inline-block;">
+                Latest <span style="color: #00BCD4;">Jobs</span>
+                <div style="position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); width: 70px; height: 3px; background: linear-gradient(to right, #00BCD4, #2196F3); border-radius: 2px;"></div>
+            </h2>
+            <p style="color: #666; font-size: 16px; max-width: 600px; margin: 18px auto 0; line-height: 1.7;">
+                Discover the most recent job opportunities that match your skills and career goals.
+            </p>
+        </div>
+        <div class="row latest-jobs-row">
+            @foreach (var job in Model)
+            {
+                <div class="col-lg-6 col-md-12 mb-4 d-flex">
+                    <div class="latest-job-card flex-fill">
+                        <div class="d-flex align-items-center">
+                            <div class="latest-job-logo">
+                                <img src="/Uploads/Logos/@(string.IsNullOrEmpty(job.Company?.LogoPath) ? "assets/img/features/default.jpg" : job.Company.LogoPath)" alt="@job.Company?.Name">
+                            </div>
+                            <div class="ps-3 flex-grow-1">
+                                <h3 class="latest-job-title">
+                                    <a href="@Url.Action("Details", "JobSearch", new { id = job.Id })">@job.Title</a>
+                                </h3>
+                                <div class="latest-job-meta mb-2">
+                                    <span><i class="lni lni-apartment"></i> @job.Company?.Name</span>
+                                    <span><i class="lni lni-map-marker"></i> @job.City, @job.Country</span>
+                                    <span><i class="lni lni-tag"></i> @job.JobCategory?.Name</span>
+                                </div>
+                                <span class="badge-job-type @(job.EmploymentType.ToLower() == "full-time" ? "full-time" : "part-time")">
+                                    @job.EmploymentType
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            <div class="col-12 text-center mt-4">
+                <a href="@Url.Action("Index", "JobSearch")" class="btn btn-latest-jobs">Browse All Jobs</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .latest-jobs-row {
+        row-gap: 32px;
+    }
+
+    .latest-job-card {
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 5px 18px rgba(0,188,212,0.08);
+        padding: 22px 24px;
+        transition: box-shadow 0.3s, transform 0.3s;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        border: 1px solid #f0f0f0;
+    }
+
+        .latest-job-card:hover {
+            box-shadow: 0 10px 32px rgba(0,188,212,0.18);
+            transform: translateY(-4px) scale(1.01);
+        }
+
+    .latest-job-logo {
+        width: 60px;
+        height: 60px;
+        border-radius: 12px;
+        overflow: hidden;
+        background: #f8f9fa;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 8px rgba(0,188,212,0.07);
+        flex-shrink: 0;
+    }
+
+        .latest-job-logo img {
+            width: 80%;
+            height: 80%;
+            object-fit: contain;
+            display: block;
+        }
+
+    .latest-job-title {
+        font-size: 20px;
+        font-weight: 700;
+        margin-bottom: 6px;
+        margin-top: 0;
+        line-height: 1.2;
+    }
+
+        .latest-job-title a {
+            color: #222;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+            .latest-job-title a:hover {
+                color: #00BCD4;
+            }
+
+    .latest-job-meta {
+        font-size: 14px;
+        color: #666;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-bottom: 4px;
+    }
+
+        .latest-job-meta i {
+            color: #00BCD4;
+            margin-right: 4px;
+            font-size: 15px;
+        }
+
+    .badge-job-type {
+        display: inline-block;
+        padding: 5px 18px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 600;
+        margin-top: 4px;
+        text-transform: capitalize;
+        letter-spacing: 0.5px;
+    }
+
+        .badge-job-type.full-time {
+            background: #e6fafd;
+            color: #00BCD4;
+        }
+
+        .badge-job-type.part-time {
+            background: #fff3e6;
+            color: #ff9800;
+        }
+
+    .btn-latest-jobs {
+        background: linear-gradient(45deg, #00BCD4, #2196F3);
+        color: #fff;
+        padding: 13px 38px;
+        border-radius: 30px;
+        font-weight: 600;
+        font-size: 16px;
+        text-decoration: none;
+        box-shadow: 0 4px 15px rgba(0, 188, 212, 0.18);
+        transition: background 0.3s, box-shadow 0.3s, transform 0.2s;
+        border: none;
+        display: inline-block;
+    }
+
+        .btn-latest-jobs:hover {
+            background: linear-gradient(45deg, #2196F3, #00BCD4);
+            color: #fff;
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 8px 24px rgba(0, 188, 212, 0.25);
+        }
+    @@media (max-width: 991px) {
+        .latest-job-title
+
+    {
+        font-size: 17px;
+    }
+
+    .latest-job-logo {
+        width: 48px;
+        height: 48px;
+    }
+
+    }
+    @@media (max-width: 768px) {
+        .latest-job-card
+
+    {
+        padding: 16px 10px;
+    }
+
+    .latest-job-title {
+        font-size: 15px;
+    }
+
+    .latest-job-meta {
+        font-size: 12px;
+    }
+
+    .badge-job-type {
+        font-size: 11px;
+        padding: 4px 12px;
+    }
+
+    }</style>

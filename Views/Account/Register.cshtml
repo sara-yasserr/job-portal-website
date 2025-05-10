@@ -1,0 +1,730 @@
+﻿@model Job_Portal_Project.ViewModels.RegisterViewModel
+
+@{
+    ViewData["Title"] = "Register";
+}
+
+<section id="content" class="section-padding" style="margin-top:80px; ">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-8 col-sm-12">
+                <div class="registration-card animate__animated animate__fadeInUp">
+                    <div class="registration-header">
+                        <h3 style="color: antiquewhite;">Create Your Account</h3>
+                    </div>
+                    <div class="registration-body">
+                        <form class="needs-validation" method="post" asp-action="Register" asp-controller="Account" enctype="multipart/form-data">
+                            <div class="validation-summary text-danger " asp-validation-summary = "All" ></div>
+                            <input type="hidden" id="Role" name="Role" value="@Model.Role" />
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group animate__animated animate__fadeInLeft animate__delay-1s">
+                                        <div class="form-floating">
+                                            <input type="text" id="FirstName" name="FirstName" class="form-control" placeholder="First Name" required>
+                                            <label for="FirstName">First Name</label>
+                                            <div class="invalid-feedback" id="FirstName-error"></div>
+                                            <span asp-validation-for="@Model.FirstName"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group animate__animated animate__fadeInRight animate__delay-1s">
+                                        <div class="form-floating">
+                                            <input type="text" id="LastName" name="LastName" class="form-control" placeholder="Last Name" required>
+                                            <label for="LastName">Last Name</label>
+                                            <div class="invalid-feedback" id="LastName-error"></div>
+                                            <span asp-validation-for="@Model.LastName"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group animate__animated animate__fadeInUp animate__delay-2s">
+                                <div class="form-floating">
+                                    <input type="text" id="UserName" name="UserName" class="form-control" placeholder="Username" required>
+                                    <label for="UserName">Username</label>
+                                    <div class="invalid-feedback" id="UserName-error"></div>
+                                    <span asp-validation-for="@Model.UserName"></span>
+
+                                </div>
+                                <small class="form-text">Choose a unique username for your profile</small>
+                            </div>
+
+                            <div class="form-group animate__animated animate__fadeInUp animate__delay-2s">
+                                <div class="form-floating">
+                                    <input type="email" id="Email" name="Email" class="form-control" placeholder="Email Address" required>
+                                    <label for="Email">Email Address</label>
+                                    <span asp-validation-for="@Model.Email"></span>
+                                    <div class="invalid-feedback" id="Email-error"></div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group animate__animated animate__fadeInLeft animate__delay-3s">
+                                        <div class="form-floating">
+                                            <input type="text" id="Country" name="Country" class="form-control" placeholder="Country" required>
+                                            <label for="Country">Country</label>
+                                            <div class="invalid-feedback" id="Country-error"></div>
+                                            <span asp-validation-for="@Model.Country"></span>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group animate__animated animate__fadeInRight animate__delay-3s">
+                                        <div class="form-floating">
+                                            <input type="text" id="City" name="City" class="form-control" placeholder="City" required>
+                                            <label for="City">City</label>
+                                            <div class="invalid-feedback" id="City-error"></div>
+                                            <span asp-validation-for="@Model.City"></span>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group animate__animated animate__fadeInUp animate__delay-4s">
+                                <label for="ProfilePictureFile" class="profile-label">Profile Picture</label>
+                                <div class="upload-area" id="uploadArea">
+                                    <p class="upload-text">Drag & drop an image or click to browse</p>
+                                    <input type="file" id="ProfilePictureFile" name="ProfilePictureFile" class="form-control" style="opacity: 0; position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
+                                    <img id="profileImagePreview" src="#" alt="Profile Preview">
+                                    <input type="hidden" id="ProfilePicturePath" name="ProfilePicturePath">
+                                </div>
+                                <div class="invalid-feedback" id="ProfilePictureFile-error"></div>
+                            </div>
+
+                            <div class="form-group animate__animated animate__fadeInUp animate__delay-5s">
+                                <div class="form-floating password-container">
+                                    <input type="password" id="Password" name="Password" class="form-control" required>
+                                    <label for="Password"> Password</label>
+
+
+                                    <button type="button" class="password-toggle" id="togglePassword" tabindex="-1">
+                                        Show
+                                    </button>
+
+                                    <div class="invalid-feedback" id="Password-error"></div>
+                                    <span asp-validation-for="@Model.Password"></span>
+                                </div>
+                                <small class="form-text">Must be at least 8 characters with letters, numbers, and special characters</small>
+                            </div>
+
+                            <div class="form-group animate__animated animate__fadeInUp animate__delay-5s">
+                                <div class="form-floating password-container">
+                                    <input type="password" id="ConfirmPassword" name="ConfirmPassword" class="form-control" required>
+                                    <label for="ConfirmPassword">Confirm Password</label>
+                                    <button type="button" class="password-toggle" id="toggleConfirmPassword" tabindex="-1">
+                                        Show
+                                    </button>
+                                    <div class="invalid-feedback" id="ConfirmPassword-error"></div>
+                                    <span asp-validation-for="@Model.ConfirmPassword"></span>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group mt-4 animate__animated animate__fadeInUp animate__delay-6s">
+                                <button type="submit" class="btn btn-register pulse-animation">Create Account</button>
+                            </div>
+
+                            <div class="text-center mt-3 animate__animated animate__fadeIn animate__delay-6s">
+                                <p>
+                                    Already have an account?
+                                    <a href="/Account/Login" class="login-link">Login</a>
+                                </p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="text-center animate__animated animate__fadeIn animate__delay-7s">
+                    <a href="/Home" class="back-link">
+                        Back to Home
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    :root {
+        --primary: #00BCD4;
+        --primary-dark: #0097A7;
+        --secondary: #607D8B;
+        --light: #F5F7FA;
+        --dark: #333333;
+        --success: #4CAF50;
+        --danger: #F44336;
+        --border-radius: 8px;
+        --box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        --transition: all 0.3s ease;
+    }
+
+    body {
+        font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        /* background-color: #00BCD4; */
+        /* background-image: linear-gradient(135deg, #00BCD4 0%, #80DEEA 100%); */
+        background-attachment: fixed;
+        color: var(--dark);
+        position: relative;
+        overflow-x: hidden;
+        background-color:#F7F7F7;
+    }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
+            z-index: -1;
+        }
+
+    .section-padding {
+        padding: 60px 0;
+    }
+
+    .registration-card {
+        background: #ffffff;
+        border-radius: var(--border-radius);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        overflow: hidden;
+        margin-bottom: 30px;
+        border: none;
+        transform: translateY(0);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        margin-top:-90px;
+    }
+
+        .registration-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+        }
+
+    .registration-header {
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        color: white;
+        padding: 25px 30px;
+        text-align: center;
+        position: relative;
+    }
+
+        .registration-header h3 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+    .registration-body {
+        padding: 30px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+        position: relative;
+    }
+
+    /* Floating label styles */
+    .form-floating {
+        position: relative;
+    }
+
+        .form-floating > .form-control {
+            height: 58px;
+            padding: 1rem 0.75rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-floating > label {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            padding: 1rem 0.75rem;
+            pointer-events: none;
+            border: 1px solid transparent;
+            transform-origin: 0 0;
+            transition: opacity .2s ease-in-out, transform .2s ease-in-out;
+        }
+
+        .form-floating > .form-control:focus,
+        .form-floating > .form-control:not(:placeholder-shown) {
+            padding-top: 1.625rem;
+            padding-bottom: 0.625rem;
+        }
+
+            .form-floating > .form-control:focus ~ label,
+            .form-floating > .form-control:not(:placeholder-shown) ~ label {
+                opacity: .65;
+                transform: scale(.85) translateY(-0.5rem) translateX(0.15rem);
+            }
+
+    .form-control {
+        border-radius: var(--border-radius);
+        border: 1px solid #dbe0e6;
+        transition: var(--transition);
+    }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 0.2rem rgba(0, 188, 212, 0.25);
+            transform: translateY(-2px);
+        }
+
+    /* Password toggle styles */
+    .password-container {
+        position: relative;
+    }
+
+    .password-toggle {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        color: var(--secondary);
+        font-size: 0.85rem;
+        cursor: pointer;
+        z-index: 5;
+        padding: 4px 8px;
+        transition: all 0.3s ease;
+    }
+
+        .password-toggle:hover {
+            color: var(--primary);
+            transform: translateY(-50%) scale(1.05);
+        }
+
+    .form-text {
+        font-size: 12px;
+        color: var(--secondary);
+        margin-top: 5px;
+    }
+
+    .form-control.is-invalid {
+        border-color: var(--danger);
+    }
+
+    .invalid-feedback {
+        display: none;
+        width: 100%;
+        margin-top: 0.25rem;
+        font-size: 80%;
+        color: var(--danger);
+    }
+
+    .was-validated .form-control:invalid ~ .invalid-feedback {
+        display: block;
+    }
+
+    .btn-register {
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        color: white;
+        border: none;
+        height: 50px;
+        border-radius: 25px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        transition: var(--transition);
+        width: 100%;
+        box-shadow: 0 4px 15px rgba(0, 188, 212, 0.3);
+        position: relative;
+        overflow: hidden;
+    }
+
+        .btn-register:hover {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(0, 188, 212, 0.4);
+        }
+
+        .btn-register:active {
+            transform: translateY(0);
+        }
+
+        .btn-register:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.7s;
+        }
+
+        .btn-register:hover:before {
+            left: 100%;
+        }
+
+    .login-link {
+        color: var(--primary);
+        font-weight: 500;
+        text-decoration: none;
+        transition: var(--transition);
+        position: relative;
+        padding-bottom: 2px;
+    }
+
+        .login-link:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--primary);
+            visibility: hidden;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .login-link:hover {
+            color: var(--primary-dark);
+        }
+
+            .login-link:hover:after {
+                visibility: visible;
+                width: 100%;
+            }
+
+    /* Upload area styles */
+    .profile-label {
+        font-weight: 500;
+        margin-bottom: 8px;
+        color: var(--dark);
+        display: block;
+    }
+
+    .upload-area {
+        border: 2px dashed #dbe0e6;
+        border-radius: var(--border-radius);
+        padding: 20px;
+        text-align: center;
+        cursor: pointer;
+        transition: var(--transition);
+        position: relative;
+        height: 120px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .upload-area:hover {
+            border-color: var(--primary);
+            background-color: rgba(0, 188, 212, 0.05);
+            transform: scale(1.02);
+        }
+
+    .upload-text {
+        color: var(--secondary);
+        font-size: 0.9rem;
+        margin: 0;
+    }
+
+    #profileImagePreview {
+        max-width: 100%;
+        max-height: 100px;
+        border-radius: var(--border-radius);
+        display: none;
+        margin: 0 auto;
+        object-fit: contain;
+    }
+
+    .back-link {
+        color: white;
+        text-decoration: none;
+        display: inline-block;
+        transition: var(--transition);
+        margin-top: 20px;
+        padding: 8px 16px;
+        border-radius: 20px;
+        background-color: rgba(255, 255, 255, 0.2);
+    }
+
+        .back-link:hover {
+            color: white;
+            background-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+    /* Fix for upload area when image is shown */
+    .image-shown {
+        padding: 10px;
+    }
+
+        .image-shown .upload-text {
+            display: none;
+        }
+
+    /* Animation classes */
+    @@keyframes pulse {
+        0%
+
+    {
+        box-shadow: 0 0 0 0 rgba(0, 188, 212, 0.7);
+    }
+
+    70% {
+        box-shadow: 0 0 0 10px rgba(0, 188, 212, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(0, 188, 212, 0);
+    }
+
+    }
+
+    .pulse-animation {
+        animation: pulse 2s infinite;
+    }
+
+    /* Add Animate.css styles */
+    .animate__animated {
+        animation-duration: 1s;
+        animation-fill-mode: both;
+    }
+
+    .animate__fadeIn {
+        animation-name: fadeIn;
+    }
+
+    .animate__fadeInUp {
+        animation-name: fadeInUp;
+    }
+
+    .animate__fadeInLeft {
+        animation-name: fadeInLeft;
+    }
+
+    .animate__fadeInRight {
+        animation-name: fadeInRight;
+    }
+
+    .animate__delay-1s {
+        animation-delay: 0.2s;
+    }
+
+    .animate__delay-2s {
+        animation-delay: 0.4s;
+    }
+
+    .animate__delay-3s {
+        animation-delay: 0.6s;
+    }
+
+    .animate__delay-4s {
+        animation-delay: 0.8s;
+    }
+
+    .animate__delay-5s {
+        animation-delay: 1s;
+    }
+
+    .animate__delay-6s {
+        animation-delay: 1.2s;
+    }
+
+    .animate__delay-7s {
+        animation-delay: 1.4s;
+    }
+
+    @@keyframes fadeIn {
+        from
+
+    {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+
+    }
+
+    @@keyframes fadeInUp {
+        from
+
+    {
+        opacity: 0;
+        transform: translate3d(0, 20px, 0);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+
+    }
+
+    @@keyframes fadeInLeft {
+        from
+
+    {
+        opacity: 0;
+        transform: translate3d(-20px, 0, 0);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+
+    }
+
+    @@keyframes fadeInRight {
+        from
+
+    {
+        opacity: 0;
+        transform: translate3d(20px, 0, 0);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+
+    }
+
+    /* Floating particles animation */
+    @@keyframes float {
+        0%
+
+    {
+        transform: translateY(0px) rotate(0deg);
+    }
+
+    50% {
+        transform: translateY(-20px) rotate(180deg);
+    }
+
+    100% {
+        transform: translateY(0px) rotate(360deg);
+    }
+
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Form validation
+        const form = document.querySelector('.needs-validation');
+
+        form.addEventListener('submit', function(event) {
+            if (!form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+
+            form.classList.add('was-validated');
+        });
+
+        // Password toggle visibility
+        const togglePassword = document.getElementById('togglePassword');
+        const password = document.getElementById('Password');
+
+        togglePassword.addEventListener('click', function() {
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+            togglePassword.textContent = type === 'password' ? 'Show' : 'Hide';
+        });
+
+        const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
+        const confirmPassword = document.getElementById('ConfirmPassword');
+
+        toggleConfirmPassword.addEventListener('click', function() {
+            const type = confirmPassword.getAttribute('type') === 'password' ? 'text' : 'password';
+            confirmPassword.setAttribute('type', type);
+            toggleConfirmPassword.textContent = type === 'password' ? 'Show' : 'Hide';
+        });
+
+        // Profile image preview
+        const profilePictureInput = document.getElementById('ProfilePictureFile');
+        const imagePreview = document.getElementById('profileImagePreview');
+        const uploadArea = document.getElementById('uploadArea');
+
+        profilePictureInput.addEventListener('change', function() {
+            if (this.files && this.files[0]) {
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+                    imagePreview.src = e.target.result;
+                    imagePreview.style.display = 'block';
+                    uploadArea.classList.add('image-shown');
+                }
+
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
+
+        // Enhance upload area interaction
+        uploadArea.addEventListener('click', function() {
+            profilePictureInput.click();
+        });
+
+        uploadArea.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            this.style.borderColor = '#00BCD4';
+            this.style.backgroundColor = 'rgba(0, 188, 212, 0.05)';
+        });
+
+        uploadArea.addEventListener('dragleave', function(e) {
+            e.preventDefault();
+            this.style.borderColor = '#dbe0e6';
+            this.style.backgroundColor = 'transparent';
+        });
+
+        uploadArea.addEventListener('drop', function(e) {
+            e.preventDefault();
+            this.style.borderColor = '#dbe0e6';
+            this.style.backgroundColor = 'transparent';
+
+            if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+                profilePictureInput.files = e.dataTransfer.files;
+
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+                    imagePreview.src = e.target.result;
+                    imagePreview.style.display = 'block';
+                    uploadArea.classList.add('image-shown');
+                }
+
+                reader.readAsDataURL(e.dataTransfer.files[0]);
+            }
+        });
+
+        // Get role parameter from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const role = urlParams.get('role');
+
+        if (role) {
+            document.getElementById('Role').value = role;
+        }
+
+        // Add hover effect for form controls
+        const formControls = document.querySelectorAll('.form-control');
+        formControls.forEach(control => {
+            control.addEventListener('focus', function() {
+                this.parentElement.classList.add('control-focused');
+            });
+            control.addEventListener('blur', function() {
+                this.parentElement.classList.remove('control-focused');
+            });
+        });
+    });
+</script>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+}

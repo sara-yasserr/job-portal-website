@@ -1,0 +1,563 @@
+﻿@using Job_Portal_Project.ViewModels;
+@model JobCreateViewModel
+@{
+    Layout = "_MyLayout";
+    ViewData["Title"] = "Create Job";
+    SelectList ComOptions = new SelectList(ViewBag.Companies, "Id", "Name");
+    SelectList CatOptions = new SelectList(ViewBag.Categories, "Id", "Name");
+}
+
+<style>
+    :root {
+        --primary-color: #00BCD4;
+        --primary-light: #e0f7fa;
+        --primary-dark: #0097a7;
+        --secondary-color: #475569;
+        --accent-color: #f97316;
+        --light-bg: #f8fafc;
+        --card-bg: #ffffff;
+        --text-color: #00BCD4;
+        --text-muted: #64748b;
+        --border-radius: 12px;
+        --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
+        --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.1);
+        --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.1);
+        --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    body {
+        background: linear-gradient(-45deg, #f0f9ff, #e0f2fe, #dbeafe, #eff6ff);
+        background-size: 400% 400%;
+        animation: gradientBG 15s ease infinite;
+        color: var(--text-color);
+        min-height: 100vh;
+        font-family: 'Inter', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    @@keyframes gradientBG {
+        0% {
+            background-position: 0% 50%;
+        }
+
+        50% {
+            background-position: 100% 50%;
+        }
+
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+    
+
+    .page-container {
+        padding: 6rem 0; /* Increased from 3rem to add more space after NavBar */
+        margin-top:20px;
+    }
+
+    .form-card {
+        background-color: var(--card-bg);
+        border-radius: var(--border-radius);
+        overflow: hidden;
+        box-shadow: var(--shadow-md);
+        transition: var(--transition);
+        animation: cardEntrance 0.8s ease-out;
+    }
+
+        .form-card:hover {
+            box-shadow: var(--shadow-lg);
+        }
+
+    @@keyframes cardEntrance {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .image-container {
+        height: 100%;
+        min-height: 300px;
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        border-radius: var(--border-radius) 0 0 var(--border-radius);
+        position: relative;
+        overflow: hidden;
+        animation: imageEntrance 1.2s ease-out;
+    }
+
+    @@keyframes imageEntrance {
+        from {
+            opacity: 0;
+            transform: translateX(-20px) scale(0.95);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateX(0) scale(1);
+        }
+    }
+
+    .image-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(to top, rgba(0, 188, 212, 0.6), rgba(0, 151, 167, 0.2));
+    }
+
+    .form-container {
+        padding: 2.5rem;
+        animation: contentEntrance 1s ease-out 0.2s;
+        animation-fill-mode: both;
+    }
+
+    @@keyframes contentEntrance {
+        from {
+            opacity: 0;
+            transform: translateX(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    .form-title {
+        color: var(--primary-dark);
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        position: relative;
+        padding-bottom: 0.75rem;
+    }
+
+        .form-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(to right, var(--primary-color), var(--accent-color));
+            border-radius: 3px;
+        }
+
+    label {
+        color: var(--secondary-color);
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+        display: block;
+        transition: var(--transition);
+    }
+
+    .form-control {
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 0.75rem 1rem;
+        transition: var(--transition);
+        color: var(--text-color);
+        background-color: #fff;
+    }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(0, 188, 212, 0.1);
+            outline: none;
+        }
+
+        .form-control::placeholder {
+            color: #a0aec0;
+        }
+
+    .form-select {
+        color: var(--text-color);
+        font-weight: 500;
+        border: 1px solid #e2e8f0;
+        height: auto; /* Ensure consistent height */
+        display: block;
+        width: 100%;
+        padding: 0.75rem 1rem;
+        line-height: 1.5;
+        background-color: #fff;
+        background-clip: padding-box;
+        border-radius: 8px;
+        transition: var(--transition);
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        cursor: pointer;
+    }
+
+        .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(0, 188, 212, 0.1);
+            outline: none;
+        }
+
+        .form-select option {
+            color: var(--secondary-color);
+            background-color: white;
+            padding: 0.75rem 1rem;
+            font-weight: 500;
+        }
+
+            .form-select option[value=""] {
+                color: #a0aec0;
+            }
+
+    /* Custom dropdown arrow */
+    .select-wrapper {
+        position: relative;
+    }
+
+        .select-wrapper:after {
+            content: '';
+            width: 12px;
+            height: 12px;
+            border-bottom: 2px solid var(--primary-color);
+            border-right: 2px solid var(--primary-color);
+            transform: rotate(45deg);
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            margin-top: -8px;
+            pointer-events: none;
+            transition: var(--transition);
+        }
+
+        .select-wrapper:hover:after {
+            border-color: var(--primary-dark);
+        }
+
+    .form-group:focus-within label {
+        color: var(--primary-color);
+    }
+
+    .btn {
+        padding: 0.75rem 1.5rem;
+        border-radius: 8px;
+        font-weight: 500;
+        transition: var(--transition);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-primary {
+        background-color: var(--primary-color);
+        border-color: var(--primary-color);
+        color: white;
+        position: relative;
+        overflow: hidden;
+        z-index: 1;
+    }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            border-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 188, 212, 0.2);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-primary::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+            z-index: -1;
+        }
+
+        .btn-primary:hover::after {
+            width: 300%;
+            height: 300%;
+        }
+
+    .btn-outline-secondary {
+        color: var(--secondary-color);
+        border-color: #cbd5e1;
+        background-color: transparent;
+    }
+
+        .btn-outline-secondary:hover {
+            background-color: #f1f5f9;
+            color: var(--secondary-color);
+            border-color: #94a3b8;
+            transform: translateY(-2px);
+        }
+
+    .text-danger {
+        color: #ef4444;
+        font-size: 0.875rem;
+        margin-top: 0.25rem;
+        display: block;
+    }
+
+    /* Ripple effect */
+    .ripple {
+        position: absolute;
+        border-radius: 50%;
+        background-color: rgba(255, 255, 255, 0.4);
+        transform: scale(0);
+        animation: ripple 0.6s linear;
+        pointer-events: none;
+    }
+
+    @@keyframes ripple {
+        to {
+            transform: scale(4);
+            opacity: 0;
+        }
+    }
+
+    /* Responsive styles */
+    @@media (max-width: 991.98px) {
+        .image-container {
+            height: 200px;
+            border-radius: var(--border-radius) var(--border-radius) 0 0;
+        }
+
+        .form-container {
+            padding: 2rem 1.5rem;
+        }
+    }
+
+    @@media (max-width: 575.98px) {
+        .form-card {
+            margin: 0 1rem;
+        }
+
+        .form-container {
+            padding: 1.5rem 1rem;
+        }
+
+        .btn {
+            width: 100%;
+            margin-bottom: 0.5rem;
+        }
+
+        .d-flex.justify-content-between {
+            flex-direction: column;
+        }
+    }
+</style>
+
+<div class="page-container">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="form-card">
+                    <div class="row g-0">
+                        <!-- Left side - Image -->
+                        <div class="col-lg-5">
+                            <div class="image-container" style="background-image: url('https://images.pexels.com/photos/6774432/pexels-photo-6774432.jpeg?auto=compress&cs=tinysrgb&w=1200&dpr=2')">
+                                <div class="image-overlay"></div>
+                            </div>
+                        </div>
+
+                        <!-- Right side - Form -->
+                        <div class="col-lg-7">
+                            <div class="form-container">
+                                <h3 class="form-title">Create New Job Opportunity</h3>
+
+                                <form asp-action="Create" method="post">
+                                    <div class="form-group mb-3">
+                                        <label asp-for="Title" class="form-label">Job Title</label>
+                                        <input asp-for="Title" class="form-control" placeholder="Enter job title">
+                                        <span asp-validation-for="Title" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="form-group mb-3">
+                                        <label asp-for="Description" class="form-label">Job Description</label>
+                                        <textarea asp-for="Description" class="form-control" rows="3" placeholder="Describe the job role and responsibilities"></textarea>
+                                        <span asp-validation-for="Description" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group mb-3">
+                                                <label asp-for="EmploymentType" class="form-label">Employment Type</label>
+                                                <div class="select-wrapper">
+                                                    <select asp-for="EmploymentType" class="form-select">
+                                                        <option value="">-- Select Type --</option>
+                                                        <option>Full-time</option>
+                                                        <option>Part-time</option>
+                                                        <option>Internship</option>
+                                                    </select>
+                                                </div>
+                                                <span asp-validation-for="EmploymentType" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group mb-3">
+                                                <label asp-for="WorkMode" class="form-label">Work Mode</label>
+                                                <div class="select-wrapper">
+                                                    <select asp-for="WorkMode" class="form-select">
+                                                        <option value="">-- Select Work Mode --</option>
+                                                        <option>On-site</option>
+                                                        <option>Remote</option>
+                                                        <option>Hybrid</option>
+                                                    </select>
+                                                </div>
+                                                <span asp-validation-for="WorkMode" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group mb-3">
+                                                <label asp-for="City" class="form-label">City</label>
+                                                <input asp-for="City" class="form-control" placeholder="Job location city">
+                                                <span asp-validation-for="City" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group mb-3">
+                                                <label asp-for="Country" class="form-label">Country</label>
+                                                <input asp-for="Country" class="form-control" placeholder="Job location country">
+                                                <span asp-validation-for="Country" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group mb-3">
+                                                <label asp-for="ExperienceLevel" class="form-label">Experience Level</label>
+                                                <input asp-for="ExperienceLevel" class="form-control" placeholder="Required experience">
+                                                <span asp-validation-for="ExperienceLevel" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group mb-3">
+                                                <label asp-for="VacancyCount" class="form-label">Vacancy Count</label>
+                                                <input asp-for="VacancyCount" class="form-control" placeholder="Number of positions">
+                                                <span asp-validation-for="VacancyCount" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group mb-3">
+                                                <label asp-for="JobCategoryId" class="form-label">Job Category</label>
+                                                <div class="select-wrapper">
+                                                    <select asp-for="JobCategoryId" class="form-select" asp-items="@CatOptions">
+                                                        <option value="">-- Select Category --</option>
+                                                    </select>
+                                                </div>
+                                                <span asp-validation-for="JobCategoryId" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group mb-3">
+                                                <label asp-for="CompanyId" class="form-label">Company</label>
+                                                <div class="select-wrapper">
+                                                    <select asp-for="CompanyId" class="form-select" asp-items="@ComOptions">
+                                                        <option value="">-- Select Company --</option>
+                                                    </select>
+                                                </div>
+                                                <span asp-validation-for="CompanyId" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="d-flex justify-content-between mt-4">
+                                        <button type="submit" class="btn btn-primary position-relative">
+                                            <i class="bi bi-plus-circle me-2"></i> Create Job
+                                        </button>
+                                        <a asp-action="Index" class="btn btn-outline-secondary">
+                                            <i class="bi bi-x-circle me-2"></i> Cancel
+                                        </a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        // Add ripple effect to buttons
+        document.querySelectorAll('.btn').forEach(button => {
+            button.addEventListener('mousedown', function(e) {
+                const x = e.clientX - e.target.getBoundingClientRect().left;
+                const y = e.clientY - e.target.getBoundingClientRect().top;
+
+                const ripple = document.createElement('span');
+                ripple.classList.add('ripple');
+                ripple.style.width = '10px';
+                ripple.style.height = '10px';
+                ripple.style.left = `${x}px`;
+                ripple.style.top = `${y}px`;
+
+                this.appendChild(ripple);
+
+                setTimeout(() => {
+                    ripple.remove();
+                }, 600);
+            });
+        });
+
+        // Enhanced select dropdowns
+        document.addEventListener('DOMContentLoaded', function() {
+            // Style select dropdowns
+            const selects = document.querySelectorAll('.form-select');
+
+            selects.forEach(select => {
+                // Ensure placeholder option has a different style
+                const placeholderOption = select.querySelector('option[value=""]');
+                if (placeholderOption) {
+                    placeholderOption.style.color = '#a0aec0';
+                }
+
+                // Add focus/blur effects
+                select.addEventListener('focus', function() {
+                    this.parentElement.classList.add('focused');
+                    this.style.backgroundColor = '#f8f9fa';
+                });
+
+                select.addEventListener('blur', function() {
+                    this.parentElement.classList.remove('focused');
+                    this.style.backgroundColor = '#fff';
+                });
+
+                // Add change event to handle placeholder styling
+                select.addEventListener('change', function() {
+                    if (this.value === '') {
+                        this.style.color = '#a0aec0';
+                    } else {
+                        this.style.color = 'var(--text-color)';
+                    }
+                });
+
+                // Initialize color based on current value
+                if (select.value === '') {
+                    select.style.color = '#a0aec0';
+                } else {
+                    select.style.color = 'var(--text-color)';
+                }
+            });
+        });
+    </script>
+}

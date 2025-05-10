@@ -1,0 +1,459 @@
+﻿@model Job_Portal_Project.ViewModels.HomeViewModel
+@{
+    ViewData["Title"] = "Home";
+}
+
+<!-- Hero Area Start -->
+<div class="main-hero">
+    <div class="hero-slider">
+        <div class="slide" style="background-image: url('/assets/images/hero/cover1.png');"></div>
+        <div class="slide" style="background-image: url('/assets/images/hero/cover2.png');"></div>
+        <div class="slide" style="background-image: url('/assets/images/hero/cover3.png');"></div>
+    </div>
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row space-100 justify-content-center">
+            <div class="col-lg-10 col-md-12 col-xs-12">
+                <div class="contents">
+                    <h2 class="main-title">
+                        Find the <span class="accent">job</span> that fits your life
+                        <div class="title-underline"></div>
+                    </h2>
+                    <p class="main-desc animate__animated animate__fadeInUp animate__delay-1s">Browse thousands of job listings from top companies around the world. Find your perfect job today.</p>
+                    <div class="job-search-form animate__animated animate__fadeInUp animate__delay-2s">
+                        <form asp-controller="JobSearch" asp-action="Index" method="get">
+                            <div class="row">
+                                <div class="col-lg-5 col-md-5 col-xs-12">
+                                    <input class="form-control" type="text" name="Keyword" placeholder="Job Title or Keywords">
+                                </div>
+                                <div class="col-lg-5 col-md-5 col-xs-12">
+                                    <input class="form-control" type="text" name="Location" placeholder="Location">
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-xs-12">
+                                    <button type="submit" class="button"><i class="lni-search" style="padding:10px;"></i></button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<!-- Hero Area End -->
+
+<style>
+    .main-hero {
+        position: relative;
+        height: 600px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+    }
+
+    .hero-slider {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    .slide {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-size: cover;
+        background-position: center;
+        opacity: 0;
+        transition: opacity 1s ease-in-out;
+    }
+
+    .slide.active {
+        opacity: 1;
+    }
+
+    .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(22, 28, 45, 0.55);
+        z-index: 1;
+    }
+
+    .main-hero .container {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        height: 100%;
+    }
+
+    .main-hero .contents {
+        text-align: center;
+        color: #fff;
+        max-width: 700px;
+        margin: 0 auto;
+        padding-top: 30px;
+        padding-bottom: 30px;
+    }
+
+    .main-title {
+        font-size: 3.2rem;
+        font-weight: 800;
+        color: #fff;
+        position: relative;
+        display: inline-block;
+        margin-bottom: 18px;
+        letter-spacing: 0.5px;
+        line-height: 1.15;
+        white-space: nowrap;
+    }
+    .main-title .accent {
+        color: #00BCD4;
+        font-weight: 900;
+        letter-spacing: 1px;
+        text-shadow: 0 2px 8px rgba(0,188,212,0.10);
+    }
+    .main-title .title-underline {
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 48px;
+        height: 3px;
+        background-color: #00BCD4;
+        border-radius: 2px;
+        transition: width 0.3s;
+    }
+    .main-title:hover .title-underline {
+        width: 90px;
+    }
+    .main-desc {
+        font-size: 1.15rem;
+        color: #e0e0e0;
+        margin-bottom: 32px;
+        margin-top: 8px;
+        line-height: 1.7;
+        font-weight: 400;
+        max-width: 90%;
+        margin-left: auto;
+        margin-right: auto;
+        text-shadow: 0 2px 8px rgba(0,0,0,0.10);
+    }
+    .main-hero .job-search-form {
+        background: rgba(255, 255, 255, 0.13);
+        padding: 30px;
+        border-radius: 12px;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 4px 24px rgba(0,188,212,0.07);
+    }
+    .main-hero .form-control {
+        height: 50px;
+        border: none;
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 5px;
+        padding: 0 20px;
+    }
+    .main-hero .button {
+        height: 50px;
+        width: 100%;
+        background: #00BCD4;
+        border: none;
+        border-radius: 5px;
+        color: #fff;
+        font-size: 20px;
+        transition: all 0.3s ease;
+    }
+    .main-hero .button:hover {
+        background: #2196F3;
+        transform: translateY(-2px);
+    }
+    @@media (max-width: 768px) {
+        .main-hero {
+            height: 420px;
+        }
+        .main-title {
+            font-size: 2rem;
+        }
+        .main-desc {
+            font-size: 1rem;
+        }
+        .main-hero .job-search-form {
+            padding: 16px;
+        }
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const slides = document.querySelectorAll('.slide');
+        let currentSlide = 0;
+
+        // Set first slide as active
+        slides[0].classList.add('active');
+
+        function nextSlide() {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }
+
+        // Change slide every 5 seconds
+        setInterval(nextSlide, 5000);
+    });
+</script>
+
+<!-- Browse jobs Section Start -->
+<div id="browse-jobs" class="section" style="padding: 40px 0; 
+                                           background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+                                           position: relative;
+                                           overflow: hidden;">
+    <!-- Decorative Elements -->
+    <div style="position: absolute; 
+                top: -50px; 
+                left: -50px; 
+                width: 200px; 
+                height: 200px; 
+                background: linear-gradient(45deg, rgba(0, 188, 212, 0.05) 0%, rgba(33, 150, 243, 0.05) 100%);
+                border-radius: 50%;"></div>
+    
+    <div style="position: absolute; 
+                bottom: -30px; 
+                right: -30px; 
+                width: 150px; 
+                height: 150px; 
+                background: linear-gradient(45deg, rgba(0, 188, 212, 0.03) 0%, rgba(33, 150, 243, 0.03) 100%);
+                border-radius: 50%;"></div>
+
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 col-md-12 col-sm-12">
+                <div class="text-wrapper" style="position: relative;">
+                    <div style="position: relative; z-index: 2;">
+                        <h3 style="color: #333; 
+                                 font-weight: 700;
+                                 font-size: 32px;
+                                 margin-bottom: 20px;
+                                 position: relative;
+                                 display: inline-block;">
+                            7,000+ <span style="color: #00BCD4;">Browse Jobs</span>
+                            <div style="position: absolute;
+                                      bottom: -5px;
+                                      left: 0;
+                                      width: 50%;
+                                      height: 2px;
+                                      background: linear-gradient(to right, #00BCD4, transparent);"></div>
+                        </h3>
+                        
+                        <p style="color: #666; 
+                                 line-height: 1.8;
+                                 font-size: 16px;
+                                 margin-bottom: 25px;
+                                 max-width: 90%;">
+                            Search all the open positions on the web. Get your own personalized salary estimate. Read reviews on over 600,000 companies worldwide.
+                        </p>
+                        
+                        <a class="btn btn-common" 
+                           href="/JobSearch/Index" 
+                           style="background: linear-gradient(45deg, #00BCD4, #2196F3);
+                                  color: white;
+                                  padding: 12px 35px;
+                                  border-radius: 30px;
+                                  text-decoration: none;
+                                  font-weight: 500;
+                                  font-size: 15px;
+                                  letter-spacing: 0.5px;
+                                  transition: all 0.3s ease;
+                                  border: none;
+                                  box-shadow: 0 4px 15px rgba(0, 188, 212, 0.3);
+                                  display: inline-flex;
+                                  align-items: center;
+                                  gap: 8px;">
+                            <i class="lni lni-search" style="font-size: 16px;"></i>
+                            Search jobs
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-6 col-md-12 col-sm-12">
+                <div class="img-thumb" style="position: relative; padding: 20px; transform: translateY(-10px); background: #fff; border-radius: 16px; display: flex; align-items: center; justify-content: center; min-height: 220px;">
+                    <!-- Decorative circle behind image -->
+                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 300px; height: 300px; background: linear-gradient(135deg, rgba(0, 188, 212, 0.08) 0%, rgba(33, 150, 243, 0.08) 100%); border-radius: 50%; z-index: 1;"></div>
+                    <img class="img-fluid" 
+                         src="assets/img/search.png" 
+                         alt="Browse Jobs" 
+                         style="position: relative; z-index: 2; max-width: 90%; height: auto; margin: 0 auto; display: block;">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    #browse-jobs .btn-common:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 188, 212, 0.4);
+    }
+
+    #browse-jobs .img-thumb img:hover {
+        transform: translateY(-5px);
+    }
+
+    @@media (max-width: 768px) {
+        #browse-jobs h3 {
+            font-size: 28px;
+        }
+        
+        #browse-jobs p {
+            font-size: 15px;
+        }
+        
+        #browse-jobs .img-thumb {
+            margin-top: 30px;
+        }
+    }
+</style>
+<!-- Browse jobs Section End -->
+
+<!-- Category Section Start -->
+<section>
+    <div>
+        <partial name="_CategoryPartial" model="Model.Categories" />
+    </div>
+</section>
+<!-- Category Section End -->
+
+<section class="how-it-works section" style="background: linear-gradient(135deg, #fff 60%, #f8f9fa 100%); padding: 60px 0;">
+  <div class="container">
+    <div class="section-header text-center" style="margin-bottom: 50px;">
+      <h2 class="section-title" style="font-size: 32px; font-weight: 800; color: #333; margin-bottom: 10px;">How It Works?</h2>
+      @* <p style="color: #666; font-size: 16px; max-width: 700px; margin: 0 auto; line-height: 1.7;"> *@
+      @*   Lorem ipsum dolor sit amet, consectetur adipiscing elit ellentesque dignissim quam et <br> *@
+      @*   metus effici turac fringilla lorem facilisis. *@
+      @* </p> *@
+    </div>
+   </div>
+</section>
+<!-- Latest Section End -->
+
+<section>
+  <div>
+    <div class="row how-works-row">
+      <div class="col-lg-4 col-md-6 mb-4 d-flex">
+        <div class="work-process-card flex-fill">
+          <span class="process-icon">
+            <i class="lni lni-user"></i>
+          </span>
+          <h4>Create an Account</h4>
+          <p>Post a job to tell us about your project. We'll quickly match you with the right freelancers find place best.</p>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6 mb-4 d-flex">
+        <div class="work-process-card flex-fill">
+          <span class="process-icon">
+            <i class="lni lni-search"></i>
+          </span>
+          <h4>Search Jobs</h4>
+          <p>Post a job to tell us about your project. We'll quickly match you with the right freelancers find place best.</p>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6 mb-4 d-flex">
+        <div class="work-process-card flex-fill">
+          <span class="process-icon">
+            <i class="lni lni-cup"></i>
+          </span>
+          <h4>Apply</h4>
+          <p>Post a job to tell us about your project. We'll quickly match you with the right freelancers find place best.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- latestjob sec-->
+<partial name="_LatestJobsPartial" model="Model.LatestJobs" />
+<!-- end latestjob sec-->
+
+<!--Testimonal-->
+<partial name="_CleintsReview"></partial>
+
+<style>
+  .how-works-row {
+    row-gap: 32px;
+  }
+  .work-process-card {
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 5px 18px rgba(0,188,212,0.08);
+    padding: 38px 24px 28px 24px;
+    text-align: center;
+    transition: box-shadow 0.3s, transform 0.3s;
+    border: 1px solid #f0f0f0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    position: relative;
+  }
+  .work-process-card:hover {
+    box-shadow: 0 10px 32px rgba(0,188,212,0.18);
+    transform: translateY(-6px) scale(1.03);
+  }
+  .process-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 70px;
+    height: 70px;
+    background: linear-gradient(135deg, #e6fafd 0%, #fff 100%);
+    border-radius: 50%;
+    margin-bottom: 22px;
+    box-shadow: 0 2px 8px rgba(0,188,212,0.07);
+    font-size: 34px;
+    color: #00BCD4;
+    transition: background 0.3s, color 0.3s, transform 0.3s;
+  }
+  .work-process-card:hover .process-icon {
+    background: linear-gradient(135deg, #00BCD4 0%, #2196F3 100%);
+    color: #fff;
+    transform: rotateY(360deg) scale(1.08);
+  }
+  .work-process-card h4 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #222;
+    margin-bottom: 12px;
+    margin-top: 0;
+  }
+  .work-process-card p {
+    color: #666;
+    font-size: 15px;
+    line-height: 1.7;
+    margin-bottom: 0;
+  }
+  @@media (max-width: 991px) {
+    .work-process-card { padding: 28px 10px 18px 10px; }
+    .process-icon { width: 56px; height: 56px; font-size: 26px; }
+    .work-process-card h4 { font-size: 17px; }
+    .work-process-card p { font-size: 13px; }
+  }
+  @@media (max-width: 767px) {
+    .how-works-row { row-gap: 18px; }
+    .work-process-card { padding: 18px 5px 12px 5px; }
+    .process-icon { width: 44px; height: 44px; font-size: 20px; }
+    .work-process-card h4 { font-size: 15px; }
+    .work-process-card p { font-size: 12px; }
+  }
+</style>

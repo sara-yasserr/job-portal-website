@@ -1,0 +1,149 @@
+﻿@model List<CategoryWithJobCount>
+
+@{
+    string GetIconClass(string categoryName)
+    {
+        switch (categoryName?.ToLower())
+        {
+            case "information technology": return "lni-code";
+            case "finance": return "lni-dollar";
+            case "science": return "lni-microscope";
+            case "healthcare": return "lni-sthethoscope";
+            case "education": return "lni-graduation";
+            case "engineering": return "lni-cogs";
+            case "marketing": return "lni-bullhorn";
+            case "sales": return "lni-stats-up";
+            case "customer service": return "lni-headphone-alt";
+            case "administration": return "lni-apartment";
+            case "human resources": return "lni-users";
+            case "legal": return "lni-briefcase";
+            case "food services": return "lni-restaurant";
+            case "logistics": return "lni-delivery";
+            case "research & development": return "lni-search";
+            case "art & design": return "lni-brush";
+            default: return "lni-briefcase";
+        }
+    }
+}
+
+<section class="category-section" style="background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%); padding: 60px 0;">
+    <div class="container">
+        <div class="section-header text-center" style="margin-bottom: 50px;">
+            <h2 class="section-title" style="font-size: 32px; font-weight: 700; color: #333; margin-bottom: 15px; position: relative; display: inline-block;">
+                Browse <span style="color: #00BCD4;">Categories</span>
+                <div style="position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); width: 70px; height: 3px; background: linear-gradient(to right, #00BCD4, #2196F3);"></div>
+            </h2>
+            <p style="color: #666; font-size: 16px; max-width: 600px; margin: 15px auto 0; line-height: 1.6;">
+                Most popular categories of portal, sorted by popularity and demand in the current job market
+            </p>
+        </div>
+
+        <div class="row category-row">
+            @foreach (var category in Model)
+            {
+                var iconClass = GetIconClass(category.Category.Name);
+
+                <div class="col-lg-3 col-md-4 col-sm-6 col-12 d-flex">
+                    <div class="category-item flex-fill">
+                        @* <a href="@Url.Action("CategoryJobs", "Jobs", new { id = category.Category.Id })" style="text-decoration: none; color: inherit;"> *@
+                            <div class="category-icon">
+                                <i class="lni @iconClass"></i>
+                            </div>
+                            <h3 class="category-title">@category.Category.Name</h3>
+                            <p class="job-count">@category.JobCount jobs</p>
+                        @* </a> *@
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<style>
+    .category-row {
+        row-gap: 32px;
+        column-gap: 0;
+    }
+
+    .category-item {
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        text-align: center;
+        padding: 28px 12px 20px 12px;
+        margin: 0 auto;
+        transition: all 0.3s ease;
+        border: 1px solid rgba(0,0,0,0.03);
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .category-icon {
+        font-size: 32px;
+        margin-bottom: 15px;
+        color: #00BCD4;
+        transition: all 0.5s ease;
+        display: inline-block;
+    }
+
+    .category-item:hover .category-icon {
+        transform: rotateY(360deg);
+    }
+
+    .category-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 8px;
+        transition: color 0.3s ease;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        width: 100%;
+        max-width: 180px;
+    }
+
+    .category-item:hover .category-title {
+        color: #00BCD4;
+    }
+
+    .job-count {
+        color: #00BCD4;
+        font-size: 14px;
+        font-weight: 500;
+        margin: 0;
+        background: #e6fafd;
+        padding: 5px 15px;
+        border-radius: 20px;
+        display: inline-block;
+    }
+
+    .category-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 188, 212, 0.15);
+    }
+    @@media (max-width: 991px) {
+        .category-title
+
+    {
+        max-width: 120px;
+    }
+
+    }
+    @@media (max-width: 768px) {
+        .category-item
+
+    {
+        padding: 20px 5px;
+    }
+
+    .category-title {
+        font-size: 16px;
+        max-width: 90px;
+    }
+
+    }
+</style>

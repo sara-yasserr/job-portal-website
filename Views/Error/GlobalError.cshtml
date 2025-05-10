@@ -1,0 +1,118 @@
+﻿@{
+    ViewData["Title"] = "Something went wrong";
+    Layout = "_Layout";
+}
+
+<div class="error-container">
+    <div class="error-content">
+        <!-- Error Icon -->
+        <div class="error-icon">
+            <i class="fas fa-exclamation-triangle"></i>
+        </div>
+
+        <!-- Error Code -->
+        <h1 class="error-code">@(ViewBag.StatusCode ?? "404")</h1>
+
+        <!-- Error Message -->
+        <h2 class="error-title">Page Not Found</h2>
+
+        <p class="error-message">
+            The page you're looking for doesn't exist or may have been moved.
+            <br>Let's get you back on track.
+        </p>
+
+        <!-- Action Button -->
+        <div class="error-action">
+            <a href="/Home/Index" class="btn-home btn-common">
+                <i class="fas fa-home me-2"></i>Return to Home
+            </a>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Base Styles */
+    .error-container {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        /* background-color: #f8f9fa; */
+        padding: 20px;
+    }
+
+    .error-content {
+        text-align: center;
+        max-width: 700px;
+        width: 100%;
+        padding: 40px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    /* Error Icon */
+    .error-icon {
+        font-size: 80px;
+        color: #00BCD4;
+        margin-bottom: 20px;
+    }
+
+    /* Error Code */
+    .error-code {
+        font-size: 72px;
+        font-weight: 700;
+        color: #00BCD4;
+        margin-bottom: 10px;
+    }
+
+    /* Error Text */
+    .error-title {
+        font-size: 24px;
+        font-weight: 600;
+        margin-bottom: 15px;
+        color: #2c3e50;
+    }
+
+    .error-message {
+        color: #6c757d;
+        font-size: 16px;
+        margin-bottom: 30px;
+    }
+
+    /* Button */
+    .btn-home {
+        display: inline-block;
+        padding: 12px 30px;
+        background-color: #00BCD4;
+        color: white;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        font-size:larger;
+    }
+
+    /* Responsive */
+    @@media (max-width: 576px) {
+        .error-content {
+            padding: 30px 20px;
+        }
+
+        .error-code {
+            font-size: 60px;
+        }
+
+        .error-title {
+            font-size: 20px;
+        }
+    }
+</style>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

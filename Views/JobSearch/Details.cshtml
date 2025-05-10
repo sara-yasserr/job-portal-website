@@ -1,0 +1,422 @@
+﻿@model Job_Portal_Project.ViewModels.JobDetailsViewModel
+<!-- Section Start -->
+<div class="category-hero-section" style="background-image: url('/assets/images/Dcover.jpg'); background-size: cover; padding: 80px 0; position: relative; z-index: 1; text-align: center; color: #fff; overflow: hidden;">
+    <div class="overlay-bg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(22, 28, 45, 0.7); z-index: -1;"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="breadcrumbs-content">
+                    <h1 class="page-title" style="font-size: 2.5rem; font-weight: 700; margin-bottom: 15px; color: #fff; text-shadow: 0px 2px 8px rgba(0,0,0,0.2); position: relative; display: inline-block;">
+                        Job <span style="color: #00BCD4;">Details</span>
+                        <div class="title-accent" style="position: absolute; bottom: -5px; left: 50%; transform: translateX(-50%); width: 80px; height: 4px; background-color: #00BCD4; border-radius: 2px;"></div>
+                    </h1>
+                    <p style="font-size: 1.1rem; max-width: 700px; margin: 20px auto 0; color: #fff; line-height: 1.6; text-shadow: 0px 1px 2px rgba(0,0,0,0.2);">
+                        Find your dream job and take the next step in your career journey <br />
+                        with the best opportunities in the market.
+                    </p>
+                </div>
+                <ul class="breadcrumb-nav" style="display: flex; justify-content: center; list-style: none; margin-top: 25px; padding: 0; flex-wrap: wrap;">
+                    <li style="margin: 5px;"><a href="/" style="color: #fff; text-decoration: none; font-weight: 500; transition: all 0.3s ease;">Home</a></li>
+                    <li style="margin: 5px;"><a href="/JobSearch/Index" style="color: #fff; text-decoration: none; font-weight: 500; transition: all 0.3s ease;">Jobs</a></li>
+                    <li style="margin: 5px; position: relative; padding-left: 15px;">
+                        <span style="color: #00BCD4; font-weight: 600;">Job Details</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-- Job Detail Section Start -->
+<div class="job-details section" style="padding: 50px 0; background-color: #f9f9f9;">
+    <div class="container">
+        <div class="row mb-5">
+            <!-- Job List Details Start -->
+            <div class="col-lg-8 col-12">
+                <div class="job-details-inner" style="background: #fff; border-radius: 8px; box-shadow: 0 5px 20px rgba(0, 188, 212, 0.08); overflow: hidden; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <!-- Job Header -->
+                    <div class="job-details-head" style="padding: 30px; border-bottom: 1px solid #eee; display: flex; align-items: center; background-color: #fff;">
+                        <div class="company-logo" style="margin-right: 20px; width: 120px; height: 120px; border-radius: 8px; overflow: hidden; border: 1px solid #eee; display: flex; align-items: center; justify-content: center; background: #fff; box-shadow: 0 3px 10px rgba(0,0,0,0.05); transition: transform 0.3s ease;">
+                            <img src="/Uploads/Logos/@Model.Job.Company.LogoPath" alt="@Model.Job.Company?.Name" style="max-width: 100%; max-height: 100%; object-fit: contain; padding: 10px;" />
+                        </div>
+                        <div class="content" style="flex: 1;">
+                            <h3 class="title" style="font-size: 24px; font-weight: 700; margin-bottom: 8px; color: #222;">@Model.Job.Title</h3>
+                            <p class="company-name" style="font-size: 16px; margin-bottom: 8px;"><strong style="color: #00BCD4;">@Model.Job.Company?.Name</strong></p>
+                            <div class="info" style="display: flex; flex-wrap: wrap; gap: 20px; color: #666; font-size: 14px;">
+                                <span style="display: flex; align-items: center;">
+                                    <i class="lni lni-map-marker" style="margin-right: 5px; color: #00BCD4;"></i> @Model.Job.City, @Model.Job.Country
+                                </span>
+                                <span style="display: flex; align-items: center;">
+                                    <i class="lni lni-calendar" style="margin-right: 5px; color: #00BCD4;"></i> Posted @Model.Job.DatePosted.ToString("MMM dd, yyyy")
+                                </span>
+                            </div>
+                        </div>
+                        <div class="job-type" style="margin-left: auto;">
+                            <span class="badge" style="background-color: #00BCD4; color: white; padding: 8px 15px; border-radius: 30px; font-weight: 500; font-size: 14px; transition: all 0.3s ease;">@Model.Job.EmploymentType</span>
+                        </div>
+                    </div>
+
+                    <!-- Job Description -->
+                    <div class="job-details-body" style="padding: 30px;">
+                        <div class="section-title-wrapper" style="margin-bottom: 25px;">
+                            <h4 class="section-title" style="font-size: 20px; font-weight: 600; margin-bottom: 20px; color: #222; border-left: 4px solid #00BCD4; padding-left: 15px; position: relative; display: inline-block;">
+                                Job Description
+                                <span class="hover-line" style="position: absolute; bottom: -5px; left: 15px; width: 50%; height: 2px; background-color: #00BCD4; transition: width 0.3s ease;"></span>
+                            </h4>
+                        </div>
+                        <p style="margin-bottom: 10px; color: #666; line-height: 1.7;">@Model.Job.Description</p>
+
+                        <!-- Responsibilities Section -->
+                        <div class="section-title-wrapper" style="margin: 30px 0 20px 0;">
+                            <h4 class="section-title" style="font-size: 18px; font-weight: 600; margin-bottom: 20px; color: #222; border-left: 4px solid #00BCD4; padding-left: 15px; position: relative; display: inline-block;">
+                                Responsibilities
+                                <span class="hover-line" style="position: absolute; bottom: -5px; left: 15px; width: 50%; height: 2px; background-color: #00BCD4; transition: width 0.3s ease;"></span>
+                            </h4>
+                        </div>
+                        <ul style="padding-left: 20px; margin-bottom: 20px;">
+                            <li style="margin-bottom: 12px; color: #666; position: relative; padding-left: 15px; transition: transform 0.2s ease;">
+                                <span style="display: inline-block; width: 6px; height: 6px; background-color: #00BCD4; border-radius: 50%; position: absolute; left: 0; top: 8px;"></span>
+                                Contribute to achieving team and organizational goals through effective task execution
+                            </li>
+                            <li style="margin-bottom: 12px; color: #666; position: relative; padding-left: 15px; transition: transform 0.2s ease;">
+                                <span style="display: inline-block; width: 6px; height: 6px; background-color: #00BCD4; border-radius: 50%; position: absolute; left: 0; top: 8px;"></span>
+                                Collaborate with colleagues and departments to complete projects efficiently
+                            </li>
+                            <li style="margin-bottom: 12px; color: #666; position: relative; padding-left: 15px; transition: transform 0.2s ease;">
+                                <span style="display: inline-block; width: 6px; height: 6px; background-color: #00BCD4; border-radius: 50%; position: absolute; left: 0; top: 8px;"></span>
+                                Ensure high quality and accuracy in daily work and deliverables
+                            </li>
+                            <li style="margin-bottom: 12px; color: #666; position: relative; padding-left: 15px; transition: transform 0.2s ease;">
+                                <span style="display: inline-block; width: 6px; height: 6px; background-color: #00BCD4; border-radius: 50%; position: absolute; left: 0; top: 8px;"></span>
+                                Identify and address problems or delays in workflows proactively
+                            </li>
+                            <li style="margin-bottom: 12px; color: #666; position: relative; padding-left: 15px; transition: transform 0.2s ease;">
+                                <span style="display: inline-block; width: 6px; height: 6px; background-color: #00BCD4; border-radius: 50%; position: absolute; left: 0; top: 8px;"></span>
+                                Maintain organized documentation and support process improvements
+                            </li>
+                            <li style="margin-bottom: 12px; color: #666; position: relative; padding-left: 15px; transition: transform 0.2s ease;">
+                                <span style="display: inline-block; width: 6px; height: 6px; background-color: #00BCD4; border-radius: 50%; position: absolute; left: 0; top: 8px;"></span>
+                                Stay informed about updates and best practices relevant to the role
+                            </li>
+                        </ul>
+
+                        <!-- Benefits -->
+                        <div class="section-title-wrapper" style="margin: 30px 0 20px 0;">
+                            <h4 class="section-title" style="font-size: 18px; font-weight: 600; margin-bottom: 20px; color: #222; border-left: 4px solid #00BCD4; padding-left: 15px; position: relative; display: inline-block;">
+                                Benefits
+                                <span class="hover-line" style="position: absolute; bottom: -5px; left: 15px; width: 50%; height: 2px; background-color: #00BCD4; transition: width 0.3s ease;"></span>
+                            </h4>
+                        </div>
+                        <ul style="padding-left: 20px; margin-bottom: 20px;">
+                            <li style="margin-bottom: 12px; color: #666; position: relative; padding-left: 15px; transition: transform 0.2s ease;">
+                                <span style="display: inline-block; width: 6px; height: 6px; background-color: #00BCD4; border-radius: 50%; position: absolute; left: 0; top: 8px;"></span>
+                                Medical insurance
+                            </li>
+                            <li style="margin-bottom: 12px; color: #666; position: relative; padding-left: 15px; transition: transform 0.2s ease;">
+                                <span style="display: inline-block; width: 6px; height: 6px; background-color: #00BCD4; border-radius: 50%; position: absolute; left: 0; top: 8px;"></span>
+                                Dental insurance
+                            </li>
+                            <li style="margin-bottom: 12px; color: #666; position: relative; padding-left: 15px; transition: transform 0.2s ease;">
+                                <span style="display: inline-block; width: 6px; height: 6px; background-color: #00BCD4; border-radius: 50%; position: absolute; left: 0; top: 8px;"></span>
+                                Vision insurance
+                            </li>
+                            <li style="margin-bottom: 12px; color: #666; position: relative; padding-left: 15px; transition: transform 0.2s ease;">
+                                <span style="display: inline-block; width: 6px; height: 6px; background-color: #00BCD4; border-radius: 50%; position: absolute; left: 0; top: 8px;"></span>
+                                Supplemental benefits (Short Term Disability, Cancer &amp; Accident)
+                            </li>
+                            <li style="margin-bottom: 12px; color: #666; position: relative; padding-left: 15px; transition: transform 0.2s ease;">
+                                <span style="display: inline-block; width: 6px; height: 6px; background-color: #00BCD4; border-radius: 50%; position: absolute; left: 0; top: 8px;"></span>
+                                Employer-sponsored Basic Life &amp; AD&amp;D Insurance
+                            </li>
+                            <li style="margin-bottom: 12px; color: #666; position: relative; padding-left: 15px; transition: transform 0.2s ease;">
+                                <span style="display: inline-block; width: 6px; height: 6px; background-color: #00BCD4; border-radius: 50%; position: absolute; left: 0; top: 8px;"></span>
+                                401(k) with matching
+                            </li>
+                        </ul>
+
+                        @if(User.IsInRole("JobSeeker")){
+                        <!-- How to Apply -->
+                        <div class="section-title-wrapper" style="margin: 30px 0 20px 0;">
+                            <h4 class="section-title" style="font-size: 18px; font-weight: 600; margin-bottom: 20px; color: #222; border-left: 4px solid #00BCD4; padding-left: 15px; position: relative; display: inline-block;">
+                                How to Apply
+                                <span class="hover-line" style="position: absolute; bottom: -5px; left: 15px; width: 50%; height: 2px; background-color: #00BCD4; transition: width 0.3s ease;"></span>
+                            </h4>
+                        </div>
+                        <p style="margin-bottom: 20px; line-height: 1.7; color: #666;">Ready to join our team? Submit your resume and portfolio (if applicable) through the button below. We review applications on a rolling basis and will contact qualified candidates for next steps.</p>
+                        <a href='@Url.Action("Add", "JobApplication", new { jobId = Model.Job.Id})' class="btn apply-btn" style="background-color: #00BCD4; color: white; padding: 12px 30px; border-radius: 30px; text-decoration: none; display: inline-block; font-weight: 500; transition: all 0.3s ease; border: none; margin-top: 10px; box-shadow: 0 4px 10px rgba(0, 188, 212, 0.3);">
+                            <i class="lni lni-check-mark-circle"></i> Apply Now
+                        </a>
+                        }
+                    </div>
+                </div>
+            </div>
+            <!-- Job List Details End -->
+            <!-- Job Sidebar Wrap Start -->
+            <div class="col-lg-4 col-12">
+
+                @if(User.IsInRole("JobSeeker")){
+                <!-- Action Buttons -->
+                <div class="job-sidebar-widget" style="background: #fff; border-radius: 8px; box-shadow: 0 5px 20px rgba(0, 188, 212, 0.08); padding: 25px; margin-bottom: 30px; border-top: 3px solid #00BCD4; transition: transform 0.3s ease;">
+                    <div class="widget-content">
+                        <div class="button-group" style="display: flex; flex-direction: column; gap: 15px; justify-content: center; align-items: center;">
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                @if (Model.IsBookmarked)
+                                {
+                                    <button id="bookmarkBtn" class="btn bookmark-btn" data-jobid="@Model.Job.Id" data-action="remove" style="background-color:#a8a8a8; color: white; padding: 12px 20px; border-radius: 30px; text-decoration: none; display: flex; align-items: center; justify-content: center; font-weight: 500; transition: all 0.3s ease; border: none; width: 80%; box-shadow: 0 4px 10px rgba(0, 188, 212, 0.3); margin: 0 auto;">
+                                        <i class="lni lni-heart-filled" style="margin-right: 8px;"></i> <span class="btn-text">Saved</span>
+                                    </button>
+                                }
+                                else
+                                {
+                                    <button id="bookmarkBtn" class="btn bookmark-btn" data-jobid="@Model.Job.Id" data-action="add" style="background-color: #f8f9fa; color: #333; padding: 12px 20px; border-radius: 30px; text-decoration: none; display: flex; align-items: center; justify-content: center; font-weight: 500; transition: all 0.3s ease; border: 1px solid #ddd; width: 80%; margin: 0 auto;">
+                                        <i class="lni lni-heart" style="margin-right: 8px; color: #00BCD4;"></i> <span class="btn-text">Save Job</span>
+                                    </button>
+                                }
+                            }
+                            <a href='@Url.Action("Add", "JobApplication", new { jobId = Model.Job.Id})' class="btn apply-btn" style="background-color: #00BCD4; color: white; padding: 12px 20px; border-radius: 30px; text-decoration: none; display: flex; align-items: center; justify-content: center; font-weight: 500; transition: all 0.3s ease; border: none; width: 80%; box-shadow: 0 4px 10px rgba(0, 188, 212, 0.3); margin: 0 auto;">
+                                <i class="lni lni-check-mark-circle" style="margin-right: 8px;"></i> Apply Now
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                }
+
+                <!-- Job Overview -->
+                <div class="job-sidebar-widget" style="background: #fff; border-radius: 8px; box-shadow: 0 5px 20px rgba(0, 188, 212, 0.08); padding: 25px; margin-bottom: 30px; border-top: 3px solid #00BCD4; transition: transform 0.3s ease;">
+                    <h4 class="widget-title" style="font-size: 18px; font-weight: 600; margin-bottom: 20px; color: #222; border-bottom: 1px solid #eee; padding-bottom: 15px; position: relative;">
+                        <span style="position: relative; z-index: 1;">Job Overview</span>
+                        <span style="position: absolute; bottom: -1px; left: 0; width: 50px; height: 3px; background-color: #00BCD4; transition: width 0.3s ease;"></span>
+                    </h4>
+                    <div class="widget-content">
+                        <ul class="job-overview-list" style="list-style: none; padding: 0; margin: 0;">
+                            <li style="display: flex; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid #eee; align-items: center; transition: transform 0.2s ease;">
+                                <div style="min-width: 30px; margin-right: 10px; color: #00BCD4;">
+                                    <i class="lni lni-calendar" style="font-size: 18px;"></i>
+                                </div>
+                                <div style="flex: 1;">
+                                    <strong style="color: #333; display: block; margin-bottom: 3px; font-size: 14px;">Published on:</strong>
+                                    <span style="color: #666; font-size: 15px;">@Model.Job.DatePosted.ToString("MMM dd, yyyy")</span>
+                                </div>
+                            </li>
+                            <li style="display: flex; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid #eee; align-items: center; transition: transform 0.2s ease;">
+                                <div style="min-width: 30px; margin-right: 10px; color: #00BCD4;">
+                                    <i class="lni lni-users" style="font-size: 18px;"></i>
+                                </div>
+                                <div style="flex: 1;">
+                                    <strong style="color: #333; display: block; margin-bottom: 3px; font-size: 14px;">Vacancy:</strong>
+                                    <span style="color: #666; font-size: 15px;">@Model.Job.VacancyCount</span>
+                                </div>
+                            </li>
+                            <li style="display: flex; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid #eee; align-items: center; transition: transform 0.2s ease;">
+                                <div style="min-width: 30px; margin-right: 10px; color: #00BCD4;">
+                                    <i class="lni lni-briefcase" style="font-size: 18px;"></i>
+                                </div>
+                                <div style="flex: 1;">
+                                    <strong style="color: #333; display: block; margin-bottom: 3px; font-size: 14px;">Employment Status:</strong>
+                                    <span style="color: #666; font-size: 15px;">@Model.Job.EmploymentType</span>
+                                </div>
+                            </li>
+                            <li style="display: flex; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid #eee; align-items: center; transition: transform 0.2s ease;">
+                                <div style="min-width: 30px; margin-right: 10px; color: #00BCD4;">
+                                    <i class="lni lni-graduation" style="font-size: 18px;"></i>
+                                </div>
+                                <div style="flex: 1;">
+                                    <strong style="color: #333; display: block; margin-bottom: 3px; font-size: 14px;">Experience:</strong>
+                                    <span style="color: #666; font-size: 15px;">@Model.Job.ExperienceLevel</span>
+                                </div>
+                            </li>
+                            <li style="display: flex; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid #eee; align-items: center; transition: transform 0.2s ease;">
+                                <div style="min-width: 30px; margin-right: 10px; color: #00BCD4;">
+                                    <i class="lni lni-map-marker" style="font-size: 18px;"></i>
+                                </div>
+                                <div style="flex: 1;">
+                                    <strong style="color: #333; display: block; margin-bottom: 3px; font-size: 14px;">Job Location:</strong>
+                                    <span style="color: #666; font-size: 15px;">@Model.Job.City, @Model.Job.Country</span>
+                                </div>
+                            </li>
+                            <li style="display: flex; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid #eee; align-items: center; transition: transform 0.2s ease;">
+                                <div style="min-width: 30px; margin-right: 10px; color: #00BCD4;">
+                                    <i class="lni lni-timer" style="font-size: 18px;"></i>
+                                </div>
+                                <div style="flex: 1;">
+                                    <strong style="color: #333; display: block; margin-bottom: 3px; font-size: 14px;">Application Deadline:</strong>
+                                    <span style="color: #666; font-size: 15px;">@Model.Job.DateClosed?.ToString("MMM dd, yyyy")</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Job Location Map -->
+                <div class="job-sidebar-widget" style="background: #fff; border-radius: 8px; box-shadow: 0 5px 20px rgba(0, 188, 212, 0.08); padding: 25px; margin-bottom: 30px; border-top: 3px solid #00BCD4; transition: transform 0.3s ease;">
+                    <h4 style="font-size: 18px; font-weight: 600; margin-bottom: 20px; color: #222; border-bottom: 1px solid #eee; padding-bottom: 15px; position: relative;">
+                        <span style="position: relative; z-index: 1;">Job Location</span>
+                        <span style="position: absolute; bottom: -1px; left: 0; width: 50px; height: 3px; background-color: #00BCD4;"></span>
+                    </h4>
+                    <div class="widget-content">
+                        <div class="map-container" style="border-radius: 8px; overflow: hidden; height: 250px; margin-bottom: 15px; border: 1px solid #eee; box-shadow: 0 3px 10px rgba(0,0,0,0.05);">
+                            <iframe width="100%" height="100%" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"
+                                    src="https://maps.google.com/maps?q=@Model.Job.City,@Model.Job.Country&t=&z=13&ie=UTF8&iwloc=&output=embed"
+                                    style="border: none;"></iframe>
+                        </div>
+                        <div class="location-info" style="display: flex; align-items: center; color: #666; font-size: 14px;">
+                            <i class="lni lni-map-marker" style="margin-right: 5px; color: #00BCD4;"></i>
+                            <span>@Model.Job.City, @Model.Job.Country</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Job Sidebar Wrap End -->
+        </div>
+
+        <!-- Similar Jobs Section -->
+
+    </div>
+</div>
+<!-- Job Detail Section End -->
+@Html.AntiForgeryToken()
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Hover effects for job cards
+            $(".job-card").hover(function() {
+                $(this).css({
+                    'transform': 'translateY(-5px)',
+                    'box-shadow': '0 8px 25px rgba(0, 188, 212, 0.15)'
+                });
+            }, function() {
+                $(this).css({
+                    'transform': 'translateY(0)',
+                    'box-shadow': '0 5px 20px rgba(0, 188, 212, 0.08)'
+                });
+            });
+
+            // Hover effects for sidebar widgets
+            $(".job-sidebar-widget").hover(function() {
+                $(this).css('transform', 'translateY(-3px)');
+            }, function() {
+                $(this).css('transform', 'translateY(0)');
+            });
+
+            // Hover effects for company logo
+            $(".company-logo").hover(function() {
+                $(this).css('transform', 'scale(1.05)');
+            }, function() {
+                $(this).css('transform', 'scale(1)');
+            });
+
+            // Hover effects for list items
+            $(".job-overview-list li, .job-details-body li").hover(function() {
+                $(this).css('transform', 'translateX(5px)');
+            }, function() {
+                $(this).css('transform', 'translateX(0)');
+            });
+
+            // Hover effects for section titles
+            $(".section-title").hover(function() {
+                $(this).find(".hover-line").css('width', '100%');
+            }, function() {
+                $(this).find(".hover-line").css('width', '50%');
+            });
+
+            // Hover effects for apply buttons
+            $(".apply-btn").hover(function() {
+                $(this).css({
+                    'background-color': '#00a5bb',
+                    'box-shadow': '0 5px 15px rgba(0, 188, 212, 0.4)'
+                });
+            }, function() {
+                $(this).css({
+                    'background-color': '#00BCD4',
+                    'box-shadow': '0 4px 10px rgba(0, 188, 212, 0.3)'
+                });
+            });
+
+            // Hover effects for bookmark button
+            $(".bookmark-btn").hover(function() {
+                if ($(this).data("action") === "add") {
+                    $(this).css({
+                        'background-color': '#f0f0f0',
+                        'border-color': '#00BCD4'
+                    });
+                } else {
+                    $(this).css({
+                        'background-color': '#00a5bb',
+                        'box-shadow': '0 5px 15px rgba(0, 188, 212, 0.4)'
+                    });
+                }
+            }, function() {
+                if ($(this).data("action") === "add") {
+                    $(this).css({
+                        'background-color': '#f8f9fa',
+                        'border-color': '#ddd'
+                    });
+                } else {
+                    $(this).css({
+                        'background-color': '#00BCD4',
+                        'box-shadow': '0 4px 10px rgba(0, 188, 212, 0.3)'
+                    });
+                }
+            });
+
+            // Bookmark button click handler
+            $(document).on('click', '.bookmark-btn', function () {
+                var button = $(this);
+                var jobId = button.data("jobid");
+                var action = button.data("action");
+                var token = $('input[name="__RequestVerificationToken"]').val();
+
+                // Add loading state
+                button.html('<i class="lni lni-spinner lni-spin" style="margin-right: 8px;"></i> Processing...');
+                button.prop('disabled', true);
+
+                $.ajax({
+                    url: '/Bookmarks/' + (action === 'add' ? 'Add' : 'Remove'),
+                    type: 'POST',
+                    data: {
+                        jobId: jobId,
+                        __RequestVerificationToken: token
+                    },
+                    success: function (response) {
+
+                      if (action === 'add') {
+                        button.html('<i class="lni lni-heart-filled" style="margin-right: 8px;"></i> <span class="btn-text">Saved</span>');
+                        button.data("action", "remove");
+                        button.css({
+                            "background-color": "#00BCD4",   //////
+                            "color": "white",
+                            "border": "none",
+                            "box-shadow": "0 4px 10px rgba(0, 188, 212, 0.3)"
+                        });
+
+
+
+                        } else {
+                            button.html('<i class="lni lni-heart" style="margin-right: 8px; color: #00BCD4;"></i> <span class="btn-text">Save Job</span>');
+                            button.data("action", "add");
+                            button.css({
+                                "background-color": "#f8f9fa",
+                                "color": "#333",
+                                "border": "1px solid #ddd",
+                                "box-shadow": "none"
+                            });
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(error);
+                        alert('Something went wrong. Please try again.');
+                    },
+                    complete: function() {
+                        button.prop('disabled', false);
+                    }
+                });
+            });
+        });
+    </script>
+}

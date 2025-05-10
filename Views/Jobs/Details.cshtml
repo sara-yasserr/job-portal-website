@@ -1,0 +1,164 @@
+﻿@model Job
+@{
+    ViewData["Title"] = "Details";
+    Layout = "_MyLayout";
+}
+
+<style>
+
+
+    body{
+        background-color: #ebf4fa;
+    }
+    h2 {
+        font-family: 'Roboto', sans-serif;
+        font-weight: bold;
+        color: #17a2b8;
+        margin-bottom: 40px;
+        font-size: 30px;
+    }
+
+    .con-card
+    {
+        margin-top:80px;
+    }
+
+    p, strong {
+        font-size: 14px;
+        color: #4A4A4A;
+    }
+
+    strong {
+        font-size: 15px;
+        color: #17a2b8;
+    }
+
+    .badge1 {
+        display: inline-block;
+        margin-top: 4px;
+        font-weight: bold;
+        font-size: 18px;
+        border-radius:5px;
+        color:white;
+    }
+
+        .badge.bg-info {
+            background-color: #17a2b8 !important;
+            color: #fff;
+        }
+
+        .badge.bg-dark {
+            background-color: #343a40 !important;
+            color: #fff;
+        }
+
+        .badge.bg-warning {
+            background-color: #ffc107 !important;
+            color: #212529 !important;
+        }
+
+        .badge.bg-success {
+            background-color: #28a745 !important;
+            color: #fff;
+        }
+
+        .badge.bg-danger {
+            background-color: #dc3545 !important;
+            color: #fff;
+        }
+
+    .btn {
+        border-radius: 5px;
+        font-size: 1rem;
+    }
+
+    .btn-info {
+        background-color: #17a2b8 !important;
+        border: none;
+    }
+
+    .btn-outline-secondary {
+        color: #6c757d;
+        border-color: #6c757d;
+        font-weight: bold;
+    }
+
+    .shadow-lg {
+        box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2) !important;
+    }
+</style>
+
+
+
+<div class="container con-card d-flex justify-content-center align-items-center pt-5">
+    <div class="bg-white shadow-lg rounded-4 p-5" style="max-width: 850px; width: 100%; border: 1px solid #ddd;">
+        <h2 class="text-center fw-bold">📋 Job Details</h2>
+
+        <div class="row gy-4 text-dark fs-6">
+            <div class="col-md-3 col-sm-6 col-12">
+                <strong>Title</strong>
+                <p class="text-muted">@Model.Title</p>
+            </div>
+            <div class="col-md-3 col-sm-6 col-12">
+                <strong>Company</strong>
+                <p class="text-muted">@Model.Company?.Name</p>
+            </div>
+            <div class="col-md-3 col-sm-6 col-12">
+                <strong>Category</strong>
+                <p class="text-muted">@Model.JobCategory?.Name</p>
+            </div>
+            <div class="col-md-3 col-sm-6 col-12">
+                <strong>Employment Type</strong><br />
+                <span class="badge bg-info px-3 py-2">@Model.EmploymentType</span>
+            </div>
+            <div class="col-md-3 col-sm-6 col-12">
+                <strong>Work Mode</strong><br />
+                <span class="badge bg-dark px-3 py-2">@Model.WorkMode</span>
+            </div>
+            <div class="col-md-3 col-sm-6 col-12">
+                <strong>Experience Level</strong><br />
+                <span class="badge bg-warning px-3 py-2">@Model.ExperienceLevel</span>
+            </div>
+            <div class="col-md-3 col-sm-6 col-12">
+                <strong>City</strong>
+                <p class="text-muted">@Model.City</p>
+            </div>
+            <div class="col-md-3 col-sm-6 col-12">
+                <strong>Country</strong>
+                <p class="text-muted">@Model.Country</p>
+            </div>
+            <div class="col-md-3 col-sm-6 col-12">
+                <strong>Vacancies</strong>
+                <p class="text-muted">@Model.VacancyCount</p>
+            </div>
+            <div class="col-md-3 col-sm-6 col-12">
+                <strong>Date Posted</strong>
+                <p class="text-muted">@Model.DatePosted.ToString("MMMM dd, yyyy")</p>
+            </div>
+
+            <!-- Description in full width -->
+            <div class="col-12">
+                <strong>Description</strong>
+                <div class="border rounded p-3 bg-light">
+                    <p class="text-muted mb-0">@Model.Description</p>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="d-flex flex-wrap justify-content-between align-items-center mt-5 gap-3">
+            <a asp-action="Index" class="btn btn-outline-secondary px-4">← Back</a>
+
+            <span class="badge1 px-3 py-2 @(Model.IsActive ? "bg-success" : "bg-danger")">
+                @(Model.IsActive ? "Active" : "Closed")
+            </span>
+
+            <a asp-controller="JobApplication" asp-action="ShowAllApplicants" asp-route-jobId="@Model.Id" class="btn btn-info text-white">
+                <i class="fas fa-users"></i> View Applicants
+            </a>
+        </div>
+    </div>
+</div>
+
+
+
