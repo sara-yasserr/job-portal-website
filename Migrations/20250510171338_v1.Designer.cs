@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Job_Portal_Project.Migrations
 {
     [DbContext(typeof(JobPortalContext))]
-    [Migration("20250423172214_v2")]
-    partial class v2
+    [Migration("20250510171338_v1")]
+    partial class v1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
