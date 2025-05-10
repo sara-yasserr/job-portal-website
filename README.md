@@ -1,72 +1,10 @@
 # Job Portal System Documentation
 
-## System Overview
-A comprehensive job portal built with ASP.NET MVC that connects job seekers with employers through advanced features and secure authentication.
-
----
-
-## User Roles & Permissions
-
-### 👨‍💼 Job Seeker
-- **Profile Management**
-  - Create/update personal profile
-  - Upload CV and cover letters
-- **Job Search**
-  - Advanced filters (location, salary, category)
-  - Save favorite listings
-- **Applications**
-  - Track application status
-  - Receive notifications
-
-### 👔 Employer
-- **Company Profile**
-  - Register company account
-  - Upload company logo/details
-- **Job Postings**
-  - Create/edit job listings
-  - Manage active/inactive posts
-- **Applications**
-  - Review candidate submissions
-  - Update application status
-
-### 👑 Administrator
-- **User Management**
-  - Activate/deactivate accounts
-  - Reset user passwords
-- **Content Moderation**
-  - Approve/reject job postings
-  - Manage categories
-- **System Configuration**
-  - Email templates
-  - Security settings
-
----
-
-## Technical Specifications
-
-### 🔧 System Architecture
-ASP.NET MVC (Model-View-Controller)
-├── Presentation Layer (Views)
-├── Business Logic (Controllers)
-└── Data Access (Models + Entity Framework)
-
-
-### 🗃️ Database Tables
-| Table        | Key Fields                          |
-|--------------|-------------------------------------|
-| Users        | Id, Email, PasswordHash, Role       |
-| Profiles     | UserId, FullName, Skills, Experience|
-| Jobs         | Title, Description, Salary, Expiry  |
-| Applications | JobId, UserId, Status, ApplyDate   |
-
----
-
 ## Authentication Flow
 
 ### 🔐 Login Options
 1. **Email/Password**
    - Secure password hashing
-   - Account lockout after 5 attempts
 
 2. **External Providers**
    ```bash
@@ -77,7 +15,6 @@ Password Recovery
 
 Token-based reset system
 
-SMS/Email verification
 
 Setup Guide
 🛠️ Installation Steps
@@ -108,4 +45,56 @@ Security Measures
 🛡️ HTTPS enforcement
 
 🕵️‍♂️ SQL injection protection
+
+
+## System Overview
+A comprehensive job portal built with ASP.NET MVC that connects job seekers with employers through advanced features and secure authentication.
+
+---
+
+## User Roles & Permissions
+
+### 👨‍💼 Job Seeker
+- **Profile Management**
+  - Create/update personal profile
+  - Upload CV and profile photo
+  - Reset Password
+- **Job Search**
+  - Advanced filters (Work mode, experience, category)
+  - Save bookmarked jobs
+  - Easy Apply option with default CV and apply option with specific CV
+- **Applications**
+  - Track application status
+  - Edit / Delete Application
+
+### 👔 Employer
+- **Company Profile**
+  - Register company account
+  - Upload company logo/details
+- **Job Postings**
+  - Create/edit job listings
+  - Manage active/inactive posts
+- **Applications**
+  - Review candidate submissions
+  - Update application status
+
+### 👑 Administrator
+- **User Management**
+  - Activate/deactivate accounts
+  - Reset user passwords
+- **Content Moderation**
+  - Manage job postings
+  - Manage companies
+  - Manage categories
+- **System Configuration**
+  - Email templates
+  - Security settings
+
+---
+
+### 🔧 System Architecture
+ASP.NET MVC (Model-View-Controller)
+├── Presentation Layer (Views)
+├── Business Logic (Controllers)
+└── Data Access (Models + Entity Framework)
 
