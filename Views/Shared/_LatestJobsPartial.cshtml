@@ -21,7 +21,7 @@
                     <div class="latest-job-card flex-fill">
                         <div class="d-flex align-items-center">
                             <div class="latest-job-logo">
-                                <img src="@(string.IsNullOrEmpty(job.Company?.LogoPath) ? "assets/img/features/default.jpg" : job.Company.LogoPath)" alt="@job.Company?.Name">
+                                <img src="/Uploads/Logos/@(string.IsNullOrEmpty(job.Company?.LogoPath) ? "assets/img/features/default.jpg" : job.Company.LogoPath)" alt="@job.Company?.Name">
                             </div>
                             <div class="ps-3 flex-grow-1">
                                 <h3 class="latest-job-title">
