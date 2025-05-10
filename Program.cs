@@ -1,6 +1,5 @@
 ﻿using Job_Portal_Project.Controllers.Profile;
 //using Job_Portal_Project.Data;
-using System.Security.Claims;
 using Job_Portal_Project.Models;
 using Job_Portal_Project.Models.DbContext;
 using Job_Portal_Project.Repositories;
@@ -77,75 +76,6 @@ namespace Job_Portal_Project
 });
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            //            builder.Services.AddAuthentication(options =>
-            //            {
-            //                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            //                options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
-            //            })
-            //.AddCookie(options =>
-            //{
-            //    options.LoginPath = "/Account/Login";
-            //    options.AccessDeniedPath = "/Account/AccessDenied";
-            //    options.SlidingExpiration = true;
-            //    options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
-            //    options.Cookie.SameSite = SameSiteMode.Lax;
-            //    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-            //})
-            //.AddGoogle(options =>
-            //{
-            //    options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
-            //    options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
-            //    options.Scope.Add("email");
-            //    options.Scope.Add("profile");
-            //    options.SaveTokens = true;
-
-            //    options.Events = new OAuthEvents
-            //    {
-            //        OnRedirectToAuthorizationEndpoint = context =>
-            //        {
-
-            //            context.Properties.SetString("returnUrl", context.Request.Query["returnUrl"]);
-            //            context.Response.Redirect(context.RedirectUri);
-            //            return Task.CompletedTask;
-            //        },
-            //        OnCreatingTicket = async ctx =>
-            //        {
-            //            var email = ctx.Identity.FindFirst(ClaimTypes.Email)?.Value;
-            //            if (!string.IsNullOrEmpty(email))
-            //            {
-            //                var claims = new List<Claim>
-            //                {
-            //                    new Claim(ClaimTypes.Email, email),
-            //                    new Claim(ClaimTypes.NameIdentifier, ctx.Identity.FindFirst(ClaimTypes.NameIdentifier)?.Value)
-            //                };
-
-            //                var identity = new ClaimsIdentity(claims, "Google");
-            //                ctx.Principal.AddIdentity(identity);
-            //            }
-            //        }
-            //    };
-            //});
-
-
-
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
             // service used insted of  method of on configuration to allow injecting the dbcontext in the repositories without using the service provider
             builder.Services.AddDbContext<JobPortalContext>(options =>
@@ -174,7 +104,6 @@ namespace Job_Portal_Project
             //Repositories  servives 
             builder.Services.AddScoped<IUserMappingService, UserMappingService>();
             builder.Services.AddScoped<IJobRepository, JobRepository>();
-            builder.Services.AddScoped<IJobApplicationRepository, JobApplicationRepository>();
             builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
             builder.Services.AddScoped<IUserMappingService, UserMappingService>();
             builder.Services.AddScoped<IJobCategoryRepository, JobCategoryRepository>();
@@ -183,7 +112,10 @@ namespace Job_Portal_Project
             builder.Services.AddScoped<IJobService, JobService>();
             builder.Services.AddScoped<IFavouritesRepository, FavouritesRepository>();
             builder.Services.AddScoped<IAdminDashboardService, AdminDashboardService>();
-
+            builder.Services.AddScoped<IJobApplicationService, JobApplicationService>();
+            builder.Services.AddScoped<IJobApplicationRepository, JobApplicationRepository>();
+            builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
+            builder.Services.AddTransient<IEmailService, EmailService>();
 
             
             // Services
