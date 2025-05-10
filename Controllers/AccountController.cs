@@ -4,8 +4,8 @@ using Job_Portal_Project.Repositories.ApplicationUserRepository;
 using Job_Portal_Project.Services;
 using Job_Portal_Project.ViewModels;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,15 +17,18 @@ namespace Job_Portal_Project.Controllers
         private SignInManager<ApplicationUser> signInManager;
         IApplicationUserRepository _applicationUserRepository;
         IUserMappingService _userMappingService;
+        private readonly IEmailService emailSerice;
         private readonly IUserService _userService;
-        public AccountController(UserManager<ApplicationUser> _userManager, SignInManager<ApplicationUser> _signInManager ,
-            IApplicationUserRepository applicationUserRepository, IUserService userService, IUserMappingService userMappingService)
+
+        public AccountController(UserManager<ApplicationUser> _userManager, SignInManager<ApplicationUser> _signInManager,
+            IApplicationUserRepository applicationUserRepository, IUserMappingService userMappingService, IEmailService _emailSerice, IUserService _userService)
         {
             userManager = _userManager;
             signInManager = _signInManager;
             _applicationUserRepository = applicationUserRepository;
             _userMappingService = userMappingService;
-            _userService = userService;
+            emailSerice = _emailSerice;
+            _userService = _userService;
         }
 
         #region Register
@@ -130,13 +133,28 @@ namespace Job_Portal_Project.Controllers
                         claims.Add(new Claim(ClaimTypes.NameIdentifier, userFromDB.Id));
                         claims.Add(new Claim(ClaimTypes.Name, userFromDB.UserName));
                         claims.Add(new Claim(ClaimTypes.Email, userFromDB.Email ?? string.Empty));
-                        claims.Add(new Claim("FirstName", userFromDB.FirstName ));
+                        claims.Add(new Claim("FirstName", userFromDB.FirstName));
                         claims.Add(new Claim("LastName", userFromDB.LastName));
                         claims.Add(new Claim("City", userFromDB.City));
                         claims.Add(new Claim("Country", userFromDB.Country));
                         claims.Add(new Claim(ClaimTypes.Role, userFromDB.Role));
 
-                        //await signInManager.SignInAsync(userFromDB, loginVM.RememberMe);
+                        if (!string.IsNullOrEmpty(userFromDB.ProfilePicturePath))
+                        {
+
+                            var imagePath = userFromDB.ProfilePicturePath;
+                            if (!imagePath.StartsWith("/images/"))
+                            {
+                                imagePath = "/images/" + Path.GetFileName(imagePath);
+                            }
+                            claims.Add(new Claim("ProfilePicturePath", imagePath));
+                        }
+                        else
+                        {
+
+                            claims.Add(new Claim("ProfilePicturePath", "/images/default-profile.png"));
+                        }
+                        await signInManager.SignInAsync(userFromDB, loginVM.RememberMe);
                         await signInManager.SignInWithClaimsAsync(userFromDB, loginVM.RememberMe, claims);
 
                         return RedirectToAction("Index", "Home");
@@ -260,23 +278,108 @@ namespace Job_Portal_Project.Controllers
         public async Task<ActionResult> IsUniqueEmail(string Email)
         {
 
-                var user = await userManager.FindByEmailAsync(Email);
-                if (user == null)
-                    return Json(true);
-                else
-                    return Json(false);
+            var user = await userManager.FindByEmailAsync(Email);
+            if (user == null)
+                return Json(true);
+            else
+                return Json(false);
 
         }
 
         public async Task<IActionResult> IsUniqueUserName(string Username)
         {
-                var user = await userManager.FindByNameAsync(Username);
-                if (user == null)
-                    return Json(true);
-                else
-                    return Json(false);
+            var user = await userManager.FindByNameAsync(Username);
+            if (user == null)
+                return Json(true);
+            else
+                return Json(false);
         }
 
         #endregion 
+        #region ForgetPassword
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult ForgetPassword()
+        {
+            return View();
+        }
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ForgetPassword(ForgetPasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await userManager.FindByEmailAsync(model.Email);
+                if ((user == null))
+                {
+                    return View("ForgotPasswordConfirmation");
+                }
+
+                string code = await userManager.GeneratePasswordResetTokenAsync(user);
+
+                var callbackURL = Url.Action(
+                    "ResetPassword",
+                    "Account",
+                      new { email = user.Email, code = code },
+                     protocol: Request.Scheme
+                    );
+                await emailSerice.SendEmailAsync(model.Email, "Reset Password", $"Please reset your password by clicking <a href='{callbackURL}'>here</a>");
+                return RedirectToAction("ForgotPasswordConfirmation", "Account");
+            }
+            return View(model);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult ForgotPasswordConfirmation()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult ResetPassword(string code = null)
+        {
+            return code == null ? View("Error") : View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ResetPassword(ResetPasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var user = await userManager.FindByEmailAsync(model.Email);
+            if (user == null)
+            {
+
+                return RedirectToAction("ResetPasswordConfirmation", "Account");
+            }
+
+            var result = await userManager.ResetPasswordAsync(user, model.Code, model.Password);
+            if (result.Succeeded)
+            {
+                return RedirectToAction("ResetPasswordConfirmation", "Account");
+            }
+
+            foreach (var item in result.Errors)
+            {
+                ModelState.AddModelError("", item.Description);
+            }
+            return View();
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult ResetPasswordConfirmation()
+        {
+            return View();
+        }
+        #endregion
     }
 }

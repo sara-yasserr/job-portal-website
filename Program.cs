@@ -1,6 +1,5 @@
 ﻿using Job_Portal_Project.Controllers.Profile;
 //using Job_Portal_Project.Data;
-using System.Security.Claims;
 using Job_Portal_Project.Models;
 using Job_Portal_Project.Models.DbContext;
 using Job_Portal_Project.Repositories;
@@ -14,6 +13,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.OAuth;
 
+using System.Security.Claims;
+using Job_Portal_Project.ViewModels;
 namespace Job_Portal_Project
 {
     public class Program
@@ -102,7 +103,6 @@ namespace Job_Portal_Project
             //Repositories  servives 
             builder.Services.AddScoped<IUserMappingService, UserMappingService>();
             builder.Services.AddScoped<IJobRepository, JobRepository>();
-            builder.Services.AddScoped<IJobApplicationRepository, JobApplicationRepository>();
             builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
             builder.Services.AddScoped<IUserMappingService, UserMappingService>();
             builder.Services.AddScoped<IJobCategoryRepository, JobCategoryRepository>();
@@ -111,7 +111,10 @@ namespace Job_Portal_Project
             builder.Services.AddScoped<IJobService, JobService>();
             builder.Services.AddScoped<IFavouritesRepository, FavouritesRepository>();
             builder.Services.AddScoped<IAdminDashboardService, AdminDashboardService>();
-
+            builder.Services.AddScoped<IJobApplicationService, JobApplicationService>();
+            builder.Services.AddScoped<IJobApplicationRepository, JobApplicationRepository>();
+            builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
+            builder.Services.AddTransient<IEmailService, EmailService>();
 
             
             // Services

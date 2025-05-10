@@ -52,6 +52,9 @@
                     <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
 
+                <div class="forgot-password">
+                    <a asp-action="ForgetPassword" asp-controller="Account">Forget Password?</a>
+                </div>
                 <!-- Remember Me -->
                 <div class="form-check remember-me">
                     <input asp-for="RememberMe" type="checkbox" class="form-check-input" id="rememberMe">
@@ -160,6 +163,23 @@
                 padding: 15px;
                 box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             }
+
+        .forgot-password {
+            text-align: right;
+            margin: -10px 0 15px;
+        }
+
+            .forgot-password a {
+                color: #68cad7;
+                font-size: 14px;
+                text-decoration: none;
+                transition: all 0.3s ease;
+            }
+
+                .forgot-password a:hover {
+                    color: #00acc1;
+                    text-decoration: underline;
+                }
 
         .welcome-title {
             color: #68cad7;
