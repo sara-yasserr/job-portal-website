@@ -4,7 +4,6 @@ using Job_Portal_Project.Repositories.ApplicationUserRepository;
 using Job_Portal_Project.Services;
 using Job_Portal_Project.ViewModels;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -19,15 +18,17 @@ namespace Job_Portal_Project.Controllers
         IApplicationUserRepository _applicationUserRepository;
         IUserMappingService _userMappingService;
         private readonly IEmailService emailSerice;
+        private readonly IUserService _userService;
 
         public AccountController(UserManager<ApplicationUser> _userManager, SignInManager<ApplicationUser> _signInManager,
-            IApplicationUserRepository applicationUserRepository, IUserMappingService userMappingService, IEmailService _emailSerice)
+            IApplicationUserRepository applicationUserRepository, IUserMappingService userMappingService, IEmailService _emailSerice, IUserService _userService)
         {
             userManager = _userManager;
             signInManager = _signInManager;
             _applicationUserRepository = applicationUserRepository;
             _userMappingService = userMappingService;
             emailSerice = _emailSerice;
+            _userService = _userService;
         }
 
         #region Register
@@ -132,12 +133,27 @@ namespace Job_Portal_Project.Controllers
                         claims.Add(new Claim(ClaimTypes.NameIdentifier, userFromDB.Id));
                         claims.Add(new Claim(ClaimTypes.Name, userFromDB.UserName));
                         claims.Add(new Claim(ClaimTypes.Email, userFromDB.Email ?? string.Empty));
-                        claims.Add(new Claim("FirstName", userFromDB.FirstName ));
+                        claims.Add(new Claim("FirstName", userFromDB.FirstName));
                         claims.Add(new Claim("LastName", userFromDB.LastName));
                         claims.Add(new Claim("City", userFromDB.City));
                         claims.Add(new Claim("Country", userFromDB.Country));
                         claims.Add(new Claim(ClaimTypes.Role, userFromDB.Role));
 
+                        if (!string.IsNullOrEmpty(userFromDB.ProfilePicturePath))
+                        {
+
+                            var imagePath = userFromDB.ProfilePicturePath;
+                            if (!imagePath.StartsWith("/images/"))
+                            {
+                                imagePath = "/images/" + Path.GetFileName(imagePath);
+                            }
+                            claims.Add(new Claim("ProfilePicturePath", imagePath));
+                        }
+                        else
+                        {
+
+                            claims.Add(new Claim("ProfilePicturePath", "/images/default-profile.png"));
+                        }
                         await signInManager.SignInAsync(userFromDB, loginVM.RememberMe);
                         await signInManager.SignInWithClaimsAsync(userFromDB, loginVM.RememberMe, claims);
 
@@ -262,21 +278,21 @@ namespace Job_Portal_Project.Controllers
         public async Task<ActionResult> IsUniqueEmail(string Email)
         {
 
-                var user = await userManager.FindByEmailAsync(Email);
-                if (user == null)
-                    return Json(true);
-                else
-                    return Json(false);
+            var user = await userManager.FindByEmailAsync(Email);
+            if (user == null)
+                return Json(true);
+            else
+                return Json(false);
 
         }
 
         public async Task<IActionResult> IsUniqueUserName(string Username)
         {
-                var user = await userManager.FindByNameAsync(Username);
-                if (user == null)
-                    return Json(true);
-                else
-                    return Json(false);
+            var user = await userManager.FindByNameAsync(Username);
+            if (user == null)
+                return Json(true);
+            else
+                return Json(false);
         }
 
         #endregion 
