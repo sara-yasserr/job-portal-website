@@ -25,23 +25,24 @@
         </div>
     </div>
 </div>
-<div class="container mt-5 col-12" style="">
-    <div class="row g-4" style="display:flex; flex-direction:row;justify-content:center;background-color:#F9F9F9 !important;">
+<div class="container col-12" style="padding:60px 0px;background-color:#F9F9F9 !important;">
+    <div class="row g-4" style="display:flex; flex-direction:row;justify-content:center;">
         <!-- Sidebar -->
             <partial name="_JobSeekerSideBar" />
 
         <!-- Main Content -->
         <div class="col-md-8 col-9">
-            <div class="card shadow-sm border-0">
-                <div class="card-header text-white py-3" style="background: linear-gradient(135deg, #00BCD4 0%, #00838F 100%);">
+            <div class="card shadow-sm border-0" style="border-radius: 10px; overflow: hidden;">
+                <!-- Card Header -->
+                <div class="card-header py-3" style="background: white; border-bottom: 2px solid #00BCD4;">
                     <div class="d-flex justify-content-between align-items-center">
-                        <h5 class="mb-1" style="color:white;">
-                            <i class="fas fa-file-alt me-2"></i> Resume Management
+                        <h5 class="mb-1" style="color: #00838f; font-weight: 600;">
+                            <i class="fas fa-file-alt me-2" style="color: #00BCD4;"></i> Resume
                         </h5>
                         @if (!string.IsNullOrEmpty(Model.ResumePath))
                         {
-                            <span class="badge bg-white text-primary">
-                                <i class="fas fa-check-circle text-success me-1"></i> Uploaded
+                            <span class="badge badge-pill" style="background: rgba(0, 188, 212, 0.1); color: #00838f;">
+                                <i class="fas fa-check-circle me-1" style="color: #00BCD4;"></i> Uploaded
                             </span>
                         }
                     </div>
