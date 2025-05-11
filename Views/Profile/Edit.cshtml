@@ -27,9 +27,9 @@
                         <div class="row mb-4">
                             <div class="col-12 text-center">
                                 <div class="position-relative d-inline-block">
-                                    @if (!string.IsNullOrEmpty(Model?.ProfilePicturePath))
+                                    @if (Model?.ProfilePicturePath!=null)
                                     {
-                                        <img src="/images/@Model.ProfilePicturePath" alt="Profile Picture"
+                                        <img src="@Model.ProfilePicturePath" alt="Profile Picture"
                                              class="rounded-circle img-thumbnail mb-3"
                                              style="width: 160px; height: 160px; object-fit: cover;">
                                     }

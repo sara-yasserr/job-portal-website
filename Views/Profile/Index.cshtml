@@ -446,9 +446,9 @@
                 <div class="row">
                     <!-- Profile Sidebar -->
                     <div class="col-lg-4 profile-sidebar">
-                        @if (!string.IsNullOrEmpty(Model.ProfilePicturePath))
+                        @if (@Model?.ProfilePicturePath != null)
                         {
-                            <img src="/images/@Model.ProfilePicturePath" alt="Profile Picture" class="profile-picture" id="profile-preview">
+                            <img src="@Model.ProfilePicturePath" alt="Profile Picture" class="profile-picture" id="profile-preview">
                         }
                         else
                         {

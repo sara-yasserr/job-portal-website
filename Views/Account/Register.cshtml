@@ -15,6 +15,7 @@
                     <div class="registration-body">
                         <form class="needs-validation" method="post" asp-action="Register" asp-controller="Account" enctype="multipart/form-data">
                             <div class="validation-summary text-danger" style="display: none;"></div>
+                            <div asp-validation-summary="All" ></div>
                             <input type="hidden" id="Role" name="Role" value="@Model.Role" />
 
                             <div class="row">
